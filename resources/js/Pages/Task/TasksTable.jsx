@@ -153,9 +153,9 @@ export default function TasksTable({
                 <td className="px-3 py-2">
                   <img src={task.image_path} style={{ width: 60 }} />
                 </td>
-                {!hideProjectColumn && (
+                {/* {!hideProjectColumn && (
                   <td className="px-3 py-2">{task.project.name}</td>
-                )}
+                )} */}
                 <th className="px-3 py-2 text-gray-100 hover:underline">
                   <Link href={route("task.show", task.id)}>{task.name}</Link>
                 </th>
@@ -169,9 +169,9 @@ export default function TasksTable({
                     {TASK_STATUS_TEXT_MAP[task.status]}
                   </span>
                 </td>
-                <td className="px-3 py-2 text-nowrap">{task.created_at}</td>
-                <td className="px-3 py-2 text-nowrap">{task.due_date}</td>
-                <td className="px-3 py-2">{task.createdBy.name}</td>
+                <td className="px-3 py-2 text-nowrap">{task.prerequisite_id}</td>
+                <td className="px-3 py-2 text-nowrap">{task.corequisite_id}</td>
+                {/* <td className="px-3 py-2">{task.createdBy.name}</td> */}
                 <td className="px-3 py-2 text-nowrap">
                   <Link
                     href={route("task.edit", task.id)}

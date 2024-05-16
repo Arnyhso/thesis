@@ -88,7 +88,7 @@ export default function Index({ auth, projects, queryParams = null, success }) {
                       >
                         ID
                       </TableHeading>
-                      <th className="px-3 py-3">Image</th>
+                      <th className="px-3 py-3"></th>
                       <TableHeading
                         name="name"
                         sort_field={queryParams.sort_field}
@@ -106,7 +106,6 @@ export default function Index({ auth, projects, queryParams = null, success }) {
                       >
                         Status
                       </TableHeading>
-
                       <TableHeading
                         name="created_at"
                         sort_field={queryParams.sort_field}
@@ -116,16 +115,7 @@ export default function Index({ auth, projects, queryParams = null, success }) {
                         Create Date
                       </TableHeading>
 
-                      <TableHeading
-                        name="due_date"
-                        sort_field={queryParams.sort_field}
-                        sort_direction={queryParams.sort_direction}
-                        sortChanged={sortChanged}
-                      >
-                        Due Date
-                      </TableHeading>
-                      <th className="px-3 py-3">Created By</th>
-                      <th className="px-3 py-3 text-right">Actions</th>
+                      <th className="px-3 py-3 text-center">Actions</th>
                     </tr>
                   </thead>
                   <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
@@ -160,7 +150,6 @@ export default function Index({ auth, projects, queryParams = null, success }) {
                       <th className="px-3 py-3"></th>
                       <th className="px-3 py-3"></th>
                       <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -170,9 +159,6 @@ export default function Index({ auth, projects, queryParams = null, success }) {
                         key={project.id}
                       >
                         <td className="px-3 py-2">{project.id}</td>
-                        <td className="px-3 py-2">
-                          <img src={project.image_path} style={{ width: 60 }} />
-                        </td>
                         <th className="px-3 py-2 text-gray-100 text-nowrap hover:underline">
                           <Link href={route("project.show", project.id)}>
                             {project.name}
@@ -191,10 +177,6 @@ export default function Index({ auth, projects, queryParams = null, success }) {
                         <td className="px-3 py-2 text-nowrap">
                           {project.created_at}
                         </td>
-                        <td className="px-3 py-2 text-nowrap">
-                          {project.due_date}
-                        </td>
-                        <td className="px-3 py-2">{project.createdBy.name}</td>
                         <td className="px-3 py-2 text-nowrap">
                           <Link
                             href={route("project.edit", project.id)}

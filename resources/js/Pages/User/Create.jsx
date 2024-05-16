@@ -1,6 +1,7 @@
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
+import SelectInput from "@/Components/SelectInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 
@@ -8,6 +9,7 @@ export default function Create({ auth }) {
   const { data, setData, post, errors, reset } = useForm({
     name: "",
     email: "",
+    user_type: "",
     password: "",
     password_confirmation: "",
   });
@@ -53,6 +55,25 @@ export default function Create({ auth }) {
 
                 <InputError message={errors.name} className="mt-2" />
               </div>
+
+              <div className="mt-4">
+                <InputLabel htmlFor="user_type" value="User type" />
+
+                <SelectInput
+                  name="user_type"
+                  id="user_type"
+                  className="mt-1 block w-full"
+                  onChange={(e) => setData("user_type", e.target.value)}
+                >
+                  <option value="">Select User Type</option>
+                  <option value="student">Student</option>
+                  <option value="college_head">College Head</option>
+                </SelectInput>
+
+                <InputError message={errors.user_type} className="mt-2" />
+              </div>
+
+
               <div className="mt-4">
                 <InputLabel htmlFor="user_email" value="User Email" />
 

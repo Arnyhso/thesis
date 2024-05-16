@@ -24,10 +24,11 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
+            'name' => 'Default User Name',
+            'user_type' => 'Default User type',
+            'email' => 'default@example.com',
             'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
+            'password' => Hash::make('password'), // Example: Default password is 'password'
             'remember_token' => Str::random(10),
         ];
     }

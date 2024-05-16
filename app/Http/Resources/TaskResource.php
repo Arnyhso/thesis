@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Storage;
 
 class TaskResource extends JsonResource
 {
-
     public static $wrap = false;
 
     /**
@@ -22,19 +21,17 @@ class TaskResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'course_code' => $this->course_code,
             'description' => $this->description,
-            'created_at' => (new Carbon($this->created_at))->format('Y-m-d'),
-            'due_date' => (new Carbon($this->due_date))->format('Y-m-d'),
             'status' => $this->status,
+            'prerequisite_id' => $this->prerequisite_id,
+            'prerequisite' => new TaskResource($this->whenLoaded('prerequisite')),
+            'corequisite_id' => $this->corequisite_id,
+            'corequisite' => new TaskResource($this->whenLoaded('corequisite')),
             'priority' => $this->priority,
-            'image_path' => $this->image_path && !(str_starts_with($this->image_path, 'http')) ?
-                Storage::url($this->image_path) : '',
+            'image_path' => $this->image_path ? Storage::url($this->image_path) : null,
             'project_id' => $this->project_id,
-            'project' => new ProjectResource($this->project),
-            'assigned_user_id' => $this->assigned_user_id,
-            'assignedUser' => $this->assignedUser ? new UserResource($this->assignedUser) : null,
-            'createdBy' => new UserResource($this->createdBy),
-            'updatedBy' => new UserResource($this->updatedBy),
+            'project' => new ProjectResource($this->whenLoaded('project')),
         ];
     }
 }

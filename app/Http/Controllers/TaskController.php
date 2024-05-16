@@ -19,7 +19,7 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Task $task)
     {
         $query = Task::query();
 
@@ -48,15 +48,22 @@ class TaskController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        $projects = Project::query()->orderBy('name', 'asc')->get();
-        $users = User::query()->orderBy('name', 'asc')->get();
+{
+    $projects = Project::query()->orderBy('name', 'asc')->get();
+    $users = User::query()->orderBy('name', 'asc')->get();
+    $task = Task::query()->orderBy('name', 'asc')->get();
+    $prerequisites = Task::orderBy('name', 'asc')->get();
+    $corequisites = Task::orderBy('name', 'asc')->get();
 
-        return inertia("Task/Create", [
-            'projects' => ProjectResource::collection($projects),
-            'users' => UserResource::collection($users),
-        ]);
-    }
+    return inertia("Task/Create", [
+        'projects' => ProjectResource::collection($projects),
+        'users' => UserResource::collection($users),
+        'task' => TaskResource::collection($task),
+        'prerequisites' => TaskResource::collection($prerequisites),
+        'corequisites' => TaskResource::collection($corequisites),
+    ]);
+}
+
 
     /**
      * Store a newly created resource in storage.
@@ -66,8 +73,6 @@ class TaskController extends Controller
         $data = $request->validated();
         /** @var $image \Illuminate\Http\UploadedFile */
         $image = $data['image'] ?? null;
-        $data['created_by'] = Auth::id();
-        $data['updated_by'] = Auth::id();
         if ($image) {
             $data['image_path'] = $image->store('task/' . Str::random(), 'public');
         }
@@ -82,25 +87,46 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        return inertia('Task/Show', [
-            'task' => new TaskResource($task),
-        ]);
+        $project = $task->project;
+
+        $prerequisite = null;
+    if ($task->prerequisite_id) {
+        $prerequisite = Task::findOrFail($task->prerequisite_id);
     }
 
+    $corequisite = null;
+    if ($task->corequisite_id) {
+        $corequisite = Task::findOrFail($task->corequisite_id);
+    }
+
+        return inertia('Task/Show', [
+            'task' => $task,
+            'project' => $project,
+            'prerequisite' => $prerequisite,
+            'corequisite' => $corequisite,
+]);
+    }
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(Task $task)
-    {
-        $projects = Project::query()->orderBy('name', 'asc')->get();
-        $users = User::query()->orderBy('name', 'asc')->get();
+{
+    $projects = Project::query()->orderBy('name', 'asc')->get();
+    $users = User::query()->orderBy('name', 'asc')->get();
+    $projectTasks = Task::where('project_id', $task->project_id)->get();
+    $prerequisites = Task::orderBy('name', 'asc')->get();
+    $corequisites = Task::orderBy('name', 'asc')->get();
 
-        return inertia("Task/Edit", [
-            'task' => new TaskResource($task),
-            'projects' => ProjectResource::collection($projects),
-            'users' => UserResource::collection($users),
-        ]);
-    }
+    return inertia("Task/Edit", [
+        'task' => new TaskResource($task),
+        'projects' => ProjectResource::collection($projects),
+        'users' => UserResource::collection($users),
+        'prerequisites' => TaskResource::collection($prerequisites),
+        'corequisites' => TaskResource::collection($corequisites),
+        'projectTasks' =>TaskResource::collection($projectTasks),
+    ]);
+}
+
 
     /**
      * Update the specified resource in storage.

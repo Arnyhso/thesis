@@ -6,7 +6,7 @@ import {
   TASK_STATUS_CLASS_MAP,
   TASK_STATUS_TEXT_MAP,
 } from "@/constants.jsx";
-export default function Show({ auth, task }) {
+export default function Show({ auth, task, prerequisite, corequisite }) {
   return (
     <AuthenticatedLayout
       user={auth.user}
@@ -75,23 +75,42 @@ export default function Show({ auth, task }) {
                     </p>
                   </div>
                   <div className="mt-4">
-                    <label className="font-bold text-lg">Created By</label>
-                    <p className="mt-1">{task.createdBy.name}</p>
-                  </div>
+                   <label className="font-bold text-lg">Prerequisite</label>
+                   <p className="mt-1">
+                    {prerequisite ? (
+                      <Link href={route("task.show", prerequisite.id)} className="hover:underline">
+                        {prerequisite.name}
+                      </Link>
+                    ) : (
+                      "N/A"
+                    )}
+                    </p>
+                   </div>
                 </div>
                 <div>
                   <div>
-                    <label className="font-bold text-lg">Due Date</label>
-                    <p className="mt-1">{task.due_date}</p>
-                  </div>
-                  <div className="mt-4">
+  <div>
+    <label className="font-bold text-lg">Corequisite</label>
+    <p className="mt-1">
+      {corequisite ? (
+        <Link href={route("task.show", corequisite.id)} className="hover:underline">
+          {corequisite.name}
+        </Link>
+      ) : (
+        "N/A"
+      )}
+    </p>
+  </div>
+</div>
+
+                  {/* <div className="mt-4">
                     <label className="font-bold text-lg">Create Date</label>
                     <p className="mt-1">{task.created_at}</p>
-                  </div>
-                  <div className="mt-4">
+                  </div> 
+                  /* <div className="mt-4">
                     <label className="font-bold text-lg">Updated By</label>
                     <p className="mt-1">{task.updatedBy.name}</p>
-                  </div>
+                  </div> */}
                   <div className="mt-4">
                     <label className="font-bold text-lg">Project</label>
                     <p className="mt-1">
@@ -102,10 +121,6 @@ export default function Show({ auth, task }) {
                         {task.project.name}
                       </Link>
                     </p>
-                  </div>
-                  <div className="mt-4">
-                    <label className="font-bold text-lg">Assigned User</label>
-                    <p className="mt-1">{task.assignedUser.name}</p>
                   </div>
                 </div>
               </div>

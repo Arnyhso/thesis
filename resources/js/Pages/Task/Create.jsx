@@ -6,13 +6,19 @@ import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 
-export default function Create({ auth, projects, users }) {
+export default function Create({ auth, projects, task }) {
   const { data, setData, post, errors, reset } = useForm({
-    image: "",
+    image_path: "", // Updated variable name
     name: "",
     status: "",
     description: "",
-    due_date: "",
+    prerequisite: "",
+    corequisite: "",
+    prerequisite_id: "",
+    corequisite_id: "",
+    priority: "",
+    project_id: "",
+    course_code: "",
   });
 
   const onSubmit = (e) => {
@@ -102,20 +108,59 @@ export default function Create({ auth, projects, users }) {
 
                 <InputError message={errors.description} className="mt-2" />
               </div>
-              <div className="mt-4">
-                <InputLabel htmlFor="task_due_date" value="Task Deadline" />
 
-                <TextInput
-                  id="task_due_date"
-                  type="date"
-                  name="due_date"
-                  value={data.due_date}
-                  className="mt-1 block w-full"
-                  onChange={(e) => setData("due_date", e.target.value)}
+              <div className="mt-4">
+                <InputLabel
+                  htmlFor="prerequisite"
+                  value="Assigned Prerequisite"
                 />
 
-                <InputError message={errors.due_date} className="mt-2" />
+                <SelectInput
+                  name="prerequisite_id"
+                  id="prerequisite"
+                  className="mt-1 block w-full"
+                  onChange={(e) => setData("prerequisite_id", e.target.value)}
+                >
+                  <option value="">Select prerequisite</option>
+                  {task.data.map((task) => (
+                    <option value={task.id} key={task.id}>
+                      {task.name}
+                    </option>
+                  ))}
+                </SelectInput>
+
+                <InputError
+                  message={errors.prerequisite_id}
+                  className="mt-2"
+                />
               </div>
+
+              <div className="mt-4">
+                <InputLabel
+                  htmlFor="corequisite"
+                  value="Assigned Corequisite"
+                />
+
+                <SelectInput
+                  name="corequisite_id"
+                  id="corequisite"
+                  className="mt-1 block w-full"
+                  onChange={(e) => setData("corequisite_id", e.target.value)}
+                >
+                  <option value="">Select corequisite</option>
+                  {task.data.map((task) => (
+                    <option value={task.id} key={task.id}>
+                      {task.name}
+                    </option>
+                  ))}
+                </SelectInput>
+
+                <InputError
+                  message={errors.corequisite_id}
+                  className="mt-2"
+                />
+              </div>
+
               <div className="mt-4">
                 <InputLabel htmlFor="task_status" value="Task Status" />
 
@@ -153,29 +198,19 @@ export default function Create({ auth, projects, users }) {
               </div>
 
               <div className="mt-4">
-                <InputLabel
-                  htmlFor="task_assigned_user"
-                  value="Assigned User"
-                />
+                <InputLabel htmlFor="course_code" value="Course Code" />
 
-                <SelectInput
-                  name="assigned_user_id"
-                  id="task_assigned_user"
+                <TextInput
+                  id="course_code"
+                  type="text"
+                  name="course_code"
+                  value={data.course_code}
                   className="mt-1 block w-full"
-                  onChange={(e) => setData("assigned_user_id", e.target.value)}
-                >
-                  <option value="">Select User</option>
-                  {users.data.map((user) => (
-                    <option value={user.id} key={user.id}>
-                      {user.name}
-                    </option>
-                  ))}
-                </SelectInput>
-
-                <InputError
-                  message={errors.assigned_user_id}
-                  className="mt-2"
+                  isFocused={true}
+                  onChange={(e) => setData("course_code", e.target.value)}
                 />
+
+                <InputError message={errors.course_code} className="mt-2" />
               </div>
 
               <div className="mt-4 text-right">

@@ -15,11 +15,9 @@ class Task extends Model
         'image_path',
         'status',
         'priority',
-        'due_date',
-        'assigned_user_id',
-        'created_by',
-        'updated_by',
         'project_id',
+        'prerequisite_id',
+        'corequisite_id',
     ];
 
     public function project()
@@ -27,18 +25,13 @@ class Task extends Model
         return $this->belongsTo(Project::class);
     }
 
-    public function assignedUser()
+    public function prerequisite()
     {
-        return $this->belongsTo(User::class, 'assigned_user_id');
+    return $this->belongsTo(Task::class, 'prerequisite_id');
     }
 
-    public function createdBy()
+    public function corequisite()
     {
-        return $this->belongsTo(User::class, 'created_by');
-    }
-
-    public function updatedBy()
-    {
-        return $this->belongsTo(User::class, 'updated_by');
+    return $this->belongsTo(Task::class, 'corequisite_id');
     }
 }
