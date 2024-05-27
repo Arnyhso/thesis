@@ -6,25 +6,22 @@ import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 
-export default function Create({ auth, projects, task }) {
+export default function Edit({ auth, allTask, projects, projectTasks}) {
   const { data, setData, post, errors, reset } = useForm({
-    image_path: "", // Updated variable name
-    name: "",
-    task_type: "",
-    gec_type: "",
-    description: "",
-    prerequisite: "",
-    corequisite: "",
-    prerequisite_id: "",
-    corequisite_id: "",
-    project_id: "",
-    //course_code: "",
+    name: allTask.name || "",
+    task_type: allTask.task_type || "",
+    gec_type: allTask.gec_type || "",
+    prerequisite_id: allTask.prerequisite_id || "",
+    prerequisite: allTask.prerequisite || "",
+    corequisite_id: allTask.corequisite_id || "",
+    corequisite: allTask.corequisite || "",
+    course_code: allTask.course_code || "",
+    _method: "PUT",
   });
 
   const onSubmit = (e) => {
     e.preventDefault();
-
-    post(route("task.store"));
+    post(route("allTask.update", allTask.id));
   };
 
   return (
@@ -33,12 +30,12 @@ export default function Create({ auth, projects, task }) {
       header={
         <div className="flex justify-between items-center">
           <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Create new Task
+            Edit task "{allTask.name}"
           </h2>
         </div>
       }
     >
-      <Head title="Tasks" />
+      <Head title="All Tasks" />
 
       <div className="py-12">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -47,38 +44,11 @@ export default function Create({ auth, projects, task }) {
               onSubmit={onSubmit}
               className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
             >
-              <div>
-                <InputLabel htmlFor="task_project_id" value="Project" />
-
-                <SelectInput
-                  name="project_id"
-                  id="task_project_id"
-                  className="mt-1 block w-full"
-                  onChange={(e) => setData("project_id", e.target.value)}
-                >
-                  <option value="">Select Project</option>
-                  {projects.data.map((project) => (
-                    <option value={project.id} key={project.id}>
-                      {project.name}
-                    </option>
-                  ))}
-                </SelectInput>
-
-                <InputError message={errors.project_id} className="mt-2" />
-              </div>
               <div className="mt-4">
-                <InputLabel htmlFor="task_image_path" value="Task Image" />
-                <TextInput
-                  id="task_image_path"
-                  type="file"
-                  name="image"
-                  className="mt-1 block w-full"
-                  onChange={(e) => setData("image", e.target.files[0])}
+                <InputLabel 
+                htmlFor="task_name" 
+                value="Task Name" 
                 />
-                <InputError message={errors.image} className="mt-2" />
-              </div>
-              <div className="mt-4">
-                <InputLabel htmlFor="task_name" value="Task Name" />
 
                 <TextInput
                   id="task_name"
@@ -94,19 +64,46 @@ export default function Create({ auth, projects, task }) {
               </div>
               <div className="mt-4">
                 <InputLabel
-                  htmlFor="task_description"
-                  value="Task Description"
+                  htmlFor="TaskType"
+                  value="Task Type"
                 />
 
-                <TextAreaInput
-                  id="task_description"
-                  name="description"
-                  value={data.description}
+                <SelectInput
+                  name="task_type"
+                  id="TaskType"
+                  value={data.task_type}
                   className="mt-1 block w-full"
-                  onChange={(e) => setData("description", e.target.value)}
+                  onChange={(e) => setData("task_type", e.target.value)}
+                >
+                  <option value="">Select Task Type</option>
+                  <option value="gec">GEC</option>
+                  <option value="special">SPECIAL</option>
+                  <option value="standing">STANDING</option>
+                </SelectInput>
+
+                <InputError message={errors.task_type} className="mt-2" />
+              </div>
+
+              <div className="mt-4">
+                <InputLabel
+                  htmlFor="gectype"
+                  value="gec Type"
                 />
 
-                <InputError message={errors.description} className="mt-2" />
+                <SelectInput
+                  name="gec_type"
+                  id="gectype"
+                  value={data.gec_type}
+                  className="mt-1 block w-full"
+                  onChange={(e) => setData("gec_type", e.target.value)}
+                >
+                  <option value="">Select Priority</option>
+                  <option value="gec">GEC</option>
+                  <option value="elective">ELECTIVE</option>
+                  <option value="gee">GEE</option>
+                </SelectInput>
+
+                <InputError message={errors.gec_type} className="mt-2" />
               </div>
 
               <div className="mt-4">
@@ -118,13 +115,14 @@ export default function Create({ auth, projects, task }) {
                 <SelectInput
                   name="prerequisite_id"
                   id="prerequisite"
+                  value={data.prerequisite_id}
                   className="mt-1 block w-full"
                   onChange={(e) => setData("prerequisite_id", e.target.value)}
                 >
                   <option value="">Select prerequisite</option>
-                  {task.data.map((task) => (
-                    <option value={task.id} key={task.id}>
-                      {task.name}
+                  {projectTasks.data.map((allTask) => (
+                    <option value={allTask.id} key={allTask.id}>
+                      {allTask.name}
                     </option>
                   ))}
                 </SelectInput>
@@ -144,13 +142,14 @@ export default function Create({ auth, projects, task }) {
                 <SelectInput
                   name="corequisite_id"
                   id="corequisite"
+                  value={data.corequisite_id}
                   className="mt-1 block w-full"
                   onChange={(e) => setData("corequisite_id", e.target.value)}
                 >
                   <option value="">Select corequisite</option>
-                  {task.data.map((task) => (
-                    <option value={task.id} key={task.id}>
-                      {task.name}
+                  {projectTasks.data.map((allTask) => (
+                    <option value={allTask.id} key={allTask.id}>
+                      {allTask.name}
                     </option>
                   ))}
                 </SelectInput>
@@ -162,60 +161,30 @@ export default function Create({ auth, projects, task }) {
               </div>
 
               <div className="mt-4">
-                <InputLabel htmlFor="TaskType" value="Task Type" />
-
-                <SelectInput
-                  name="task_type"
-                  id="TaskType"
-                  className="mt-1 block w-full"
-                  onChange={(e) => setData("task_type", e.target.value)}
-                >
-                  <option value="">Select Task Type</option>
-                  <option value="gec">GEC</option>
-                  <option value="special">SPECIAL</option>
-                  <option value="standing">STANDING</option>
-                </SelectInput>
-
-                <InputError message={errors.task_type} className="mt-2" />
-              </div>
-
-              <div className="mt-4">
-                <InputLabel htmlFor="gectype" value="gec Type" />
-
-                <SelectInput
-                  name="gec_type"
-                  id="gectype"
-                  className="mt-1 block w-full"
-                  onChange={(e) => setData("gec_type", e.target.value)}
-                >
-                  <option value="">Select GEC Type</option>
-                  <option value="gec">GEC</option>
-                  <option value="elective">ELECTIVE</option>
-                  <option value="gee">GEE</option>
-                </SelectInput>
-
-                <InputError message={errors.gec_type} className="mt-2" />
-              </div>
-
-              {/* <div className="mt-4">
-                <InputLabel htmlFor="course_code" value="Course Code" />
+                <InputLabel
+                  htmlFor="task_course_code"
+                  value="Course Code"
+                />
 
                 <TextInput
-                  id="course_code"
+                  id="task_course_code"
                   type="text"
                   name="course_code"
                   value={data.course_code}
                   className="mt-1 block w-full"
-                  isFocused={true}
                   onChange={(e) => setData("course_code", e.target.value)}
                 />
 
-                <InputError message={errors.course_code} className="mt-2" />
-              </div> */}
+                <InputError
+                  message={errors.course_code}
+                  className="mt-2"
+                />
+              </div>
+
 
               <div className="mt-4 text-right">
                 <Link
-                  href={route("task.index")}
+                  href={route("allTask.index")}
                   className="bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-all hover:bg-gray-200 mr-2"
                 >
                   Cancel

@@ -29,8 +29,8 @@ class TaskController extends Controller
         if (request("name")) {
             $query->where("name", "like", "%" . request("name") . "%");
         }
-        if (request("status")) {
-            $query->where("status", request("status"));
+        if (request("task_type")) {
+            $query->where("task_type", request("task_type"));
         }
 
         $tasks = $query->orderBy($sortField, $sortDirection)
@@ -76,10 +76,13 @@ class TaskController extends Controller
         if ($image) {
             $data['image_path'] = $image->store('task/' . Str::random(), 'public');
         }
-        Task::create($data);
+        $data['project_id'] = $request->input('project_id'); // Add project_id to task data
+        // Create task
+        $task = Task::create($data);
 
-        return to_route('task.index')
-            ->with('success', 'Task was created');
+        return redirect()->route('task.index')
+            ->with('success', 'Task was created')
+            ->with('task', $task); // Optionally, pass the created task instance in the response
     }
 
     /**
@@ -104,8 +107,8 @@ class TaskController extends Controller
             'project' => $project,
             'prerequisite' => $prerequisite,
             'corequisite' => $corequisite,
-]);
-    }
+    ]);
+}
     /**
      * Show the form for editing the specified resource.
      */
@@ -173,8 +176,8 @@ class TaskController extends Controller
         if (request("name")) {
             $query->where("name", "like", "%" . request("name") . "%");
         }
-        if (request("status")) {
-            $query->where("status", request("status"));
+        if (request("task_type")) {
+            $query->where("task_type", request("task_type"));
         }
 
         $tasks = $query->orderBy($sortField, $sortDirection)

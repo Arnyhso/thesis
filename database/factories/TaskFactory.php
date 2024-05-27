@@ -18,7 +18,7 @@ class TaskFactory extends Factory
     {
         return [
             'name' => 'Default Task Name',
-            'course_code' => 'Default Course Code',
+            //'course_code' => 'Default Course Code',
             'description' => 'Default Task Description',
             'image_path' => null,
             'status' => 'pending',

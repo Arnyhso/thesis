@@ -13,11 +13,10 @@ return new class extends Migration {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('course_code')->nullable();
             $table->longText('description')->nullable();
             $table->string('image_path')->nullable();
-            $table->string('status');
-            $table->string('priority');
+            $table->string('task_type');
+            $table->string('gec_type');
             $table->foreignId('project_id')->constrained('projects');
             $table->foreignId('prerequisite_id')->nullable()->constrained('tasks');
             $table->foreignId('corequisite_id')->nullable()->constrained('tasks');

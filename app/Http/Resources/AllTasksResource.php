@@ -7,10 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
 
-class TaskResource extends JsonResource
+class AllTasksResource extends JsonResource
 {
     public static $wrap = false;
-
     /**
      * Transform the resource into an array.
      *
@@ -21,16 +20,13 @@ class TaskResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'description' => $this->description,
-            'image_path' => $this->image_path ? Storage::url($this->image_path) : null,
+            'course_code' => $this->course_code,
             'task_type' => $this->task_type,
             'gec_type' => $this->gec_type,
             'prerequisite_id' => $this->prerequisite_id,
-            'prerequisite' => new TaskResource($this->whenLoaded('prerequisite')),
+            'prerequisite' => new AllTasksResource($this->whenLoaded('prerequisite')),
             'corequisite_id' => $this->corequisite_id,
-            'corequisite' => new TaskResource($this->whenLoaded('corequisite')),
-            'project_id' => $this->project_id,
-            'project' => new ProjectResource($this->whenLoaded('project')),
+            'corequisite' => new AllTasksResource($this->whenLoaded('corequisite')),
         ];
     }
 }

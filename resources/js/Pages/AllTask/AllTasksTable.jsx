@@ -5,8 +5,8 @@ import TableHeading from "@/Components/TableHeading";
 import { TASK_PRIORITY_CLASS_MAP, TASK_PRIORITY_TEXT_MAP, TASK_STATUS_CLASS_MAP, TASK_STATUS_TEXT_MAP } from "@/constants.jsx";
 import { Link, router } from "@inertiajs/react";
 
-export default function TasksTable({
-  tasks,
+export default function AllTasksTable({
+  allTasks,
   success,
   queryParams = null,
   hideProjectColumn = false,
@@ -19,7 +19,7 @@ export default function TasksTable({
       delete queryParams[name];
     }
 
-    router.get(route("task.index"), queryParams);
+    router.get(route("allTask.index"), queryParams);
   };
 
   const onKeyPress = (name, e) => {
@@ -39,14 +39,14 @@ export default function TasksTable({
       queryParams.sort_field = name;
       queryParams.sort_direction = "asc";
     }
-    router.get(route("task.index"), queryParams);
+    router.get(route("allTask.index"), queryParams);
   };
 
-  const deleteTask = (task) => {
+  const deleteTask = (allTask) => {
     if (!window.confirm("Are you sure you want to delete the task?")) {
       return;
     }
-    router.delete(route("task.destroy", task.id));
+    router.delete(route("allTask.destroy", allTask.id));
   };
 
   return (
@@ -144,53 +144,53 @@ export default function TasksTable({
             </tr>
           </thead>
           <tbody>
-            {tasks.data.map((task) => (
+            {allTasks.data.map((allTask) => (
               <tr
                 className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                key={task.id}
+                key={allTask.id}
               >
-                <td className="px-3 py-2">{task.id}</td>
+                <td className="px-3 py-2">{allTask.id}</td>
                 <td className="px-3 py-2">
-                  <img src={task.image_path} style={{ width: 60 }} />
+                  <img src={allTask.image_path} style={{ width: 60 }} />
                 </td>
                 {/* {!hideProjectColumn && (
                   <td className="px-3 py-2">{task.project.name}</td>
                 )} */}
                 <th className="px-3 py-2 text-gray-100 hover:underline">
-                  <Link href={route("task.show", task.id)}>{task.name}</Link>
+                  <Link href={route("allTask.show", allTask.id)}>{allTask.name}</Link>
                 </th>
                 <td className="px-3 py-2">
                   <span
                     className={
                       "px-2 py-1 rounded text-nowrap text-white " +
-                      TASK_STATUS_CLASS_MAP[task.task_type]
+                      TASK_STATUS_CLASS_MAP[allTask.task_type]
                     }
                   >
-                    {TASK_STATUS_TEXT_MAP[task.task_type]}
+                    {TASK_STATUS_TEXT_MAP[allTask.task_type]}
                   </span>
                 </td>
                 <td className="px-3 py-2">
                   <span
                     className={
                       "px-2 py-1 rounded text-nowrap text-white " +
-                      TASK_PRIORITY_CLASS_MAP[task.gec_type]
+                      TASK_PRIORITY_CLASS_MAP[allTask.gec_type]
                     }
                   >
-                    {TASK_PRIORITY_TEXT_MAP[task.gec_type]}
+                    {TASK_PRIORITY_TEXT_MAP[allTask.gec_type]}
                   </span>
                 </td>
-                <td className="px-3 py-2 text-nowrap">{task.prerequisite_id}</td>
-                <td className="px-3 py-2 text-nowrap">{task.corequisite_id}</td>
+                <td className="px-3 py-2 text-nowrap">{allTask.prerequisite_id}</td>
+                <td className="px-3 py-2 text-nowrap">{allTask.corequisite_id}</td>
                 {/* <td className="px-3 py-2">{task.createdBy.name}</td> */}
                 <td className="px-3 py-2 text-nowrap">
                   <Link
-                    href={route("task.edit", task.id)}
+                    href={route("allTask.edit", allTask.id)}
                     className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
                   >
                     Edit
                   </Link>
                   <button
-                    onClick={(e) => deleteTask(task)}
+                    onClick={(e) => deleteTask(allTask)}
                     className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
                   >
                     Delete
@@ -201,7 +201,7 @@ export default function TasksTable({
           </tbody>
         </table>
       </div>
-      <Pagination links={tasks.meta.links} />
+      <Pagination links={allTasks.meta.links} />
     </>
   );
 }

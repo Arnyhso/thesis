@@ -10,15 +10,15 @@ export default function Edit({ auth, task, projects, projectTasks }) {
   const { data, setData, post, errors, reset } = useForm({
     image: "",
     name: task.name || "",
-    status: task.status || "",
+    task_type: task.task_type || "",
+    gec_type: task.gec_type || "",
     description: task.description || "",
     project_id: task.project_id || "",
-    priority: task.priority || "",
     prerequisite_id: task.prerequisite_id || "",
     prerequisite: task.prerequisite || "",
     corequisite_id: task.corequisite_id || "",
     corequisite: task.corequisite || "",
-    course_code: task.course_code || "",
+    //course_code: task.course_code || "",
     _method: "PUT",
   });
 
@@ -123,46 +123,46 @@ export default function Edit({ auth, task, projects, projectTasks }) {
               </div>
               <div className="mt-4">
                 <InputLabel
-                  htmlFor="task_status"
-                  value="Task Status"
+                  htmlFor="TaskType"
+                  value="Task Type"
                 />
 
                 <SelectInput
-                  name="status"
-                  id="task_status"
-                  value={data.status}
+                  name="task_type"
+                  id="TaskType"
+                  value={data.task_type}
                   className="mt-1 block w-full"
-                  onChange={(e) => setData("status", e.target.value)}
+                  onChange={(e) => setData("task_type", e.target.value)}
                 >
-                  <option value="">Select Status</option>
-                  <option value="pending">Pending</option>
-                  <option value="in_progress">In Progress</option>
-                  <option value="completed">Completed</option>
+                  <option value="">Select Task Type</option>
+                  <option value="gec">GEC</option>
+                  <option value="special">SPECIAL</option>
+                  <option value="standing">STANDING</option>
                 </SelectInput>
 
-                <InputError message={errors.task_status} className="mt-2" />
+                <InputError message={errors.task_type} className="mt-2" />
               </div>
 
               <div className="mt-4">
                 <InputLabel
-                  htmlFor="task_priority"
-                  value="Task Priority"
+                  htmlFor="gectype"
+                  value="gec Type"
                 />
 
                 <SelectInput
-                  name="priority"
-                  id="task_priority"
-                  value={data.priority}
+                  name="gec_type"
+                  id="gectype"
+                  value={data.gec_type}
                   className="mt-1 block w-full"
-                  onChange={(e) => setData("priority", e.target.value)}
+                  onChange={(e) => setData("gec_type", e.target.value)}
                 >
                   <option value="">Select Priority</option>
-                  <option value="low">Low</option>
-                  <option value="medium">Medium</option>
-                  <option value="high">High</option>
+                  <option value="gec">GEC</option>
+                  <option value="elective">ELECTIVE</option>
+                  <option value="gee">GEE</option>
                 </SelectInput>
 
-                <InputError message={errors.priority} className="mt-2" />
+                <InputError message={errors.gec_type} className="mt-2" />
               </div>
 
               <div className="mt-4">
@@ -219,7 +219,7 @@ export default function Edit({ auth, task, projects, projectTasks }) {
                 />
               </div>
 
-              <div className="mt-4">
+              {/* <div className="mt-4">
                 <InputLabel
                   htmlFor="task_course_code"
                   value="Course Code"
@@ -238,7 +238,7 @@ export default function Edit({ auth, task, projects, projectTasks }) {
                   message={errors.course_code}
                   className="mt-2"
                 />
-              </div>
+              </div> */}
 
 
               <div className="mt-4 text-right">

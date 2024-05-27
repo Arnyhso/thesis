@@ -6,31 +6,32 @@ import {
   TASK_STATUS_CLASS_MAP,
   TASK_STATUS_TEXT_MAP,
 } from "@/constants.jsx";
-export default function Show({ auth, task, prerequisite, corequisite }) {
+
+export default function Show({ auth, allTask, prerequisite, corequisite }) {
   return (
     <AuthenticatedLayout
       user={auth.user}
       header={
         <div className="flex items-center justify-between">
           <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {`Task "${task.name}"`}
+            {`Task "${allTask.name}"`}
           </h2>
-          <Link
-            href={route("task.edit", task.id)}
+          {/* <Link
+            href={route("allTask.edit", allTasks.id)}
             className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
           >
             Edit
-          </Link>
+          </Link> */}
         </div>
       }
     >
-      <Head title={`Task "${task.name}"`} />
+      <Head title={`Task "${allTask.name}"`} />
       <div className="py-12">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
           <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             <div>
               <img
-                src={task.image_path}
+                src={allTask.image_path}
                 alt=""
                 className="w-full h-64 object-cover"
               />
@@ -40,11 +41,11 @@ export default function Show({ auth, task, prerequisite, corequisite }) {
                 <div>
                   <div>
                     <label className="font-bold text-lg">Task ID</label>
-                    <p className="mt-1">{task.id}</p>
+                    <p className="mt-1">{allTask.id}</p>
                   </div>
                   <div className="mt-4">
                     <label className="font-bold text-lg">Task Name</label>
-                    <p className="mt-1">{task.name}</p>
+                    <p className="mt-1">{allTask.name}</p>
                   </div>
 
                   <div className="mt-4">
@@ -53,10 +54,10 @@ export default function Show({ auth, task, prerequisite, corequisite }) {
                       <span
                         className={
                           "px-2 py-1 rounded text-white " +
-                          TASK_STATUS_CLASS_MAP[task.task_type]
+                          TASK_STATUS_CLASS_MAP[allTask.task_type]
                         }
                       >
-                        {TASK_STATUS_TEXT_MAP[task.task_type]}
+                        {TASK_STATUS_TEXT_MAP[allTask.task_type]}
                       </span>
                     </p>
                   </div>
@@ -67,10 +68,10 @@ export default function Show({ auth, task, prerequisite, corequisite }) {
                       <span
                         className={
                           "px-2 py-1 rounded text-white " +
-                          TASK_PRIORITY_CLASS_MAP[task.gec_type]
+                          TASK_PRIORITY_CLASS_MAP[allTask.gec_type]
                         }
                       >
-                        {TASK_PRIORITY_TEXT_MAP[task.gec_type]}
+                        {TASK_PRIORITY_TEXT_MAP[allTask.gec_type]}
                       </span>
                     </p>
                   </div>
@@ -78,7 +79,7 @@ export default function Show({ auth, task, prerequisite, corequisite }) {
                    <label className="font-bold text-lg">Prerequisite</label>
                    <p className="mt-1">
                     {prerequisite ? (
-                      <Link href={route("task.show", prerequisite.id)} className="hover:underline">
+                      <Link href={route("allTask.show", prerequisite.id)} className="hover:underline">
                         {prerequisite.name}
                       </Link>
                     ) : (
@@ -89,36 +90,45 @@ export default function Show({ auth, task, prerequisite, corequisite }) {
                 </div>
                 <div>
                   <div>
-                      <div>
-                        <label className="font-bold text-lg">Corequisite</label>
-                        <p className="mt-1">
-                          {corequisite ? (
-                            <Link href={route("task.show", corequisite.id)} className="hover:underline">
-                              {corequisite.name}
-                            </Link>
-                          ) : (
-                            "N/A"
-                          )}
-                        </p>
-                      </div>
-                    </div>
-                  <div className="mt-4">
+                        <div>
+                            <label className="font-bold text-lg">Corequisite</label>
+                            <p className="mt-1">
+                            {corequisite ? (
+                                <Link href={route("allTask.show", corequisite.id)} className="hover:underline">
+                                {corequisite.name}
+                                </Link>
+                            ) : (
+                                "N/A"
+                            )}
+                            </p>
+                        </div>
+                  </div>
+
+                  {/* <div className="mt-4">
+                    <label className="font-bold text-lg">Create Date</label>
+                    <p className="mt-1">{task.created_at}</p>
+                  </div> 
+                  /* <div className="mt-4">
+                    <label className="font-bold text-lg">Updated By</label>
+                    <p className="mt-1">{task.updatedBy.name}</p>
+                  </div> */}
+                  {/* <div className="mt-4">
                     <label className="font-bold text-lg">Project</label>
                     <p className="mt-1">
                       <Link
-                        href={route("project.show", task.project.id)}
+                        href={route("project.show", allTask.project.id)}
                         className="hover:underline"
                       >
-                        {task.project.name}
+                        {allTask.project.name}
                       </Link>
                     </p>
-                  </div>
+                  </div> */}
                 </div>
               </div>
 
               <div className="mt-4">
                 <label className="font-bold text-lg">Task Description</label>
-                <p className="mt-1">{task.description}</p>
+                <p className="mt-1">{allTask.description}</p>
               </div>
             </div>
           </div>

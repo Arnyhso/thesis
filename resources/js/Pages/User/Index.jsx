@@ -3,7 +3,7 @@ import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 import TableHeading from "@/Components/TableHeading";
-import { PROJECT_STATUS_CLASS_MAP, PROJECT_STATUS_TEXT_MAP } from "@/constants";
+import { USER_STATUS_CLASS_MAP, USER_STATUS_TEXT_MAP } from "@/constants";
 
 export default function Index({ auth, users, queryParams = null, success }) {
   queryParams = queryParams || {};
@@ -178,10 +178,10 @@ export default function Index({ auth, users, queryParams = null, success }) {
                           <span
                             className={
                               "px-2 py-1 rounded text-white " +
-                              PROJECT_STATUS_CLASS_MAP[user.user_type]
+                              USER_STATUS_CLASS_MAP[user.user_type]
                             }
                           >
-                            {PROJECT_STATUS_TEXT_MAP[user.user_type]}
+                            {USER_STATUS_TEXT_MAP[user.user_type]}
                           </span>
                         </td>
 

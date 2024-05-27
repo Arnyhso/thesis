@@ -5,33 +5,33 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Task extends Model
+class AssignedTasks extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'name',
-        'description',
-        'image_path',
         'task_type',
         'gec_type',
+        'status',
+        'priority',
         'project_id',
-        'prerequisite_id',
-        'corequisite_id',
+        'max_units',
+        'assigned_user_id',
+        'assigned_by',
     ];
 
     public function project()
     {
         return $this->belongsTo(Project::class);
     }
-
-    public function prerequisite()
+    public function assignedUser()
     {
-    return $this->belongsTo(Task::class, 'prerequisite_id');
+        return $this->belongsTo(User::class, 'assigned_user_id');
+    }
+    public function assignedBy()
+    {
+        return $this->belongsTo(User::class, 'assigned_by');
     }
 
-    public function corequisite()
-    {
-    return $this->belongsTo(Task::class, 'corequisite_id');
-    }
 }

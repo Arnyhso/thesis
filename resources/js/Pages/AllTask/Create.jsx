@@ -6,25 +6,24 @@ import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 
-export default function Create({ auth, projects, task }) {
+export default function Create({ auth, allTask, prerequisites, corequisites }) {
   const { data, setData, post, errors, reset } = useForm({
-    image_path: "", // Updated variable name
+    //image_path: "", // Updated variable name
     name: "",
     task_type: "",
     gec_type: "",
-    description: "",
+    //description: "",
     prerequisite: "",
     corequisite: "",
     prerequisite_id: "",
     corequisite_id: "",
-    project_id: "",
-    //course_code: "",
+    course_code: "",
   });
 
   const onSubmit = (e) => {
+      console.log(data);
     e.preventDefault();
-
-    post(route("task.store"));
+    post(route("allTask.store"));
   };
 
   return (
@@ -38,7 +37,7 @@ export default function Create({ auth, projects, task }) {
         </div>
       }
     >
-      <Head title="Tasks" />
+      <Head title="All Tasks" />
 
       <div className="py-12">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -47,7 +46,7 @@ export default function Create({ auth, projects, task }) {
               onSubmit={onSubmit}
               className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
             >
-              <div>
+                {/* <div>
                 <InputLabel htmlFor="task_project_id" value="Project" />
 
                 <SelectInput
@@ -76,7 +75,8 @@ export default function Create({ auth, projects, task }) {
                   onChange={(e) => setData("image", e.target.files[0])}
                 />
                 <InputError message={errors.image} className="mt-2" />
-              </div>
+              </div> */}
+              
               <div className="mt-4">
                 <InputLabel htmlFor="task_name" value="Task Name" />
 
@@ -92,7 +92,7 @@ export default function Create({ auth, projects, task }) {
 
                 <InputError message={errors.name} className="mt-2" />
               </div>
-              <div className="mt-4">
+              {/* <div className="mt-4">
                 <InputLabel
                   htmlFor="task_description"
                   value="Task Description"
@@ -107,7 +107,7 @@ export default function Create({ auth, projects, task }) {
                 />
 
                 <InputError message={errors.description} className="mt-2" />
-              </div>
+              </div> */}
 
               <div className="mt-4">
                 <InputLabel
@@ -122,9 +122,9 @@ export default function Create({ auth, projects, task }) {
                   onChange={(e) => setData("prerequisite_id", e.target.value)}
                 >
                   <option value="">Select prerequisite</option>
-                  {task.data.map((task) => (
-                    <option value={task.id} key={task.id}>
-                      {task.name}
+                  {allTask.data.map((allTask) => (
+                    <option value={allTask.id} key={allTask.id}>
+                      {allTask.name}
                     </option>
                   ))}
                 </SelectInput>
@@ -148,9 +148,9 @@ export default function Create({ auth, projects, task }) {
                   onChange={(e) => setData("corequisite_id", e.target.value)}
                 >
                   <option value="">Select corequisite</option>
-                  {task.data.map((task) => (
-                    <option value={task.id} key={task.id}>
-                      {task.name}
+                  {allTask.data.map((allTask) => (
+                    <option value={allTask.id} key={allTask.id}>
+                      {allTask.name}
                     </option>
                   ))}
                 </SelectInput>
@@ -197,7 +197,7 @@ export default function Create({ auth, projects, task }) {
                 <InputError message={errors.gec_type} className="mt-2" />
               </div>
 
-              {/* <div className="mt-4">
+              <div className="mt-4">
                 <InputLabel htmlFor="course_code" value="Course Code" />
 
                 <TextInput
@@ -211,11 +211,11 @@ export default function Create({ auth, projects, task }) {
                 />
 
                 <InputError message={errors.course_code} className="mt-2" />
-              </div> */}
+              </div>
 
               <div className="mt-4 text-right">
                 <Link
-                  href={route("task.index")}
+                  href={route("allTask.index")}
                   className="bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-all hover:bg-gray-200 mr-2"
                 >
                   Cancel

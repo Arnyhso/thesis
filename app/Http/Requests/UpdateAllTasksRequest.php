@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreTaskRequest extends FormRequest
+class UpdateAllTasksRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +24,9 @@ class StoreTaskRequest extends FormRequest
     {
         return [
             "name" => ['required', 'max:255'],
-            'image_path' => ['nullable', 'image'],
-            "description" => ['nullable', 'string'],
-            'project_id' => ['required', 'exists:projects,id'],
-            'prerequisite_id' => ['nullable', 'exists:tasks,id'],
-            'corequisite_id' => ['nullable', 'exists:tasks,id'],
+            "course_code" => ['nullable', 'string'],
+            'prerequisite_id' => ['nullable', 'exists:all_tasks,id'],
+            'corequisite_id' => ['nullable', 'exists:all_tasks,id'],
             'task_type' => [
                 'required',
                 Rule::in(['gec', 'special', 'standing'])

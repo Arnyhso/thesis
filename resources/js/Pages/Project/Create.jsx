@@ -5,17 +5,44 @@ import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 
-export default function Create({ auth }) {
+export default function Create({ auth, allTasks }) {
   const { data, setData, post, errors, reset } = useForm({
     name: "",
     status: "",
+    selectedTasks: [],
+
+    image_path: "", // Updated variable name
+    task_type: "",
+    gec_type: "",
+    description: "",
+    prerequisite: "",
+    corequisite: "",
+    prerequisite_id: "",
+    corequisite_id: "",
+    project_id: "",
   });
+
+  const handleTaskCheckboxChange = (task) => {
+        const isSelected = data.selectedTasks.includes(task.id);
+        if (isSelected) {
+          setData("selectedTasks", data.selectedTasks.filter((id) => id !== task.id));
+        } else {
+          setData("selectedTasks", [...data.selectedTasks, task.id]);
+        }
+      };
 
   const onSubmit = (e) => {
     e.preventDefault();
-
-    post(route("project.store"));
+    console.log(data.selectedTasks); // Check the values here
+    post(route("project.store"), {
+      data,
+      onSuccess: () => {
+        reset();
+      },
+    });
   };
+
+
 
   return (
     <AuthenticatedLayout
@@ -69,6 +96,38 @@ export default function Create({ auth }) {
 
                 <InputError message={errors.project_status} className="mt-2" />
               </div>
+
+              <div className="mt-4">
+                <InputLabel value="Select Tasks" />
+                <div className="p-6 text-gray-900 dark:text-gray-100">
+                <ul>
+                  {allTasks.data.map((allTask) => (
+                    <li key={allTask.id}>
+                      <input
+                        type="checkbox"
+                        id={`task_${allTask.id}`}
+                        name={`task_${allTask.id}`}
+                        checked={data.selectedTasks.includes(allTask.id)}
+                        onChange={() => handleTaskCheckboxChange(allTask)}
+                      />
+                      <label htmlFor={`task_${allTask.id}`}>{allTask.name}</label>
+                    </li>
+                  ))}
+                </ul>
+                </div>
+              </div>
+
+              <div className="mt-4">
+                <InputLabel value="Selected Task IDs" />
+                <div className="p-6 text-gray-900 dark:text-gray-100">
+                  <ul>
+                    {data.selectedTasks.map((taskId) => (
+                      <li key={taskId}>{taskId}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
               <div className="mt-4 text-right">
                 <Link
                   href={route("project.index")}

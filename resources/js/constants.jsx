@@ -2,47 +2,37 @@ export const PROJECT_STATUS_CLASS_MAP = {
   pending: "bg-amber-500",
   in_progress: "bg-blue-500 ",
   completed: "bg-green-500",
-  student: "bg-green-500",
-  college_head: "bg-amber-500",
 };
 export const PROJECT_STATUS_TEXT_MAP = {
   pending: "Pending",
   in_progress: "In Progress",
   completed: "Completed",
-  student: "Student",
-  college_head: "Faculty",
 };
 export const TASK_STATUS_CLASS_MAP = {
-  pending: "bg-amber-500",
-  in_progress: "bg-blue-500",
-  completed: "bg-green-500",
+  gec: "bg-amber-500",
+  special: "bg-blue-500",
+  standing: "bg-green-500",
 };
 export const TASK_STATUS_TEXT_MAP = {
-  pending: "Pending",
-  in_progress: "In Progress",
-  completed: "Completed",
+  gec: "GEC",
+  special: "SPECIAL",
+  standing: "STANDING",
 };
 export const TASK_PRIORITY_CLASS_MAP = {
-  low: "bg-gray-600",
-  medium: "bg-amber-600",
-  high: "bg-red-600",
+  gec: "bg-gray-600",
+  elective: "bg-amber-600",
+  gee: "bg-red-600",
 };
 export const TASK_PRIORITY_TEXT_MAP = {
-  low: "Low",
-  medium: "Medium",
-  high: "High",
+  gec: "GEC",
+  elective: "ELECTIVE",
+  gee: "GEE",
 };
 export const USER_STATUS_CLASS_MAP = {
-  pending: "bg-amber-500",
-  in_progress: "bg-blue-500 ",
-  completed: "bg-green-500",
   student: "bg-green-500",
-  college_head: "bg-amber-500",
+  college_head: "bg-blue-500",
 };
 export const USER_STATUS_TEXT_MAP = {
-  pending: "Pending",
-  in_progress: "In Progress",
-  completed: "Completed",
   student: "Student",
   college_head: "Faculty",
 };

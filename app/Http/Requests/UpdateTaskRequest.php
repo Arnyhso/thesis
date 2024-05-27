@@ -29,13 +29,13 @@ class UpdateTaskRequest extends FormRequest
             'project_id' => ['required', 'exists:projects,id'],
             'prerequisite_id' => ['nullable', 'exists:tasks,id'],
             'corequisite_id' => ['nullable', 'exists:tasks,id'],
-            'status' => [
+            'task_type' => [
                 'required',
-                Rule::in(['pending', 'in_progress', 'completed'])
+                Rule::in(['gec', 'special', 'standing'])
             ],
-            'priority' => [
+            'gec_type' => [
                 'required',
-                Rule::in(['low', 'medium', 'high'])
+                Rule::in(['gec', 'elective', 'gee'])
             ]
         ];
     }

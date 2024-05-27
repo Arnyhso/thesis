@@ -2,14 +2,23 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Http\Resources\AllTasksResource;
 use App\Http\Resources\ProjectResource;
 use App\Http\Resources\TaskResource;
+use App\Models\AllTasks;
 use App\Models\Project;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use App\Models\Task;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\StoreTaskRequest;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Arr;
+
 
 class ProjectController extends Controller
 {
@@ -46,7 +55,10 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        return inertia("Project/Create");
+        $allTasks = AllTasks::query()->orderBy('name', 'asc')->get();
+        return inertia("Project/Create", [
+            'allTasks' => AllTasksResource::collection($allTasks),
+        ]);
     }
 
     /**
@@ -57,11 +69,47 @@ class ProjectController extends Controller
         $data = $request->validated();
         $data['created_by'] = Auth::id();
         $data['updated_by'] = Auth::id();
-        Project::create($data);
 
-        return to_route('project.index')
-            ->with('success', 'Project was created');
+        $selectedTasks = Arr::get($data, 'selectedTasks', []);
+
+
+        Log::info('Selected Tasks:', $selectedTasks);
+            // Create the project
+            $project = Project::create($data);
+
+            // Create the tasks and associate them with the project
+        if (!empty($data['selectedTasks'])) {
+            foreach ($data['selectedTasks'] as $taskId) {
+                // Find task info from AllTasks
+                $taskInfo = AllTasks::find($taskId);
+
+                if ($taskInfo) {
+                    // Validate task data
+                    $taskInfo['project_id'] = $project->id;
+
+                    // Create task with validated task data
+                    Task::create([
+                        'name' => $taskInfo->name,
+                        'prerequisite_id' => $taskInfo->prerequisite_id,
+                        'corequisite_id' => $taskInfo->corequisite_id,
+                        'project_id' => $project->id,
+                        'task_type' => $taskInfo->task_type,
+                        'gec_type' => $taskInfo->gec_type,
+                    ]);
+                } else {
+                    throw new \Exception("Task with ID $taskId not found.");
+                }
+            }
+        } else {
+            throw new \Exception('No selected tasks.');
+        }
+
+
+        return redirect()->route('project.index')->with([
+                'success' => 'Project created successfully.',
+            ]);
     }
+
 
     /**
      * Display the specified resource.
