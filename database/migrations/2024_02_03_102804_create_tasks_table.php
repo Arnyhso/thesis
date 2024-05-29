@@ -15,11 +15,17 @@ return new class extends Migration {
             $table->string('name');
             $table->longText('description')->nullable();
             $table->string('image_path')->nullable();
-            $table->string('task_type');
-            $table->string('gec_type');
+            $table->string('task_type')->nullable();
+            $table->string('gec_type')->nullable();
             $table->foreignId('project_id')->constrained('projects');
             $table->foreignId('prerequisite_id')->nullable()->constrained('tasks');
             $table->foreignId('corequisite_id')->nullable()->constrained('tasks');
+            $table->integer('units');
+            $table->string('prof_name')->nullable();
+            $table->string('room_num')->nullable();
+            $table->string('day')->nullable();
+            $table->time('start_time')->nullable();
+            $table->time('end_time')->nullable();
             $table->timestamps();
         });
     }

@@ -31,6 +31,12 @@ class TaskResource extends JsonResource
             'corequisite' => new TaskResource($this->whenLoaded('corequisite')),
             'project_id' => $this->project_id,
             'project' => new ProjectResource($this->whenLoaded('project')),
+            'prof_name' => $this->prof_name,
+            'room_num' => $this->room_num,
+            'units' => $this->units,
+            'day' => $this->day,
+            'start_time' => $this->start_time ? Carbon::parse($this->start_time)->format('H:i') : null,
+            'end_time' => $this->end_time ? Carbon::parse($this->end_time)->format('H:i') : null,
         ];
     }
 }

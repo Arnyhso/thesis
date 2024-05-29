@@ -27,6 +27,7 @@ class AllTasksResource extends JsonResource
             'prerequisite' => new AllTasksResource($this->whenLoaded('prerequisite')),
             'corequisite_id' => $this->corequisite_id,
             'corequisite' => new AllTasksResource($this->whenLoaded('corequisite')),
+            'units' => $this->units,
         ];
     }
 }

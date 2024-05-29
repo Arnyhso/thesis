@@ -95,6 +95,8 @@ class ProjectController extends Controller
                         'project_id' => $project->id,
                         'task_type' => $taskInfo->task_type,
                         'gec_type' => $taskInfo->gec_type,
+                        'units' => $taskInfo->units,
+                        'day' => $taskInfo->day,
                     ]);
                 } else {
                     throw new \Exception("Task with ID $taskId not found.");

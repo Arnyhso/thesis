@@ -19,11 +19,12 @@ return new class extends Migration
             $table->string('status');
             $table->string('priority');
             $table->foreignId('project_id')->constrained('projects');
+            $table->integer('units');
             $table->integer('max_units');
             $table->foreignId('assigned_user_id')->constrained('users');
             $table->foreignId('assigned_by')->constrained('users');
-            $table->foreignId('prerequisite_id')->nullable()->constrained('all_tasks');
-            $table->foreignId('corequisite_id')->nullable()->constrained('all_tasks');
+            $table->foreignId('prerequisite_id')->nullable()->constrained('assigned_tasks');
+            $table->foreignId('corequisite_id')->nullable()->constrained('assigned_tasks');
             $table->timestamps();
         });
     }

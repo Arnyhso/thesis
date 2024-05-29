@@ -5,8 +5,9 @@ import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
+import { useState } from "react";
 
-export default function Create({ auth, allTask, prerequisites, corequisites }) {
+export default function Create({ auth, allTask }) {
   const { data, setData, post, errors, reset } = useForm({
     //image_path: "", // Updated variable name
     name: "",
@@ -18,7 +19,11 @@ export default function Create({ auth, allTask, prerequisites, corequisites }) {
     prerequisite_id: "",
     corequisite_id: "",
     course_code: "",
+    units: "",
   });
+
+  const [taskType, setTaskType] = useState("");
+
 
   const onSubmit = (e) => {
       console.log(data);
@@ -45,38 +50,7 @@ export default function Create({ auth, allTask, prerequisites, corequisites }) {
             <form
               onSubmit={onSubmit}
               className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
-            >
-                {/* <div>
-                <InputLabel htmlFor="task_project_id" value="Project" />
-
-                <SelectInput
-                  name="project_id"
-                  id="task_project_id"
-                  className="mt-1 block w-full"
-                  onChange={(e) => setData("project_id", e.target.value)}
-                >
-                  <option value="">Select Project</option>
-                  {projects.data.map((project) => (
-                    <option value={project.id} key={project.id}>
-                      {project.name}
-                    </option>
-                  ))}
-                </SelectInput>
-
-                <InputError message={errors.project_id} className="mt-2" />
-              </div>
-              <div className="mt-4">
-                <InputLabel htmlFor="task_image_path" value="Task Image" />
-                <TextInput
-                  id="task_image_path"
-                  type="file"
-                  name="image"
-                  className="mt-1 block w-full"
-                  onChange={(e) => setData("image", e.target.files[0])}
-                />
-                <InputError message={errors.image} className="mt-2" />
-              </div> */}
-              
+            > 
               <div className="mt-4">
                 <InputLabel htmlFor="task_name" value="Task Name" />
 
@@ -92,22 +66,22 @@ export default function Create({ auth, allTask, prerequisites, corequisites }) {
 
                 <InputError message={errors.name} className="mt-2" />
               </div>
-              {/* <div className="mt-4">
-                <InputLabel
-                  htmlFor="task_description"
-                  value="Task Description"
-                />
 
-                <TextAreaInput
-                  id="task_description"
-                  name="description"
-                  value={data.description}
+              <div className="mt-4">
+                <InputLabel htmlFor="units" value="Units" />
+
+                <TextInput
+                  id="units"
+                  type="number"
+                  name="units"
+                  value={data.units}
                   className="mt-1 block w-full"
-                  onChange={(e) => setData("description", e.target.value)}
+                  onChange={(e) => setData("units", e.target.value)}
                 />
 
-                <InputError message={errors.description} className="mt-2" />
-              </div> */}
+                <InputError message={errors.units} className="mt-2" />
+              </div>
+
 
               <div className="mt-4">
                 <InputLabel
@@ -168,7 +142,11 @@ export default function Create({ auth, allTask, prerequisites, corequisites }) {
                   name="task_type"
                   id="TaskType"
                   className="mt-1 block w-full"
-                  onChange={(e) => setData("task_type", e.target.value)}
+                  value={taskType} 
+                  onChange={(e) => {
+                    setTaskType(e.target.value); // Update state
+                    setData("task_type", e.target.value); // Update form data
+                  }}
                 >
                   <option value="">Select Task Type</option>
                   <option value="gec">GEC</option>
@@ -179,23 +157,26 @@ export default function Create({ auth, allTask, prerequisites, corequisites }) {
                 <InputError message={errors.task_type} className="mt-2" />
               </div>
 
-              <div className="mt-4">
-                <InputLabel htmlFor="gectype" value="gec Type" />
 
-                <SelectInput
-                  name="gec_type"
-                  id="gectype"
-                  className="mt-1 block w-full"
-                  onChange={(e) => setData("gec_type", e.target.value)}
-                >
-                  <option value="">Select GEC Type</option>
-                  <option value="gec">GEC</option>
-                  <option value="elective">ELECTIVE</option>
-                  <option value="gee">GEE</option>
-                </SelectInput>
+              {taskType === "gec" && ( // Conditional rendering
+                <div className="mt-4">
+                  <InputLabel htmlFor="gectype" value="gec Type" />
 
-                <InputError message={errors.gec_type} className="mt-2" />
-              </div>
+                  <SelectInput
+                    name="gec_type"
+                    id="gectype"
+                    className="mt-1 block w-full"
+                    onChange={(e) => setData("gec_type", e.target.value)}
+                  >
+                    <option value="">Select GEC Type</option>
+                    <option value="gec">GEC</option>
+                    <option value="elective">ELECTIVE</option>
+                    <option value="gee">GEE</option>
+                  </SelectInput>
+
+                  <InputError message={errors.gec_type} className="mt-2" />
+                </div>  
+              )}
 
               <div className="mt-4">
                 <InputLabel htmlFor="course_code" value="Course Code" />

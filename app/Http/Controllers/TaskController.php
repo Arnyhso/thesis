@@ -13,6 +13,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class TaskController extends Controller
 {
@@ -130,6 +131,24 @@ class TaskController extends Controller
     ]);
 }
 
+    public function scheduleedit(Task $task)
+    {
+        $projects = Project::query()->orderBy('name', 'asc')->get();
+        $users = User::query()->orderBy('name', 'asc')->get();
+        $projectTasks = Task::where('project_id', $task->project_id)->get();
+        $prerequisites = Task::orderBy('name', 'asc')->get();
+        $corequisites = Task::orderBy('name', 'asc')->get();
+
+        return inertia("Task/ScheduleEdit", [
+            'task' => new TaskResource($task),
+            'projects' => ProjectResource::collection($projects),
+            'users' => UserResource::collection($users),
+            'prerequisites' => TaskResource::collection($prerequisites),
+            'corequisites' => TaskResource::collection($corequisites),
+            'projectTasks' => TaskResource::collection($projectTasks),
+        ]);
+    }
+
 
     /**
      * Update the specified resource in storage.
@@ -138,13 +157,21 @@ class TaskController extends Controller
     {
         $data = $request->validated();
         $image = $data['image'] ?? null;
-        $data['updated_by'] = Auth::id();
         if ($image) {
             if ($task->image_path) {
                 Storage::disk('public')->deleteDirectory(dirname($task->image_path));
             }
             $data['image_path'] = $image->store('task/' . Str::random(), 'public');
         }
+
+        if (!$this->professorIsAvailable($data['prof_name'], $data['start_time'], $data['end_time'], $data['day'])) {
+            return redirect()->back()->withInput()->withErrors(['prof_name' => 'Professor is not available during the specified time on the given day.']);
+        }
+
+        if (!$this->roomIsAvailable($data['room_num'], $data['start_time'], $data['end_time'], $data['day'])) {
+            return redirect()->back()->withInput()->withErrors(['room_num' => 'Room is not available during the specified time on the given day.']);
+        }
+
         $task->update($data);
 
         return to_route('task.index')
@@ -189,5 +216,67 @@ class TaskController extends Controller
             'queryParams' => request()->query() ?: null,
             'success' => session('success'),
         ]);
+    }
+    public function schedule()
+    {
+        $query = Task::query();
+
+        $sortField = request("sort_field", 'created_at');
+        $sortDirection = request("sort_direction", "desc");
+
+        if (request("name")) {
+            $query->where("name", "like", "%" . request("name") . "%");
+        }
+        if (request("task_type")) {
+            $query->where("task_type", request("task_type"));
+        }
+        $projects = Project::query()->orderBy('name', 'asc')->get();
+        $tasks = $query->orderBy($sortField, $sortDirection)
+            ->paginate(10)
+            ->onEachSide(1);
+
+        return inertia("Task/Schedule", [
+            "tasks" => TaskResource::collection($tasks),
+            'projects' => ProjectResource::collection($projects),
+            'queryParams' => request()->query() ?: null,
+            'success' => session('success'),
+        ]);
+    }
+
+    protected function professorIsAvailable($prof_name, $start_time, $end_time, $day)
+    {
+        // Perform database query to check professor's availability
+        $count = DB::table('tasks')
+            ->where('prof_name', $prof_name)
+            ->where('day', $day)
+            ->where(function ($query) use ($start_time, $end_time) {
+                $query->whereBetween('start_time', [$start_time, $end_time])
+                    ->orWhereBetween('end_time', [$start_time, $end_time])
+                    ->orWhere(function ($query) use ($start_time, $end_time) {
+                        $query->where('start_time', '<', $start_time)
+                            ->where('end_time', '>', $end_time);
+                    });
+            })
+            ->count();
+
+        return $count == 0;
+    }
+    protected function roomIsAvailable($room_num, $start_time, $end_time, $day)
+    {
+        // Perform database query to check room's availability
+        $count = DB::table('tasks')
+            ->where('room_num', $room_num)
+            ->where('day', $day)
+            ->where(function ($query) use ($start_time, $end_time) {
+                $query->whereBetween('start_time', [$start_time, $end_time])
+                    ->orWhereBetween('end_time', [$start_time, $end_time])
+                    ->orWhere(function ($query) use ($start_time, $end_time) {
+                        $query->where('start_time', '<', $start_time)
+                            ->where('end_time', '>', $end_time);
+                    });
+            })
+            ->count();
+
+        return $count == 0;
     }
 }

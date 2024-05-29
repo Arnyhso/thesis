@@ -49,6 +49,11 @@ export default function Show({ auth, allTask, prerequisite, corequisite }) {
                   </div>
 
                   <div className="mt-4">
+                    <label className="font-bold text-lg">Units</label>
+                    <p className="mt-1">{allTask.units}</p>
+                  </div>
+
+                  <div className="mt-4">
                     <label className="font-bold text-lg">Task Status</label>
                     <p className="mt-1">
                       <span

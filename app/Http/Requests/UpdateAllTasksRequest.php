@@ -32,9 +32,10 @@ class UpdateAllTasksRequest extends FormRequest
                 Rule::in(['gec', 'special', 'standing'])
             ],
             'gec_type' => [
-                'required',
+                'nullable',
                 Rule::in(['gec', 'elective', 'gee'])
-            ]
+            ],
+            "units" => ['required', 'integer', 'min:1'] // Add min or max if needed
         ];
     }
 }

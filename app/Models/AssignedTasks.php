@@ -16,6 +16,7 @@ class AssignedTasks extends Model
         'status',
         'priority',
         'project_id',
+        'units',
         'max_units',
         'assigned_user_id',
         'assigned_by',

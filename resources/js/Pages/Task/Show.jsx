@@ -48,6 +48,11 @@ export default function Show({ auth, task, prerequisite, corequisite }) {
                   </div>
 
                   <div className="mt-4">
+                    <label className="font-bold text-lg">Units</label>
+                    <p className="mt-1">{task.units}</p>
+                  </div>
+
+                  <div className="mt-4">
                     <label className="font-bold text-lg">Task Status</label>
                     <p className="mt-1">
                       <span
@@ -102,6 +107,26 @@ export default function Show({ auth, task, prerequisite, corequisite }) {
                         </p>
                       </div>
                     </div>
+                    <div className="mt-4">
+                    <label className="font-bold text-lg">Professor Name</label>
+                    <p className="mt-1">{task.prof_name}</p>
+                  </div>
+                  <div className="mt-4">
+                    <label className="font-bold text-lg">Room Number</label>
+                    <p className="mt-1">{task.room_num}</p>
+                  </div>
+                  <div className="mt-4">
+                    <label className="font-bold text-lg">Day</label>
+                    <p className="mt-1">{task.day}</p>
+                  </div>
+                  <div className="mt-4">
+                    <label className="font-bold text-lg">Start Time</label>
+                    <p className="mt-1">{task.start_time}</p>
+                  </div>
+                  <div className="mt-4">
+                    <label className="font-bold text-lg">End Time</label>
+                    <p className="mt-1">{task.end_time}</p>
+                  </div>
                   <div className="mt-4">
                     <label className="font-bold text-lg">Project</label>
                     <p className="mt-1">

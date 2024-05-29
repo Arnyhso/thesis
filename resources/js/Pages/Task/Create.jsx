@@ -18,6 +18,7 @@ export default function Create({ auth, projects, task }) {
     prerequisite_id: "",
     corequisite_id: "",
     project_id: "",
+    units: "",
     //course_code: "",
   });
 
@@ -92,6 +93,22 @@ export default function Create({ auth, projects, task }) {
 
                 <InputError message={errors.name} className="mt-2" />
               </div>
+
+              <div className="mt-4">
+                <InputLabel htmlFor="units" value="Units" />
+
+                <TextInput
+                  id="units"
+                  type="number"
+                  name="units"
+                  value={data.units}
+                  className="mt-1 block w-full"
+                  onChange={(e) => setData("units", e.target.value)}
+                />
+
+                <InputError message={errors.units} className="mt-2" />
+              </div>
+              
               <div className="mt-4">
                 <InputLabel
                   htmlFor="task_description"

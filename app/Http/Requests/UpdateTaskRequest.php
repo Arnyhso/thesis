@@ -34,9 +34,15 @@ class UpdateTaskRequest extends FormRequest
                 Rule::in(['gec', 'special', 'standing'])
             ],
             'gec_type' => [
-                'required',
+                'nullable',
                 Rule::in(['gec', 'elective', 'gee'])
-            ]
+            ],
+            "units" => ['required', 'integer', 'min:1'],
+            'prof_name' => ['nullable', 'string', 'max:255'],
+            'room_num' => ['nullable', 'string', 'max:255'],
+            'day' => ['nullable', Rule::in(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])],
+            'start_time' => ['nullable', 'date_format:H:i'],
+            'end_time' => ['nullable', 'date_format:H:i', 'after:start_time'],
         ];
     }
 }

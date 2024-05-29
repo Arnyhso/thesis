@@ -109,17 +109,19 @@ class AllTasksController extends Controller
     {
         $projects = Project::query()->orderBy('name', 'asc')->get();
         $users = User::query()->orderBy('name', 'asc')->get();
-        $projectTasks = AllTasks::where('project_id', $allTask->project_id)->get();
+        $projects = Project::query()->orderBy('name', 'asc')->get();
+        $task = AllTasks::query()->orderBy('name', 'asc')->get();
         $prerequisites = AllTasks::orderBy('name', 'asc')->get();
         $corequisites = AllTasks::orderBy('name', 'asc')->get();
 
         return inertia("AllTask/Edit", [
             'allTask' => new AllTasksResource($allTask),
             'projects' => ProjectResource::collection($projects),
+            'task' => AllTasksResource::collection($task),
             'users' => UserResource::collection($users),
             'prerequisites' => AllTasksResource::collection($prerequisites),
             'corequisites' => AllTasksResource::collection($corequisites),
-            'projectTasks' => AllTasksResource::collection($projectTasks),
+            
         ]);
     }
 
@@ -128,19 +130,12 @@ class AllTasksController extends Controller
      */
     public function update(UpdateAllTasksRequest $request, AllTasks $allTask)
     {
+        $name = $allTask->name;
         $data = $request->validated();
-        $image = $data['image'] ?? null;
-        $data['updated_by'] = Auth::id();
-        if ($image) {
-            if ($allTask->image_path) {
-                Storage::disk('public')->deleteDirectory(dirname($allTask->image_path));
-            }
-            $data['image_path'] = $image->store('allTask/' . Str::random(), 'public');
-        }
         $allTask->update($data);
 
         return to_route('allTask.index')
-            ->with('success', "Task \"$allTask->name\" was updated");
+            ->with('success', "Task \"$name\" was updated");
     }
 
     /**

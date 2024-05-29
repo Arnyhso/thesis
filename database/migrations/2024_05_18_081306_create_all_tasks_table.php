@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('gec_type')->nullable();
             $table->foreignId('prerequisite_id')->nullable()->constrained('all_tasks');
             $table->foreignId('corequisite_id')->nullable()->constrained('all_tasks');
+            $table->integer('units');
             $table->timestamps();
         });
     }

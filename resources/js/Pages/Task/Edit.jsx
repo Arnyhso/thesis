@@ -18,6 +18,7 @@ export default function Edit({ auth, task, projects, projectTasks }) {
     prerequisite: task.prerequisite || "",
     corequisite_id: task.corequisite_id || "",
     corequisite: task.corequisite || "",
+    units: task.units || "",
     //course_code: task.course_code || "",
     _method: "PUT",
   });
@@ -105,6 +106,22 @@ export default function Edit({ auth, task, projects, projectTasks }) {
 
                 <InputError message={errors.name} className="mt-2" />
               </div>
+
+              <div className="mt-4">
+                <InputLabel htmlFor="units" value="Units" />
+
+                <TextInput
+                  id="units"
+                  type="number"
+                  name="units"
+                  value={data.units}
+                  className="mt-1 block w-full"
+                  onChange={(e) => setData("units", e.target.value)}
+                />
+
+                <InputError message={errors.units} className="mt-2" />
+              </div>
+
               <div className="mt-4">
                 <InputLabel
                   htmlFor="task_description"

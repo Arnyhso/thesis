@@ -5,9 +5,10 @@ import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
+import { useState } from "react";
 
-export default function Edit({ auth, allTask, projects, projectTasks}) {
-  const { data, setData, post, errors, reset } = useForm({
+export default function Edit({ auth, allTask, task }) {
+  const { data, setData, post, errors } = useForm({
     name: allTask.name || "",
     task_type: allTask.task_type || "",
     gec_type: allTask.gec_type || "",
@@ -16,8 +17,11 @@ export default function Edit({ auth, allTask, projects, projectTasks}) {
     corequisite_id: allTask.corequisite_id || "",
     corequisite: allTask.corequisite || "",
     course_code: allTask.course_code || "",
+    units: allTask.units || "",
     _method: "PUT",
   });
+
+  const [taskType, setTaskType] = useState("");
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -62,6 +66,23 @@ export default function Edit({ auth, allTask, projects, projectTasks}) {
 
                 <InputError message={errors.name} className="mt-2" />
               </div>
+
+              <div className="mt-4">
+                <InputLabel htmlFor="units" value="Units" />
+
+                <TextInput
+                  id="units"
+                  type="number"
+                  name="units"
+                  value={data.units}
+                  className="mt-1 block w-full"
+                  onChange={(e) => setData("units", e.target.value)}
+                />
+
+                <InputError message={errors.units} className="mt-2" />
+              </div>
+
+              
               <div className="mt-4">
                 <InputLabel
                   htmlFor="TaskType"
@@ -71,9 +92,12 @@ export default function Edit({ auth, allTask, projects, projectTasks}) {
                 <SelectInput
                   name="task_type"
                   id="TaskType"
-                  value={data.task_type}
                   className="mt-1 block w-full"
-                  onChange={(e) => setData("task_type", e.target.value)}
+                  value={data.task_type} 
+                  onChange={(e) => {
+                    setTaskType(e.target.value); // Update state
+                    setData("task_type", e.target.value); // Update form data
+                  }}
                 >
                   <option value="">Select Task Type</option>
                   <option value="gec">GEC</option>
@@ -84,27 +108,30 @@ export default function Edit({ auth, allTask, projects, projectTasks}) {
                 <InputError message={errors.task_type} className="mt-2" />
               </div>
 
-              <div className="mt-4">
-                <InputLabel
-                  htmlFor="gectype"
-                  value="gec Type"
-                />
 
-                <SelectInput
-                  name="gec_type"
-                  id="gectype"
-                  value={data.gec_type}
-                  className="mt-1 block w-full"
-                  onChange={(e) => setData("gec_type", e.target.value)}
-                >
-                  <option value="">Select Priority</option>
-                  <option value="gec">GEC</option>
-                  <option value="elective">ELECTIVE</option>
-                  <option value="gee">GEE</option>
-                </SelectInput>
+              {taskType === "gec" && ( // Conditional rendering
+                  <div className="mt-4">
+                    <InputLabel
+                      htmlFor="gectype"
+                      value="gec Type"
+                    />
 
-                <InputError message={errors.gec_type} className="mt-2" />
-              </div>
+                    <SelectInput
+                      name="gec_type"
+                      id="gectype"
+                      value={data.gec_type}
+                      className="mt-1 block w-full"
+                      onChange={(e) => setData("gec_type", e.target.value)}
+                    >
+                      <option value="">Select Priority</option>
+                      <option value="gec">GEC</option>
+                      <option value="elective">ELECTIVE</option>
+                      <option value="gee">GEE</option>
+                    </SelectInput>
+
+                    <InputError message={errors.gec_type} className="mt-2" />
+                  </div>
+              )}
 
               <div className="mt-4">
                 <InputLabel
@@ -120,7 +147,7 @@ export default function Edit({ auth, allTask, projects, projectTasks}) {
                   onChange={(e) => setData("prerequisite_id", e.target.value)}
                 >
                   <option value="">Select prerequisite</option>
-                  {projectTasks.data.map((allTask) => (
+                  {task.data.map((allTask) => (
                     <option value={allTask.id} key={allTask.id}>
                       {allTask.name}
                     </option>
@@ -147,7 +174,7 @@ export default function Edit({ auth, allTask, projects, projectTasks}) {
                   onChange={(e) => setData("corequisite_id", e.target.value)}
                 >
                   <option value="">Select corequisite</option>
-                  {projectTasks.data.map((allTask) => (
+                  {task.data.map((allTask) => (
                     <option value={allTask.id} key={allTask.id}>
                       {allTask.name}
                     </option>

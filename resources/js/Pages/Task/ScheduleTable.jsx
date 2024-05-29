@@ -2,11 +2,10 @@ import Pagination from "@/Components/Pagination";
 import SelectInput from "@/Components/SelectInput";
 import TextInput from "@/Components/TextInput";
 import TableHeading from "@/Components/TableHeading";
-import { TASK_PRIORITY_CLASS_MAP, TASK_PRIORITY_TEXT_MAP, TASK_STATUS_CLASS_MAP, TASK_STATUS_TEXT_MAP } from "@/constants.jsx";
 import { Link, router } from "@inertiajs/react";
 
-export default function AllTasksTable({
-  allTasks,
+export default function TasksTable({
+  tasks,
   success,
   queryParams = null,
   hideProjectColumn = false,
@@ -19,7 +18,7 @@ export default function AllTasksTable({
       delete queryParams[name];
     }
 
-    router.get(route("allTask.index"), queryParams);
+    router.get(route("task.index"), queryParams);
   };
 
   const onKeyPress = (name, e) => {
@@ -39,14 +38,14 @@ export default function AllTasksTable({
       queryParams.sort_field = name;
       queryParams.sort_direction = "asc";
     }
-    router.get(route("allTask.index"), queryParams);
+    router.get(route("task.index"), queryParams);
   };
 
-  const deleteTask = (allTask) => {
+  const deleteTask = (task) => {
     if (!window.confirm("Are you sure you want to delete the task?")) {
       return;
     }
-    router.delete(route("allTask.destroy", allTask.id));
+    router.delete(route("task.destroy", task.id));
   };
 
   return (
@@ -80,26 +79,46 @@ export default function AllTasksTable({
               >
                 Name
               </TableHeading>
-
               <TableHeading
-                name="units"
+                name="prof_name"
                 sort_field={queryParams.sort_field}
                 sort_direction={queryParams.sort_direction}
                 sortChanged={sortChanged}
               >
-                Units
+                Professor Name
               </TableHeading>
-
-
               <TableHeading
-                name="status"
+                name="room_num"
                 sort_field={queryParams.sort_field}
                 sort_direction={queryParams.sort_direction}
                 sortChanged={sortChanged}
               >
-                Status
+                Room Number
               </TableHeading>
-
+              <TableHeading
+                name="day"
+                sort_field={queryParams.sort_field}
+                sort_direction={queryParams.sort_direction}
+                sortChanged={sortChanged}
+              >
+                Day
+              </TableHeading>
+              <TableHeading
+                name="start_time"
+                sort_field={queryParams.sort_field}
+                sort_direction={queryParams.sort_direction}
+                sortChanged={sortChanged}
+              >
+                Start Time
+              </TableHeading>
+              <TableHeading
+                name="end_time"
+                sort_field={queryParams.sort_field}
+                sort_direction={queryParams.sort_direction}
+                sortChanged={sortChanged}
+              >
+                End Time
+              </TableHeading>
               <TableHeading
                 name="created_at"
                 sort_field={queryParams.sort_field}
@@ -108,7 +127,6 @@ export default function AllTasksTable({
               >
                 Create Date
               </TableHeading>
-
               <TableHeading
                 name="due_date"
                 sort_field={queryParams.sort_field}
@@ -136,15 +154,6 @@ export default function AllTasksTable({
                 />
               </th>
               <th className="px-3 py-3">
-                <TextInput
-                  className="w-full"
-                  defaultValue={queryParams.units}
-                  placeholder="Units"
-                  onBlur={(e) => searchFieldChanged("units", e.target.value)}
-                  onKeyPress={(e) => onKeyPress("units", e)}
-                />
-              </th>
-              <th className="px-3 py-3">
                 <SelectInput
                   className="w-full"
                   defaultValue={queryParams.status}
@@ -160,57 +169,43 @@ export default function AllTasksTable({
               <th className="px-3 py-3"></th>
               <th className="px-3 py-3"></th>
               <th className="px-3 py-3"></th>
+              <th className="px-3 py-3"></th>
             </tr>
           </thead>
           <tbody>
-            {allTasks.data.map((allTask) => (
+            {tasks.data.map((task) => (
               <tr
                 className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                key={allTask.id}
+                key={task.id}
               >
-                <td className="px-3 py-2">{allTask.id}</td>
+                <td className="px-3 py-2">{task.id}</td>
                 <td className="px-3 py-2">
-                  <img src={allTask.image_path} style={{ width: 60 }} />
+                  <img src={task.image_path} style={{ width: 60 }} />
                 </td>
-                {/* {!hideProjectColumn && (
-                  <td className="px-3 py-2">{task.project.name}</td>
-                )} */}
+                
+                {!hideProjectColumn && (
+                  <td className="px-3 py-2">{task.project_id}</td>
+                )}
+
                 <th className="px-3 py-2 text-gray-100 hover:underline">
-                  <Link href={route("allTask.show", allTask.id)}>{allTask.name}</Link>
+                  <Link href={route("task.show", task.id)}>{task.name}</Link>
                 </th>
-                <td className="px-3 py-2">{allTask.units}</td>
-                <td className="px-3 py-2">
-                  <span
-                    className={
-                      "px-2 py-1 rounded text-nowrap text-white " +
-                      TASK_STATUS_CLASS_MAP[allTask.task_type]
-                    }
-                  >
-                    {TASK_STATUS_TEXT_MAP[allTask.task_type]}
-                  </span>
-                </td>
-                <td className="px-3 py-2">
-                  <span
-                    className={
-                      "px-2 py-1 rounded text-nowrap text-white " +
-                      TASK_PRIORITY_CLASS_MAP[allTask.gec_type]
-                    }
-                  >
-                    {TASK_PRIORITY_TEXT_MAP[allTask.gec_type]}
-                  </span>
-                </td>
-                <td className="px-3 py-2 text-nowrap">{allTask.prerequisite_id}</td>
-                <td className="px-3 py-2 text-nowrap">{allTask.corequisite_id}</td>
-                {/* <td className="px-3 py-2">{task.createdBy.name}</td> */}
+                <td className="px-3 py-2 text-nowrap">{task.prof_name}</td>
+                <td className="px-3 py-2 text-nowrap">{task.room_num}</td>
+                <td className="px-3 py-2 text-nowrap">{task.day}</td>
+                <td className="px-3 py-2 text-nowrap">{task.start_time}</td>
+                <td className="px-3 py-2 text-nowrap">{task.end_time}</td>
+                <td className="px-3 py-2 text-nowrap">{task.created_at}</td>
+                <td className="px-3 py-2 text-nowrap">{task.due_date}</td>
                 <td className="px-3 py-2 text-nowrap">
                   <Link
-                    href={route("allTask.edit", allTask.id)}
+                    href={route("task.scheduleedit", task.id)}
                     className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
                   >
                     Edit
                   </Link>
                   <button
-                    onClick={(e) => deleteTask(allTask)}
+                    onClick={(e) => deleteTask(task)}
                     className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
                   >
                     Delete
@@ -221,7 +216,7 @@ export default function AllTasksTable({
           </tbody>
         </table>
       </div>
-      <Pagination links={allTasks.meta.links} />
+      <Pagination links={tasks.meta.links} />
     </>
   );
 }

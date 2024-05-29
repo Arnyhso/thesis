@@ -16,6 +16,7 @@ class AllTasks extends Model
         'gec_type',
         'prerequisite_id',
         'corequisite_id',
+        'units',
     ];
 
     public function prerequisite()

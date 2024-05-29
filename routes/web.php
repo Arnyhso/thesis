@@ -23,6 +23,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('assignedTask', AssignedTasksController::class);
     Route::get('/task/my-tasks', [TaskController::class, 'myTasks'])
         ->name('task.myTasks');
+    Route::get('/task/schedule', [TaskController::class, 'schedule'])
+        ->name('task.schedule');
+    Route::get('/tasks/{task}/scheduleedit', [TaskController::class, 'scheduleedit'])->name('task.scheduleedit');
     Route::resource('task', TaskController::class);
     Route::resource('user', UserController::class);
 });
