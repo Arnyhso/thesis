@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,18 +12,28 @@ return new class extends Migration
     {
         Schema::create('assigned_tasks', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->nullable();
+            $table->string('course_code')->nullable();
             $table->string('task_type')->nullable();
             $table->string('gec_type')->nullable();
-            $table->string('status');
-            $table->string('priority');
+            $table->foreignId('prerequisite_id')->nullable()->constrained('tasks');
+            $table->foreignId('corequisite_id')->nullable()->constrained('tasks');
+            $table->integer('units')->nullable();
+
+            $table->longText('description')->nullable();
+            $table->string('image_path')->nullable();
             $table->foreignId('project_id')->constrained('projects');
-            $table->integer('units');
-            $table->integer('max_units');
+
+            $table->string('prof_name')->nullable();
+            $table->string('room_num')->nullable();
+            $table->string('day')->nullable();
+            $table->time('start_time')->nullable();
+            $table->time('end_time')->nullable();
+
+            $table->string('status')->nullable();
+            $table->string('priority')->nullable();
             $table->foreignId('assigned_user_id')->constrained('users');
-            $table->foreignId('assigned_by')->constrained('users');
-            $table->foreignId('prerequisite_id')->nullable()->constrained('assigned_tasks');
-            $table->foreignId('corequisite_id')->nullable()->constrained('assigned_tasks');
+            $table->integer('max_units');
             $table->timestamps();
         });
     }

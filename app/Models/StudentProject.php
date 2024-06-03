@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Project extends Model
+class StudentProject extends Model
 {
     use HasFactory;
 
@@ -15,7 +15,7 @@ class Project extends Model
     {
         return $this->hasMany(Task::class);
     }
-    
+
     public function assignedTasks()
     {
         return $this->hasMany(AssignedTasks::class);
@@ -30,5 +30,5 @@ class Project extends Model
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
-    
+
 }

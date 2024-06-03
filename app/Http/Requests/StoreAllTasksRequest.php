@@ -25,8 +25,6 @@ class StoreAllTasksRequest extends FormRequest
         return [
             "name" => ['required', 'max:255'],
             "course_code" => ['nullable', 'string'],
-            'prerequisite_id' => ['nullable', 'exists:all_tasks,id'],
-            'corequisite_id' => ['nullable', 'exists:all_tasks,id'],
             'task_type' => [
                 'required',
                 Rule::in(['gec', 'special', 'standing'])
@@ -35,6 +33,8 @@ class StoreAllTasksRequest extends FormRequest
                 'nullable',
                 Rule::in(['gec', 'elective', 'gee'])
             ],
+            'prerequisite_id' => ['nullable', 'exists:all_tasks,id'],
+            'corequisite_id' => ['nullable', 'exists:all_tasks,id'],
             "units" => ['required', 'integer', 'min:1'] // Add min or max if needed
         ];
     }

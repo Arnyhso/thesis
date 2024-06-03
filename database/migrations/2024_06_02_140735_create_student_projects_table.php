@@ -10,15 +10,12 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('all_tasks', function (Blueprint $table) {
+        Schema::create('student_projects', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('course_code')->nullable();
-            $table->string('task_type')->nullable();
-            $table->string('gec_type')->nullable();
-            $table->foreignId('prerequisite_id')->nullable()->constrained('all_tasks');
-            $table->foreignId('corequisite_id')->nullable()->constrained('all_tasks');
-            $table->integer('units');
+            $table->string('status');
+            $table->foreignId('created_by')->constrained('users');
+            $table->foreignId('updated_by')->constrained('users');
             $table->timestamps();
         });
     }

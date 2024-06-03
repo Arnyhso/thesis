@@ -9,7 +9,7 @@ import {
 import { Head, Link, router } from "@inertiajs/react";
 import TableHeading from "@/Components/TableHeading";
 
-export default function Index({ auth, projects, queryParams = null, success }) {
+export default function Index({ auth, studentProject, queryParams = null, success }) {
   queryParams = queryParams || {};
   const searchFieldChanged = (name, value) => {
     if (value) {
@@ -18,7 +18,7 @@ export default function Index({ auth, projects, queryParams = null, success }) {
       delete queryParams[name];
     }
 
-    router.get(route("project.index"), queryParams);
+    router.get(route("studentProject.index"), queryParams);
   };
 
   const onKeyPress = (name, e) => {
@@ -38,14 +38,14 @@ export default function Index({ auth, projects, queryParams = null, success }) {
       queryParams.sort_field = name;
       queryParams.sort_direction = "asc";
     }
-    router.get(route("project.index"), queryParams);
+    router.get(route("studentProject.index"), queryParams);
   };
 
-  const deleteProject = (project) => {
-    if (!window.confirm("Are you sure you want to delete the project?")) {
+  const deleteProject = (studentProject) => {
+    if (!window.confirm("Are you sure you want to delete the studentProject?")) {
       return;
     }
-    router.delete(route("project.destroy", project.id));
+    router.delete(route("studentProject.destroy", studentProject.id));
   };
 
   return (
@@ -54,16 +54,16 @@ export default function Index({ auth, projects, queryParams = null, success }) {
       header={
         <div className="flex justify-between items-center">
           <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Projects
+            Student Library
           </h2>
-          <Link
-            href={route("project.assign")}
+          {/* <Link
+            href={route("studentProject.assign")}
             className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
           >
             Assign Student Course
-          </Link>
+          </Link> */}
           <Link
-            href={route("project.create")}
+            href={route("studentProject.create")}
             className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
           >
             Add new
@@ -71,7 +71,7 @@ export default function Index({ auth, projects, queryParams = null, success }) {
         </div>
       }
     >
-      <Head title="Projects" />
+      <Head title="studentProject" />
 
       <div className="py-12">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -132,7 +132,7 @@ export default function Index({ auth, projects, queryParams = null, success }) {
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.name}
-                          placeholder="Project Name"
+                          placeholder="studentProject Name"
                           onBlur={(e) =>
                             searchFieldChanged("name", e.target.value)
                           }
@@ -159,39 +159,39 @@ export default function Index({ auth, projects, queryParams = null, success }) {
                     </tr>
                   </thead>
                   <tbody>
-                    {projects.data.map((project) => (
+                    {studentProject.data.map((studentProject) => (
                       <tr
                         className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                        key={project.id}
+                        key={studentProject.id}
                       >
-                        <td className="px-3 py-2">{project.id}</td>
+                        <td className="px-3 py-2">{studentProject.id}</td>
                         <th className="px-3 py-2 text-gray-100 text-nowrap hover:underline">
-                          <Link href={route("project.show", project.id)}>
-                            {project.name}
+                          <Link href={route("studentProject.show", studentProject.id)}>
+                            {studentProject.name}
                           </Link>
                         </th>
                         <td className="px-3 py-2">
                           <span
                             className={
                               "px-2 py-1 rounded text-white " +
-                              PROJECT_STATUS_CLASS_MAP[project.status]
+                              PROJECT_STATUS_CLASS_MAP[studentProject.status]
                             }
                           >
-                            {PROJECT_STATUS_TEXT_MAP[project.status]}
+                            {PROJECT_STATUS_TEXT_MAP[studentProject.status]}
                           </span>
                         </td>
                         <td className="px-3 py-2 text-nowrap">
-                          {project.created_at}
+                          {studentProject.created_at}
                         </td>
                         <td className="px-3 py-2 text-nowrap">
-                          <Link
-                            href={route("project.edit", project.id)}
+                          {/* <Link
+                            href={route("studentProject.edit", studentProject.id)}
                             className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
                           >
                             Edit
-                          </Link>
+                          </Link> */}
                           <button
-                            onClick={(e) => deleteProject(project)}
+                            onClick={(e) => deleteProject(studentProject)}
                             className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
                           >
                             Delete
@@ -202,7 +202,7 @@ export default function Index({ auth, projects, queryParams = null, success }) {
                   </tbody>
                 </table>
               </div>
-              <Pagination links={projects.meta.links} />
+              <Pagination links={studentProject.meta.links} />
             </div>
           </div>
         </div>

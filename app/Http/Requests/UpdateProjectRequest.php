@@ -36,6 +36,7 @@ class UpdateProjectRequest extends FormRequest
             'prerequisite_id' => ['nullable', 'integer'],
             'corequisite_id' => ['nullable', 'integer'],
             'project_id' => ['nullable', 'integer'],
+            'max_units' => ['required', 'integer', 'min:1'],
         ];
     }
 }

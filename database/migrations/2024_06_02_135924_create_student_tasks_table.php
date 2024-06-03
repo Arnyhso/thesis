@@ -10,7 +10,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('tasks', function (Blueprint $table) {
+        Schema::create('student_tasks', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('course_code')->nullable();
@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->string('gec_type')->nullable();
             $table->foreignId('prerequisite_id')->nullable()->constrained('tasks');
             $table->foreignId('corequisite_id')->nullable()->constrained('tasks');
-            $table->integer('units');
+            $table->integer('units')->nullable();
 
             $table->longText('description')->nullable();
             $table->string('image_path')->nullable();
@@ -29,6 +29,11 @@ return new class extends Migration {
             $table->string('day')->nullable();
             $table->time('start_time')->nullable();
             $table->time('end_time')->nullable();
+
+            $table->string('status')->nullable();
+            $table->string('priority')->nullable();
+            $table->foreignId('assigned_user_id')->constrained('users');
+            $table->integer('max_units');
             $table->timestamps();
         });
     }
@@ -38,6 +43,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('tasks');
+        Schema::dropIfExists('assigned_tasks');
     }
 };

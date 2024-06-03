@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreProjectRequest extends FormRequest
+class StoreStudentProjectRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,7 @@ class StoreProjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'max:255'],
+            'name' => ['nullable', 'max:255'],
             'status' => ['required', Rule::in(['pending', 'in_progress', 'completed'])],
             'selectedTasks' => ['array', 'nullable'],
             'selectedTasks.*' => ['integer', 'exists:all_tasks,id'], // Ensure each task ID exists in the all_tasks table
@@ -36,8 +36,9 @@ class StoreProjectRequest extends FormRequest
             'prerequisite_id' => ['nullable', 'integer'],
             'corequisite_id' => ['nullable', 'integer'],
             'project_id' => ['nullable', 'integer'],
-            /* 'max_units' => ['required', 'integer', 'min:1'],
-            'assigned_user_id' => ['nullable', 'exists:users,id'], */
+            'max_units' => ['required', 'integer', 'min:1'],
+            'assigned_user_id' => ['nullable', 'exists:users,id'],
         ];
     }
 }
+

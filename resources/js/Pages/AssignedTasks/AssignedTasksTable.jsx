@@ -2,15 +2,17 @@ import Pagination from "@/Components/Pagination";
 import SelectInput from "@/Components/SelectInput";
 import TextInput from "@/Components/TextInput";
 import TableHeading from "@/Components/TableHeading";
+import { TASK_PRIORITY_CLASS_MAP, TASK_PRIORITY_TEXT_MAP, TASK_STATUS_CLASS_MAP, TASK_STATUS_TEXT_MAP } from "@/constants.jsx";
 import { Link, router } from "@inertiajs/react";
 
-export default function ScheduleTable({
-  tasks,
+export default function AssignedTasksTable({
+  assignedTasks,
   success,
   queryParams = null,
   hideProjectColumn = false,
 }) {
   queryParams = queryParams || {};
+
   const searchFieldChanged = (name, value) => {
     if (value) {
       queryParams[name] = value;
@@ -38,14 +40,14 @@ export default function ScheduleTable({
       queryParams.sort_field = name;
       queryParams.sort_direction = "asc";
     }
-    router.get(route("task.index"), queryParams);
+    router.get(route("assignedTasks.index"), queryParams);
   };
 
-  const deleteTask = (task) => {
+  const deleteTask = (assignedTask) => {
     if (!window.confirm("Are you sure you want to delete the task?")) {
       return;
     }
-    router.delete(route("task.destroy", task.id));
+    router.delete(route("assignedTasks.destroy", assignedTask.id));
   };
 
   return (
@@ -67,9 +69,9 @@ export default function ScheduleTable({
               >
                 ID
               </TableHeading>
-              {/* <th className="px-3 py-3">Image</th> */}
+              <th className="px-3 py-3">Image</th>
               {!hideProjectColumn && (
-                <th className="px-3 py-3">Project</th>
+                <th className="px-3 py-3">Project Name</th>
               )}
               <TableHeading
                 name="name"
@@ -79,47 +81,17 @@ export default function ScheduleTable({
               >
                 Name
               </TableHeading>
+
               <TableHeading
-                name="prof_name"
+                name="status"
                 sort_field={queryParams.sort_field}
                 sort_direction={queryParams.sort_direction}
                 sortChanged={sortChanged}
               >
-                Professor Name
+                Status
               </TableHeading>
+
               <TableHeading
-                name="room_num"
-                sort_field={queryParams.sort_field}
-                sort_direction={queryParams.sort_direction}
-                sortChanged={sortChanged}
-              >
-                Room
-              </TableHeading>
-              <TableHeading
-                name="day"
-                sort_field={queryParams.sort_field}
-                sort_direction={queryParams.sort_direction}
-                sortChanged={sortChanged}
-              >
-                Day
-              </TableHeading>
-              <TableHeading
-                name="start_time"
-                sort_field={queryParams.sort_field}
-                sort_direction={queryParams.sort_direction}
-                sortChanged={sortChanged}
-              >
-                Start Time
-              </TableHeading>
-              <TableHeading
-                name="end_time"
-                sort_field={queryParams.sort_field}
-                sort_direction={queryParams.sort_direction}
-                sortChanged={sortChanged}
-              >
-                End Time
-              </TableHeading>
-              {/*<TableHeading
                 name="created_at"
                 sort_field={queryParams.sort_field}
                 sort_direction={queryParams.sort_direction}
@@ -127,15 +99,16 @@ export default function ScheduleTable({
               >
                 Create Date
               </TableHeading>
+
               <TableHeading
-                name="due_date"
+                name="assigned_user_id"
                 sort_field={queryParams.sort_field}
                 sort_direction={queryParams.sort_direction}
                 sortChanged={sortChanged}
               >
-                Due Date
+                Assigned User
               </TableHeading>
-               <th className="px-3 py-3">Created By</th>
+              <th className="px-3 py-3">Created By</th>
               <th className="px-3 py-3 text-right">Actions</th>
             </tr>
           </thead>
@@ -169,44 +142,43 @@ export default function ScheduleTable({
               <th className="px-3 py-3"></th>
               <th className="px-3 py-3"></th>
               <th className="px-3 py-3"></th>
-              <th className="px-3 py-3"></th> */}
-              <th className="px-3 py-3 text-left">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {tasks.data.map((task) => (
+            {assignedTasks.data.map((assignedTask) => (
               <tr
                 className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                key={task.id}
+                key={assignedTask.id}
               >
-                <td className="px-3 py-2">{task.id}</td>
-                {/* <td className="px-3 py-2">
-                  <img src={task.image_path} style={{ width: 60 }} />
-                </td> */}
-                
-                {!hideProjectColumn && (
-                  <td className="px-3 py-2">{task.project_id}</td>
-                )}
-
+                <td className="px-3 py-2">{assignedTask.id}</td>
+                <td className="px-3 py-2">
+                  <img src={assignedTask.image_path} style={{ width: 60 }} />
+                </td>
                 <th className="px-3 py-2 text-gray-100 hover:underline">
-                  <Link href={route("task.show", task.id)}>{task.name}</Link>
+                  <Link href={route("task.show", assignedTask.id)}>{assignedTask.name}</Link>
                 </th>
-                <td className="px-3 py-2 text-nowrap">{task.prof_name}</td>
-                <td className="px-3 py-2 text-nowrap">{task.room_num}</td>
-                <td className="px-3 py-2 text-nowrap">{task.day}</td>
-                <td className="px-3 py-2 text-nowrap">{task.start_time}</td>
-                <td className="px-3 py-2 text-nowrap">{task.end_time}</td>
-                {/* <td className="px-3 py-2 ">{task.created_at}</td>
-                <td className="px-3 py-2">{task.due_date}</td> */}
+                <td className="px-3 py-2">
+                  <span
+                    className={
+                      "px-2 py-1 rounded text-nowrap text-white " +
+                      TASK_STATUS_CLASS_MAP[assignedTask.status]
+                    }
+                  >
+                    {TASK_STATUS_TEXT_MAP[assignedTask.status]}
+                  </span>
+                </td>
+                <td className="px-3 py-2 text-nowrap">{assignedTask.project_id}</td>
+                <td className="px-3 py-2 text-nowrap">{assignedTask.assigned_user_id}</td>
+                <td className="px-3 py-2 text-nowrap">{assignedTask.assigned_by}</td>
                 <td className="px-3 py-2 text-nowrap">
                   <Link
-                    href={route("task.scheduleedit", task.id)}
+                    href={route("assignedTasks.edit", assignedTask.id)}
                     className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
                   >
                     Edit
                   </Link>
                   <button
-                    onClick={(e) => deleteTask(task)}
+                    onClick={(e) => deleteTask(assignedTask)}
                     className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
                   >
                     Delete
@@ -217,7 +189,7 @@ export default function ScheduleTable({
           </tbody>
         </table>
       </div>
-      <Pagination links={tasks.meta.links} />
+      <Pagination links={assignedTasks.meta.links} />
     </>
   );
 }

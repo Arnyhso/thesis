@@ -3,14 +3,21 @@
 namespace App\Http\Controllers;
 
 
+use App\Http\Requests\StoreAssignedTasksRequest;
+use App\Http\Requests\StoreStudentProjectRequest;
 use App\Http\Resources\AllTasksResource;
+use App\Http\Resources\AssignedTasksResource;
 use App\Http\Resources\ProjectResource;
 use App\Http\Resources\TaskResource;
+use App\Http\Resources\UserResource;
 use App\Models\AllTasks;
+use App\Models\AssignedTasks;
 use App\Models\Project;
+use App\Models\StudentProject;
+use App\Models\Task;
+use App\Models\User;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
-use App\Models\Task;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreTaskRequest;
 use Illuminate\Support\Facades\DB;
@@ -106,7 +113,6 @@ class ProjectController extends Controller
             throw new \Exception('No selected tasks.');
         }
 
-
         return redirect()->route('project.index')->with([
                 'success' => 'Project created successfully.',
             ]);
@@ -176,4 +182,105 @@ class ProjectController extends Controller
         return to_route('project.index')
             ->with('success', "Project \"$name\" was deleted");
     }
+
+    public function assign()
+    {
+        $query = Task::query();
+
+        $sortField = request("sort_field", 'created_at');
+        $sortDirection = request("sort_direction", "desc");
+
+        if (request("name")) {
+            $query->where("name", "like", "%" . request("name") . "%");
+        }
+        if (request("task_type")) {
+            $query->where("task_type", request("task_type"));
+        }
+        $projects = Project::query()->orderBy('name', 'asc')->get();
+        $assignedTasks = $query->orderBy($sortField, $sortDirection)
+            ->paginate(10)
+            ->onEachSide(1);
+
+        return inertia("Project/Assign", [
+            "assignedTasks" => TaskResource::collection($assignedTasks),
+            'projects' => ProjectResource::collection($projects),
+            'queryParams' => request()->query() ?: null,
+            'success' => session('success'),
+        ]);
+    }
+
+    public function student()
+    {
+        $task = Task::query()->orderBy('name', 'asc')->get();
+        $projects = Project::query()->orderBy('name', 'asc')->get();
+        $assignedTasks = AssignedTasks::query()->orderBy('name', 'asc')->get();
+        $users = User::query()->orderBy('name', 'asc')->get();
+        return inertia("Project/Student", [
+            'task' => TaskResource::collection($task),
+            'projects' => ProjectResource::collection($projects),
+            'assignedTasks' => AssignedTasksResource::collection($assignedTasks),
+            'users' => UserResource::collection($users),
+        ]);
+    }
+
+    // Import necessary classes
+
+    public function studentStore(StoreStudentProjectRequest $request)
+    {
+        $data = $request->validated();
+        $data['created_by'] = Auth::id();
+        $data['updated_by'] = Auth::id();
+
+
+        $project = Project::create($data);
+
+        // Create the tasks and associate them with the project
+        if (!empty($data['selectedTasks'])) {
+            foreach ($data['selectedTasks'] as $taskId) {
+                // Find task info from AllTasks
+                $taskInfo = Task::find($taskId);
+
+                if ($taskInfo) {
+                    // Validate task data
+                    $taskInfo['project_id'] = $project->id;
+                    
+                    // Create task with validated task data
+                    AssignedTasks::create([
+                        'name' => $taskInfo->name,
+                        'prerequisite_id' => $taskInfo->prerequisite_id,
+                        'corequisite_id' => $taskInfo->corequisite_id,
+                        'project_id' => $project->id,
+                        'task_type' => $taskInfo->task_type,
+                        'gec_type' => $taskInfo->gec_type,
+                        'units' => $taskInfo->units,
+                        'day' => $taskInfo->day,
+                        'max_units' => $data['max_units'],
+                        'assigned_user_id' => $data['assigned_user_id'],
+                        /* 'course_code' => $data['course_code'],
+                        'description' => $data['description'],
+                        'image_path' => $data['image_path'], // Assuming you handle file upload separately
+                        'prof_name' => $data['prof_name'],
+                        'room_num' => $data['room_num'],
+                        'start_time' => $data['start_time'],
+                        'end_time' => $data['end_time'],
+                        'status' => $data['status'],
+                        'priority' => $data['priority'],
+                        'assigned_by' => $data['assigned_by'],
+                        'semester' => $data['semester'], */
+                    ]);
+
+                } else {
+                    throw new \Exception("Task with ID $taskId not found.");
+                }
+                LOG::info("value", $data);
+            }
+        } else {
+            throw new \Exception('No selected tasks.');
+        }
+
+        return redirect()->route('project.index')->with([
+            'success' => 'Project created successfully.',
+        ]);
+    }
+
 }

@@ -4,6 +4,8 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\StudentProjectController;
+use App\Http\Controllers\StudentTaskController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\AllTasksController;
 use App\Http\Controllers\AssignedTasksController;
@@ -18,9 +20,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
 
+    Route::get('/project/assign', [ProjectController::class, 'assign'])
+        ->name('project.assign');
+    Route::get('/project/student', [ProjectController::class, 'student'])
+        ->name('project.student');
+    Route::post('/project/student-store', [ProjectController::class, 'studentStore'])->name('project.studentStore');
+
     Route::resource('project', ProjectController::class);
     Route::resource('allTask', AllTasksController::class);
-    Route::resource('assignedTask', AssignedTasksController::class);
+    Route::resource('assignedTasks', AssignedTasksController::class);
+    Route::resource('studentTask', StudentTaskController::class);
+    Route::resource('studentProject', StudentProjectController::class);
     Route::get('/task/my-tasks', [TaskController::class, 'myTasks'])
         ->name('task.myTasks');
     Route::get('/task/schedule', [TaskController::class, 'schedule'])

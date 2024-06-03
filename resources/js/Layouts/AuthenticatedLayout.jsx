@@ -59,6 +59,18 @@ export default function AuthenticatedLayout({ user, header, children }) {
                     >
                       My Tasks
                     </NavLink>
+                    <NavLink
+                      href={route("assignedTasks.index")}
+                      active={route().current("assignedTasks.index")}
+                    >
+                      Course Planner
+                    </NavLink>
+                    <NavLink
+                      href={route("studentProject.index")}
+                      active={route().current("studentProject.index")}
+                    >
+                      Student Library
+                    </NavLink>
                   </>
                 ) : user.user_type === 'student' ? (
                   <>

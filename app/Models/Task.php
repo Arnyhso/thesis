@@ -11,14 +11,17 @@ class Task extends Model
 
     protected $fillable = [
         'name',
-        'description',
-        'image_path',
+        'course_code',
         'task_type',
         'gec_type',
-        'project_id',
         'prerequisite_id',
         'corequisite_id',
         'units',
+
+        'description',
+        'image_path',
+        'project_id',
+        
         'prof_name',
         'room_num',
         'day',
@@ -35,6 +38,11 @@ class Task extends Model
     public function project()
     {
         return $this->belongsTo(Project::class);
+    }
+
+    public function StudentProject()
+    {
+        return $this->belongsTo(StudentProject::class);
     }
 
     public function prerequisite()
