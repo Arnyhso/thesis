@@ -9,6 +9,12 @@ export default function AuthenticatedLayout({ user, header, children }) {
   const [showingNavigationDropdown, setShowingNavigationDropdown] =
     useState(false);
 
+
+    const logoStyles = {
+    height: '60px',
+    width: 'auto',
+  };
+  
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
       <nav className="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
@@ -17,35 +23,32 @@ export default function AuthenticatedLayout({ user, header, children }) {
             <div className="flex">
               <div className="shrink-0 flex items-center">
                 <Link href="/">
-                  <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                  <ApplicationLogo 
+                    className="block fill-current text-gray-800 dark:text-gray-200"
+                    style={logoStyles} // Apply inline styles
+                  />
                 </Link>
               </div>
               <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                 {user.user_type === 'college_head' ? (
                   <>
                     <NavLink
-                      href={route("dashboard")}
-                      active={route().current("dashboard")}
-                    >
-                      Dashboard
-                    </NavLink>
-                    <NavLink
                       href={route("project.index")}
                       active={route().current("project.index")}
                     >
-                      Projects
+                      Courses
                     </NavLink>
                     <NavLink
                       href={route("allTask.index")}
                       active={route().current("allTask.index")}
                     >
-                      All Tasks
+                      Subject Library
                     </NavLink>
                     <NavLink
                       href={route("task.index")}
                       active={route().current("task.index")}
                     >
-                      Task Courses
+                      Subject/ Courses
                     </NavLink>
                     <NavLink
                       href={route("user.index")}
@@ -54,10 +57,10 @@ export default function AuthenticatedLayout({ user, header, children }) {
                       Users
                     </NavLink>
                     <NavLink
-                      href={route("task.myTasks")}
-                      active={route().current("task.myTasks")}
+                      href={route("assignedTasks.Planner")}
+                      active={route().current("assignedTasks.Planner")}
                     >
-                      My Tasks
+                      My Planner
                     </NavLink>
                     <NavLink
                       href={route("assignedTasks.index")}
@@ -81,16 +84,16 @@ export default function AuthenticatedLayout({ user, header, children }) {
                       Dashboard
                     </NavLink>
                     <NavLink
-                      href={route("task.index")}
-                      active={route().current("task.index")}
+                      href={route("assignedTasks.Planner")}
+                      active={route().current("assignedTasks.Planner")}
                     >
-                      All Tasks
+                      My Planner
                     </NavLink>
                     <NavLink
-                      href={route("task.myTasks")}
-                      active={route().current("task.myTasks")}
+                      href={route("studentProject.index")}
+                      active={route().current("studentProject.index")}
                     >
-                      My Tasks
+                      Student Library
                     </NavLink>
                   </>
                 ) : null}

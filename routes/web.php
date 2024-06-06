@@ -25,14 +25,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/project/student', [ProjectController::class, 'student'])
         ->name('project.student');
     Route::post('/project/student-store', [ProjectController::class, 'studentStore'])->name('project.studentStore');
-
+    
+    Route::get('/assignedTasks/Planner', [AssignedTasksController::class, 'Planner'])
+        ->name('assignedTasks.Planner');
+    Route::get('/assignedTasks/Generated', [AssignedTasksController::class, 'Generated'])
+        ->name('assignedTasks.Generated');
     Route::resource('project', ProjectController::class);
     Route::resource('allTask', AllTasksController::class);
     Route::resource('assignedTasks', AssignedTasksController::class);
     Route::resource('studentTask', StudentTaskController::class);
     Route::resource('studentProject', StudentProjectController::class);
-    Route::get('/task/my-tasks', [TaskController::class, 'myTasks'])
-        ->name('task.myTasks');
     Route::get('/task/schedule', [TaskController::class, 'schedule'])
         ->name('task.schedule');
     Route::get('/tasks/{task}/scheduleedit', [TaskController::class, 'scheduleedit'])->name('task.scheduleedit');

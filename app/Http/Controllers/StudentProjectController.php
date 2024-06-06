@@ -77,6 +77,7 @@ class StudentProjectController extends Controller
         $data['created_by'] = Auth::id();
         $data['updated_by'] = Auth::id();
 
+        LOG::info("Received data: ", $data);
         $project = StudentProject::create($data);
 
         // Create the tasks and associate them with the project
@@ -102,6 +103,7 @@ class StudentProjectController extends Controller
                         'day' => $taskInfo->day,
                         'max_units' => $data['max_units'],
                         'assigned_user_id' => $data['assigned_user_id'],
+                        'status' => $data['status'],
                     ]);
                 } else {
                     throw new \Exception("Task with ID $taskId not found.");

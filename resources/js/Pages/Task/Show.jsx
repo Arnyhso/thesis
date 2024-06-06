@@ -39,11 +39,11 @@ export default function Show({ auth, task, prerequisite, corequisite }) {
               <div className="grid gap-1 grid-cols-2 mt-2">
                 <div>
                   <div>
-                    <label className="font-bold text-lg">Task ID</label>
+                    <label className="font-bold text-lg">Subject ID</label>
                     <p className="mt-1">{task.id}</p>
                   </div>
                   <div className="mt-4">
-                    <label className="font-bold text-lg">Task Name</label>
+                    <label className="font-bold text-lg">Subject Name</label>
                     <p className="mt-1">{task.name}</p>
                   </div>
 
@@ -53,7 +53,7 @@ export default function Show({ auth, task, prerequisite, corequisite }) {
                   </div>
 
                   <div className="mt-4">
-                    <label className="font-bold text-lg">Task Status</label>
+                    <label className="font-bold text-lg">Subject Type</label>
                     <p className="mt-1">
                       <span
                         className={
@@ -67,7 +67,7 @@ export default function Show({ auth, task, prerequisite, corequisite }) {
                   </div>
 
                   <div className="mt-4">
-                    <label className="font-bold text-lg">Task Priority</label>
+                    <label className="font-bold text-lg">Subject GEC Type</label>
                     <p className="mt-1">
                       <span
                         className={
@@ -79,6 +79,8 @@ export default function Show({ auth, task, prerequisite, corequisite }) {
                       </span>
                     </p>
                   </div>
+                </div>
+                <div>
                   <div className="mt-4">
                    <label className="font-bold text-lg">Prerequisite</label>
                    <p className="mt-1">
@@ -91,8 +93,6 @@ export default function Show({ auth, task, prerequisite, corequisite }) {
                     )}
                     </p>
                    </div>
-                </div>
-                <div>
                   <div>
                       <div>
                         <label className="font-bold text-lg">Corequisite</label>

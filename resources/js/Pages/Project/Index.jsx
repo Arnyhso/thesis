@@ -54,11 +54,11 @@ export default function Index({ auth, projects, queryParams = null, success }) {
       header={
         <div className="flex justify-between items-center">
           <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Projects
+            Courses
           </h2>
           <Link
             href={route("project.assign")}
-            className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
+            className="bg-blue-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
           >
             Assign Student Course
           </Link>
@@ -66,7 +66,7 @@ export default function Index({ auth, projects, queryParams = null, success }) {
             href={route("project.create")}
             className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
           >
-            Add new
+            Add new Course
           </Link>
         </div>
       }
@@ -94,7 +94,6 @@ export default function Index({ auth, projects, queryParams = null, success }) {
                       >
                         ID
                       </TableHeading>
-                      <th className="px-3 py-3"></th>
                       <TableHeading
                         name="name"
                         sort_field={queryParams.sort_field}
@@ -103,7 +102,6 @@ export default function Index({ auth, projects, queryParams = null, success }) {
                       >
                         Name
                       </TableHeading>
-
                       <TableHeading
                         name="status"
                         sort_field={queryParams.sort_field}
@@ -112,50 +110,10 @@ export default function Index({ auth, projects, queryParams = null, success }) {
                       >
                         Status
                       </TableHeading>
-                      <TableHeading
-                        name="created_at"
-                        sort_field={queryParams.sort_field}
-                        sort_direction={queryParams.sort_direction}
-                        sortChanged={sortChanged}
-                      >
-                        Create Date
-                      </TableHeading>
-
-                      <th className="px-3 py-3 text-center">Actions</th>
-                    </tr>
-                  </thead>
-                  <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
-                    <tr className="text-nowrap">
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3">
-                        <TextInput
-                          className="w-full"
-                          defaultValue={queryParams.name}
-                          placeholder="Project Name"
-                          onBlur={(e) =>
-                            searchFieldChanged("name", e.target.value)
-                          }
-                          onKeyPress={(e) => onKeyPress("name", e)}
-                        />
-                      </th>
-                      <th className="px-3 py-3">
-                        <SelectInput
-                          className="w-full"
-                          defaultValue={queryParams.status}
-                          onChange={(e) =>
-                            searchFieldChanged("status", e.target.value)
-                          }
-                        >
-                          <option value="">Select Status</option>
-                          <option value="pending">Pending</option>
-                          <option value="in_progress">In Progress</option>
-                          <option value="completed">Completed</option>
-                        </SelectInput>
-                      </th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
+                      <th className="px-3 py-3 text-left">Create Date</th>
+                      <th className="px-3 py-3 text-center"></th>
+                      <th className="px-3 py-3 text-center"></th>
+                      <th className="px-3 py-3 text-left">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -183,6 +141,8 @@ export default function Index({ auth, projects, queryParams = null, success }) {
                         <td className="px-3 py-2 text-nowrap">
                           {project.created_at}
                         </td>
+                        <td className="px-3 py-2 text-nowrap"></td>
+                        <td className="px-3 py-2 text-nowrap"></td>
                         <td className="px-3 py-2 text-nowrap">
                           <Link
                             href={route("project.edit", project.id)}

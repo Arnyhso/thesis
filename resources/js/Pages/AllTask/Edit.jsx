@@ -34,7 +34,7 @@ export default function Edit({ auth, allTask, task }) {
       header={
         <div className="flex justify-between items-center">
           <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Edit task "{allTask.name}"
+            Edit Subject "{allTask.name}"
           </h2>
         </div>
       }
@@ -51,7 +51,7 @@ export default function Edit({ auth, allTask, task }) {
               <div className="mt-4">
                 <InputLabel 
                 htmlFor="task_name" 
-                value="Task Name" 
+                value="Subject Name" 
                 />
 
                 <TextInput
@@ -86,7 +86,7 @@ export default function Edit({ auth, allTask, task }) {
               <div className="mt-4">
                 <InputLabel
                   htmlFor="TaskType"
-                  value="Task Type"
+                  value="Subject Type"
                 />
 
                 <SelectInput
@@ -99,7 +99,7 @@ export default function Edit({ auth, allTask, task }) {
                     setData("task_type", e.target.value); // Update form data
                   }}
                 >
-                  <option value="">Select Task Type</option>
+                  <option value="">Select Subject Type</option>
                   <option value="gec">GEC</option>
                   <option value="special">SPECIAL</option>
                   <option value="standing">STANDING</option>
@@ -113,7 +113,7 @@ export default function Edit({ auth, allTask, task }) {
                   <div className="mt-4">
                     <InputLabel
                       htmlFor="gectype"
-                      value="gec Type"
+                      value="GEC Type"
                     />
 
                     <SelectInput
@@ -123,7 +123,7 @@ export default function Edit({ auth, allTask, task }) {
                       className="mt-1 block w-full"
                       onChange={(e) => setData("gec_type", e.target.value)}
                     >
-                      <option value="">Select Priority</option>
+                      <option value="">Select GEC type</option>
                       <option value="gec">GEC</option>
                       <option value="elective">ELECTIVE</option>
                       <option value="gee">GEE</option>

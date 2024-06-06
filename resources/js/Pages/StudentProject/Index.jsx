@@ -56,18 +56,6 @@ export default function Index({ auth, studentProject, queryParams = null, succes
           <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             Student Library
           </h2>
-          {/* <Link
-            href={route("studentProject.assign")}
-            className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
-          >
-            Assign Student Course
-          </Link> */}
-          <Link
-            href={route("studentProject.create")}
-            className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
-          >
-            Add new
-          </Link>
         </div>
       }
     >
@@ -94,7 +82,6 @@ export default function Index({ auth, studentProject, queryParams = null, succes
                       >
                         ID
                       </TableHeading>
-                      <th className="px-3 py-3"></th>
                       <TableHeading
                         name="name"
                         sort_field={queryParams.sort_field}
@@ -120,19 +107,19 @@ export default function Index({ auth, studentProject, queryParams = null, succes
                       >
                         Create Date
                       </TableHeading>
-
-                      <th className="px-3 py-3 text-center">Actions</th>
+                    <th className="px-3 py-3 text-center"></th>
+                    <th className="px-3 py-3 text-center"></th>
+                    <th className="px-3 py-3 text-center">Actions</th>
                     </tr>
                   </thead>
                   <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                     <tr className="text-nowrap">
                       <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
                       <th className="px-3 py-3">
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.name}
-                          placeholder="studentProject Name"
+                          placeholder="student / Project Name"
                           onBlur={(e) =>
                             searchFieldChanged("name", e.target.value)
                           }
@@ -153,6 +140,7 @@ export default function Index({ auth, studentProject, queryParams = null, succes
                           <option value="completed">Completed</option>
                         </SelectInput>
                       </th>
+                      <th className="px-3 py-3"></th>
                       <th className="px-3 py-3"></th>
                       <th className="px-3 py-3"></th>
                       <th className="px-3 py-3"></th>
@@ -183,19 +171,17 @@ export default function Index({ auth, studentProject, queryParams = null, succes
                         <td className="px-3 py-2 text-nowrap">
                           {studentProject.created_at}
                         </td>
+                        <td className="px-3 py-2"></td>
+                        <td className="px-3 py-2"></td>
                         <td className="px-3 py-2 text-nowrap">
-                          {/* <Link
-                            href={route("studentProject.edit", studentProject.id)}
-                            className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
-                          >
-                            Edit
-                          </Link> */}
-                          <button
-                            onClick={(e) => deleteProject(studentProject)}
-                            className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
-                          >
-                            Delete
-                          </button>
+                          {auth.user.user_type !== 'student' && (
+                            <button
+                              onClick={(e) => deleteProject(studentProject)}
+                              className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
+                            >
+                              Delete
+                            </button>
+                          )}
                         </td>
                       </tr>
                     ))}

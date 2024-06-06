@@ -11,6 +11,7 @@ export default function Create({ auth, allTasks }) {
     status: "",
     selectedTasks: [],
 
+    course_code: "",
     image_path: "", // Updated variable name
     task_type: "",
     gec_type: "",
@@ -50,7 +51,7 @@ export default function Create({ auth, allTasks }) {
       header={
         <div className="flex justify-between items-center">
           <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Create new Project
+            Create new Course
           </h2>
         </div>
       }
@@ -98,7 +99,7 @@ export default function Create({ auth, allTasks }) {
               </div>
 
               <div className="mt-4">
-                <InputLabel value="Select Tasks" />
+                <InputLabel value="Select Subjects" />
                 <div className="p-6 text-gray-900 dark:text-gray-100">
                 <ul>
                   {allTasks.data.map((allTask) => (
@@ -118,7 +119,7 @@ export default function Create({ auth, allTasks }) {
               </div>
 
               <div className="mt-4">
-                <InputLabel value="Selected Task IDs" />
+                <InputLabel value="Selected Subjects IDs" />
                 <div className="p-6 text-gray-900 dark:text-gray-100">
                   <ul>
                     {data.selectedTasks.map((taskId) => (
@@ -127,7 +128,6 @@ export default function Create({ auth, allTasks }) {
                   </ul>
                 </div>
               </div>
-
               <div className="mt-4 text-right">
                 <Link
                   href={route("project.index")}

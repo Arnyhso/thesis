@@ -23,6 +23,7 @@ class TaskController extends Controller
     public function index(Task $task)
     {
         $query = Task::query();
+        $projects = Project::query()->orderBy('name', 'asc')->get();
 
         $sortField = request("sort_field", 'created_at');
         $sortDirection = request("sort_direction", "desc");
@@ -39,6 +40,7 @@ class TaskController extends Controller
             ->onEachSide(1);
 
         return inertia("Task/Index", [
+            'projects' => ProjectResource::collection($projects),
             "tasks" => TaskResource::collection($tasks),
             'queryParams' => request()->query() ?: null,
             'success' => session('success'),
@@ -148,8 +150,6 @@ class TaskController extends Controller
             'projectTasks' => TaskResource::collection($projectTasks),
         ]);
     }
-
-
     /**
      * Update the specified resource in storage.
      */
@@ -192,31 +192,6 @@ class TaskController extends Controller
             ->with('success', "Task \"$name\" was deleted");
     }
 
-    public function myTasks()
-    {
-        $user = auth()->user();
-        $query = Task::query()->where('assigned_user_id', $user->id);
-
-        $sortField = request("sort_field", 'created_at');
-        $sortDirection = request("sort_direction", "desc");
-
-        if (request("name")) {
-            $query->where("name", "like", "%" . request("name") . "%");
-        }
-        if (request("task_type")) {
-            $query->where("task_type", request("task_type"));
-        }
-
-        $tasks = $query->orderBy($sortField, $sortDirection)
-            ->paginate(10)
-            ->onEachSide(1);
-
-        return inertia("Task/Index", [
-            "tasks" => TaskResource::collection($tasks),
-            'queryParams' => request()->query() ?: null,
-            'success' => session('success'),
-        ]);
-    }
     public function schedule()
     {
         $query = Task::query();

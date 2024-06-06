@@ -49,6 +49,12 @@ export default function AllTasksTable({
     router.delete(route("allTask.destroy", allTask.id));
   };
 
+
+  const getTaskName = (taskId) => {
+    const task = allTasks.data.find(task => task.id === taskId);
+    return task ? task.course_code : "";
+  };
+
   return (
     <>
       {success && (
@@ -69,16 +75,21 @@ export default function AllTasksTable({
                 ID
               </TableHeading>
               <th className="px-3 py-3">Image</th>
-              {!hideProjectColumn && (
-                <th className="px-3 py-3">Project Name</th>
-              )}
+              <TableHeading
+                name="course_code"
+                sort_field={queryParams.sort_field}
+                sort_direction={queryParams.sort_direction}
+                sortChanged={sortChanged}
+              >
+                Course Code
+              </TableHeading>
               <TableHeading
                 name="name"
                 sort_field={queryParams.sort_field}
                 sort_direction={queryParams.sort_direction}
                 sortChanged={sortChanged}
               >
-                Name
+                Subject Name
               </TableHeading>
 
               <TableHeading
@@ -90,34 +101,10 @@ export default function AllTasksTable({
                 Units
               </TableHeading>
 
-
-              <TableHeading
-                name="status"
-                sort_field={queryParams.sort_field}
-                sort_direction={queryParams.sort_direction}
-                sortChanged={sortChanged}
-              >
-                Status
-              </TableHeading>
-
-              <TableHeading
-                name="created_at"
-                sort_field={queryParams.sort_field}
-                sort_direction={queryParams.sort_direction}
-                sortChanged={sortChanged}
-              >
-                Create Date
-              </TableHeading>
-
-              <TableHeading
-                name="due_date"
-                sort_field={queryParams.sort_field}
-                sort_direction={queryParams.sort_direction}
-                sortChanged={sortChanged}
-              >
-                Due Date
-              </TableHeading>
-              <th className="px-3 py-3">Created By</th>
+              <th className="px-3 py-3">Subject type</th>
+              <th className="px-3 py-3">GEC type</th>
+              <th className="px-3 py-3">Prerequisite</th>
+              <th className="px-3 py-3">Corequisite</th>
               <th className="px-3 py-3 text-right">Actions</th>
             </tr>
           </thead>
@@ -147,13 +134,13 @@ export default function AllTasksTable({
               <th className="px-3 py-3">
                 <SelectInput
                   className="w-full"
-                  defaultValue={queryParams.status}
-                  onChange={(e) => searchFieldChanged("status", e.target.value)}
+                  defaultValue={queryParams.task_type}
+                  onChange={(e) => searchFieldChanged("task_type", e.target.value)}
                 >
-                  <option value="">Select Status</option>
-                  <option value="pending">Pending</option>
-                  <option value="in_progress">In Progress</option>
-                  <option value="completed">Completed</option>
+                  <option value="">Select Task Type</option>
+                  <option value="gec">GEC</option>
+                  <option value="special">SPECIAL</option>
+                  <option value="standing">STANDING</option>
                 </SelectInput>
               </th>
               <th className="px-3 py-3"></th>
@@ -172,9 +159,7 @@ export default function AllTasksTable({
                 <td className="px-3 py-2">
                   <img src={allTask.image_path} style={{ width: 60 }} />
                 </td>
-                {/* {!hideProjectColumn && (
-                  <td className="px-3 py-2">{task.project.name}</td>
-                )} */}
+                <td className="px-3 py-2">{allTask.course_code}</td>
                 <th className="px-3 py-2 text-gray-100 hover:underline">
                   <Link href={route("allTask.show", allTask.id)}>{allTask.name}</Link>
                 </th>
@@ -199,9 +184,8 @@ export default function AllTasksTable({
                     {TASK_PRIORITY_TEXT_MAP[allTask.gec_type]}
                   </span>
                 </td>
-                <td className="px-3 py-2 text-nowrap">{allTask.prerequisite_id}</td>
-                <td className="px-3 py-2 text-nowrap">{allTask.corequisite_id}</td>
-                {/* <td className="px-3 py-2">{task.createdBy.name}</td> */}
+                <td className="px-3 py-2 text-nowrap">{getTaskName(allTask.prerequisite_id)}</td>
+                <td className="px-3 py-2 text-nowrap">{getTaskName(allTask.prerequisite_id)}</td>
                 <td className="px-3 py-2 text-nowrap">
                   <Link
                     href={route("allTask.edit", allTask.id)}

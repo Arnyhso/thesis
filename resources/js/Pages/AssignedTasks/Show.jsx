@@ -6,7 +6,6 @@ import {
   TASK_STATUS_CLASS_MAP,
   TASK_STATUS_TEXT_MAP,
 } from "@/constants.jsx";
-
 export default function Show({ auth, assignedTasks, prerequisite, corequisite }) {
   return (
     <AuthenticatedLayout
@@ -14,14 +13,8 @@ export default function Show({ auth, assignedTasks, prerequisite, corequisite })
       header={
         <div className="flex items-center justify-between">
           <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {`Task "${assignedTasks.name}"`}
+            {`Subject Name "${assignedTasks.name}"`}
           </h2>
-          {/* <Link
-            href={route("allTask.edit", allTasks.id)}
-            className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
-          >
-            Edit
-          </Link> */}
         </div>
       }
     >
@@ -40,11 +33,11 @@ export default function Show({ auth, assignedTasks, prerequisite, corequisite })
               <div className="grid gap-1 grid-cols-2 mt-2">
                 <div>
                   <div>
-                    <label className="font-bold text-lg">Task ID</label>
+                    <label className="font-bold text-lg">Subject ID</label>
                     <p className="mt-1">{assignedTasks.id}</p>
                   </div>
                   <div className="mt-4">
-                    <label className="font-bold text-lg">Task Name</label>
+                    <label className="font-bold text-lg">Subject Name</label>
                     <p className="mt-1">{assignedTasks.name}</p>
                   </div>
 
@@ -54,7 +47,7 @@ export default function Show({ auth, assignedTasks, prerequisite, corequisite })
                   </div>
 
                   <div className="mt-4">
-                    <label className="font-bold text-lg">Task Status</label>
+                    <label className="font-bold text-lg">Subject Type</label>
                     <p className="mt-1">
                       <span
                         className={
@@ -68,7 +61,7 @@ export default function Show({ auth, assignedTasks, prerequisite, corequisite })
                   </div>
 
                   <div className="mt-4">
-                    <label className="font-bold text-lg">Task Priority</label>
+                    <label className="font-bold text-lg">Subject GEC Type</label>
                     <p className="mt-1">
                       <span
                         className={
@@ -80,6 +73,8 @@ export default function Show({ auth, assignedTasks, prerequisite, corequisite })
                       </span>
                     </p>
                   </div>
+                </div>
+                <div>
                   <div className="mt-4">
                    <label className="font-bold text-lg">Prerequisite</label>
                    <p className="mt-1">
@@ -92,42 +87,40 @@ export default function Show({ auth, assignedTasks, prerequisite, corequisite })
                     )}
                     </p>
                    </div>
-                </div>
-                <div>
                   <div>
-                        <div>
-                            <label className="font-bold text-lg">Corequisite</label>
-                            <p className="mt-1">
-                            {corequisite ? (
-                                <Link href={route("assignedTasks.show", corequisite.id)} className="hover:underline">
-                                {corequisite.name}
-                                </Link>
-                            ) : (
-                                "N/A"
-                            )}
-                            </p>
-                        </div>
+                      <div>
+                        <label className="font-bold text-lg">Corequisite</label>
+                        <p className="mt-1">
+                          {corequisite ? (
+                            <Link href={route("assignedTasks.show", corequisite.id)} className="hover:underline">
+                              {corequisite.name}
+                            </Link>
+                          ) : (
+                            "N/A"
+                          )}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="mt-4">
+                    <label className="font-bold text-lg">Professor Name</label>
+                    <p className="mt-1">{assignedTasks.prof_name}</p>
                   </div>
-
-                  {/* <div className="mt-4">
-                    <label className="font-bold text-lg">Create Date</label>
-                    <p className="mt-1">{task.created_at}</p>
-                  </div> 
-                  /* <div className="mt-4">
-                    <label className="font-bold text-lg">Updated By</label>
-                    <p className="mt-1">{task.updatedBy.name}</p>
-                  </div> */}
-                  {/* <div className="mt-4">
-                    <label className="font-bold text-lg">Project</label>
-                    <p className="mt-1">
-                      <Link
-                        href={route("project.show", allTask.project.id)}
-                        className="hover:underline"
-                      >
-                        {allTask.project.name}
-                      </Link>
-                    </p>
-                  </div> */}
+                  <div className="mt-4">
+                    <label className="font-bold text-lg">Room Number</label>
+                    <p className="mt-1">{assignedTasks.room_num}</p>
+                  </div>
+                  <div className="mt-4">
+                    <label className="font-bold text-lg">Day</label>
+                    <p className="mt-1">{assignedTasks.day}</p>
+                  </div>
+                  <div className="mt-4">
+                    <label className="font-bold text-lg">Start Time</label>
+                    <p className="mt-1">{assignedTasks.start_time}</p>
+                  </div>
+                  <div className="mt-4">
+                    <label className="font-bold text-lg">End Time</label>
+                    <p className="mt-1">{assignedTasks.end_time}</p>
+                  </div>
                 </div>
               </div>
 

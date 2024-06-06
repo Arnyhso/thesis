@@ -134,10 +134,10 @@ export default function Create({ auth, task, projects, users, assignedTasks }) {
               </div>
 
               <div className="mt-4">
-                <InputLabel htmlFor="project_status" value="Project Status" />
+                <InputLabel htmlFor="status" value="Project Status" />
                 <SelectInput
                   name="status"
-                  id="project_status"
+                  id="status"
                   className="mt-1 block w-full"
                   onChange={(e) => setData("status", e.target.value)}
                 >
@@ -146,7 +146,7 @@ export default function Create({ auth, task, projects, users, assignedTasks }) {
                   <option value="in_progress">In Progress</option>
                   <option value="completed">Completed</option>
                 </SelectInput>
-                <InputError message={errors.project_status} className="mt-2" />
+                <InputError message={errors.status} className="mt-2" />
               </div>
 
 
@@ -384,19 +384,6 @@ export default function Create({ auth, task, projects, users, assignedTasks }) {
                 />
                 <InputError message={errors.priority} className="mt-2" />
               </div>
-
-              {/* <div className="mt-4">
-                <InputLabel htmlFor="max_units" value="Max Units" />
-                <TextInput
-                  id="max_units"
-                  type="number"
-                  name="max_units"
-                  value={data.max_units}
-                  className="mt-1 block w-full"
-                  onChange={(e) => setData("max_units", e.target.value)}
-                />
-                <InputError message={errors.max_units} className="mt-2" />
-              </div> */}
 
               <div className="mt-4">
                 <InputLabel htmlFor="assigned_user_id" value="Assigned User" />

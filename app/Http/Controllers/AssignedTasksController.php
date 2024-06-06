@@ -4,16 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\AssignedTasksResource;
 use App\Http\Resources\ProjectResource;
+use App\Http\Resources\StudentProjectResource;
 use App\Http\Resources\UserResource;
 use App\Models\Project;
 use App\Models\AssignedTasks;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreAssignedTasksRequest;
 use App\Http\Requests\UpdateAssignedTasksRequest;
+use App\Models\StudentProject;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class AssignedTasksController extends Controller
 {
@@ -23,22 +26,27 @@ class AssignedTasksController extends Controller
     public function index(AssignedTasks $assignedTasks)
     {
         $query = AssignedTasks::query();
-
+        $projects = Project::query()->orderBy('name', 'asc')->get();
+        $studentprojects = StudentProject::query()->orderBy('name', 'asc')->get();
+        $users = User::query()->orderBy('name', 'asc')->get();
         $sortField = request("sort_field", 'created_at');
         $sortDirection = request("sort_direction", "desc");
 
         if (request("name")) {
             $query->where("name", "like", "%" . request("name") . "%");
         }
-        if (request("task_type")) {
-            $query->where("task_type", request("task_type"));
+        if (request("status")) {
+            $query->where("status", request("status"));
         }
 
         $assignedTasks = $query->orderBy($sortField, $sortDirection)
-            ->paginate(10)
+            ->paginate(100)
             ->onEachSide(1);
 
         return inertia("AssignedTasks/Index", [
+            'projects' => ProjectResource::collection($projects),
+            'studentprojects' => StudentProjectResource::collection($studentprojects),
+            'users' => UserResource::collection($users),
             "assignedTasks" => AssignedTasksResource::collection($assignedTasks),
             'queryParams' => request()->query() ?: null,
             'success' => session('success'),
@@ -85,7 +93,6 @@ class AssignedTasksController extends Controller
      */
     public function show(AssignedTasks $assignedTasks)
     {
-        $project = $assignedTasks->project;
 
         $prerequisite = null;
         if ($assignedTasks->prerequisite_id) {
@@ -99,7 +106,6 @@ class AssignedTasksController extends Controller
 
         return inertia('AssignedTasks/Show', [
             'assignedTasks' => $assignedTasks,
-            'project' => $project,
             'prerequisite' => $prerequisite,
             'corequisite' => $corequisite,
         ]);
@@ -140,14 +146,6 @@ class AssignedTasksController extends Controller
             $data['image_path'] = $image->store('task/' . Str::random(), 'public');
         }
 
-        /* if (!$this->professorIsAvailable($data['prof_name'], $data['start_time'], $data['end_time'], $data['day'])) {
-            return redirect()->back()->withInput()->withErrors(['prof_name' => 'Professor is not available during the specified time on the given day.']);
-        }
-
-        if (!$this->roomIsAvailable($data['room_num'], $data['start_time'], $data['end_time'], $data['day'])) {
-            return redirect()->back()->withInput()->withErrors(['room_num' => 'Room is not available during the specified time on the given day.']);
-        } */
-
         $assignedTasks->update($data);
 
         return to_route('AssignedTasks.index')
@@ -167,4 +165,68 @@ class AssignedTasksController extends Controller
         return to_route('assignedTasks.index')
             ->with('success', "Task \"$name\" was deleted");
     }
+
+    public function Planner(AssignedTasks $assignedTasks)
+    {
+        $user = auth()->user();
+        $query = AssignedTasks::query()->where('assigned_user_id', $user->id);
+        $projects = Project::query()->orderBy('name', 'asc')->get();
+        $studentprojects = StudentProject::query()->orderBy('name', 'asc')->get();
+        $users = User::query()->orderBy('name', 'asc')->get();
+        $sortField = request("sort_field", 'created_at');
+        $sortDirection = request("sort_direction", "desc");
+
+        if (request("name")) {
+            $query->where("name", "like", "%" . request("name") . "%");
+        }
+
+        if (request("status")) {
+            $query->where("status", request("status"));
+        }
+
+        $assignedTasks = $query->orderBy($sortField, $sortDirection)
+            ->get();
+
+        return inertia("AssignedTasks/Planner", [
+            'projects' => ProjectResource::collection($projects),
+            'studentprojects' => StudentProjectResource::collection($studentprojects),
+            'users' => UserResource::collection($users),
+            "assignedTasks" => AssignedTasksResource::collection($assignedTasks),
+            'queryParams' => request()->query() ?: null,
+            'success' => session('success'),
+        ]);
+    }
+
+    public function Generated(AssignedTasks $assignedTasks)
+    {
+        $user = auth()->user();
+        $query = AssignedTasks::query()->where('assigned_user_id', $user->id);
+        $projects = Project::query()->orderBy('name', 'asc')->get();
+        $studentprojects = StudentProject::query()->orderBy('name', 'asc')->get();
+        $users = User::query()->orderBy('name', 'asc')->get();
+        $sortField = request("sort_field", 'created_at');
+        $sortDirection = request("sort_direction", "desc");
+
+        if (request("name")) {
+            $query->where("name", "like", "%" . request("name") . "%");
+        }
+
+        if (request("status")) {
+            $query->where("status", request("status"));
+        }
+
+        $assignedTasks = $query->orderBy($sortField, $sortDirection)
+            ->get();
+
+        return inertia("AssignedTasks/Generated", [
+            'projects' => ProjectResource::collection($projects),
+            'studentprojects' => StudentProjectResource::collection($studentprojects),
+            'users' => UserResource::collection($users),
+            "assignedTasks" => AssignedTasksResource::collection($assignedTasks),
+            'queryParams' => request()->query() ?: null,
+            'success' => session('success'),
+        ]);
+    }
+
+
 }

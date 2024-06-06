@@ -1,16 +1,20 @@
-import Pagination from "@/Components/Pagination";
 import SelectInput from "@/Components/SelectInput";
 import TextInput from "@/Components/TextInput";
 import TableHeading from "@/Components/TableHeading";
-import { TASK_PRIORITY_CLASS_MAP, TASK_PRIORITY_TEXT_MAP, TASK_STATUS_CLASS_MAP, TASK_STATUS_TEXT_MAP } from "@/constants.jsx";
+import { PROJECT_STATUS_CLASS_MAP, PROJECT_STATUS_TEXT_MAP } from "@/constants.jsx";
 import { Link, router } from "@inertiajs/react";
+import { usePage } from '@inertiajs/react';
 
 export default function AssignedTasksTable({
+  projects,
+  studentprojects,
+  users,
   assignedTasks,
   success,
   queryParams = null,
   hideProjectColumn = false,
 }) {
+
   queryParams = queryParams || {};
 
   const searchFieldChanged = (name, value) => {
@@ -20,7 +24,7 @@ export default function AssignedTasksTable({
       delete queryParams[name];
     }
 
-    router.get(route("task.index"), queryParams);
+    router.get(route("assignedTasks.Planner"), queryParams);
   };
 
   const onKeyPress = (name, e) => {
@@ -40,14 +44,19 @@ export default function AssignedTasksTable({
       queryParams.sort_field = name;
       queryParams.sort_direction = "asc";
     }
-    router.get(route("assignedTasks.index"), queryParams);
+
+    router.get(route("assignedTasks.Planner"), queryParams);
   };
 
-  const deleteTask = (assignedTask) => {
-    if (!window.confirm("Are you sure you want to delete the task?")) {
-      return;
-    }
-    router.delete(route("assignedTasks.destroy", assignedTask.id));
+  const getProjectName = (projectId) => {
+    const project = studentprojects.data.find(project => project.id === projectId);
+    return project ? project.name : "N/A";
+  };
+
+
+  const getUserName = (userId) => {
+    const user = users.data.find((user) => user.id === userId);
+    return user ? user.name : "N/A";
   };
 
   return (
@@ -61,88 +70,19 @@ export default function AssignedTasksTable({
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
             <tr className="text-nowrap">
-              <TableHeading
-                name="id"
-                sort_field={queryParams.sort_field}
-                sort_direction={queryParams.sort_direction}
-                sortChanged={sortChanged}
-              >
-                ID
-              </TableHeading>
+              <th className="px-3 py-3">ID</th>
               <th className="px-3 py-3">Image</th>
-              {!hideProjectColumn && (
-                <th className="px-3 py-3">Project Name</th>
-              )}
-              <TableHeading
-                name="name"
-                sort_field={queryParams.sort_field}
-                sort_direction={queryParams.sort_direction}
-                sortChanged={sortChanged}
-              >
-                Name
-              </TableHeading>
-
-              <TableHeading
-                name="status"
-                sort_field={queryParams.sort_field}
-                sort_direction={queryParams.sort_direction}
-                sortChanged={sortChanged}
-              >
-                Status
-              </TableHeading>
-
-              <TableHeading
-                name="created_at"
-                sort_field={queryParams.sort_field}
-                sort_direction={queryParams.sort_direction}
-                sortChanged={sortChanged}
-              >
-                Create Date
-              </TableHeading>
-
-              <TableHeading
-                name="assigned_user_id"
-                sort_field={queryParams.sort_field}
-                sort_direction={queryParams.sort_direction}
-                sortChanged={sortChanged}
-              >
-                Assigned User
-              </TableHeading>
-              <th className="px-3 py-3">Created By</th>
+              <th className="px-3 py-3">Project Name</th>
+              <th className="px-3 py-3">Subject Name</th>
+              <th className="px-3 py-3">Status</th>
+              <th className="px-3 py-3">Course Code</th>
+              <th className="px-3 py-3">Assigned_User</th>
+              <th className="px-3 py-3">Subject Units</th>
+              <th className="px-3 py-3">Max Units</th>
               <th className="px-3 py-3 text-right">Actions</th>
             </tr>
           </thead>
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
-            <tr className="text-nowrap">
-              <th className="px-3 py-3"></th>
-              <th className="px-3 py-3"></th>
-              {!hideProjectColumn && <th className="px-3 py-3"></th>}
-              <th className="px-3 py-3">
-                <TextInput
-                  className="w-full"
-                  defaultValue={queryParams.name}
-                  placeholder="Task Name"
-                  onBlur={(e) => searchFieldChanged("name", e.target.value)}
-                  onKeyPress={(e) => onKeyPress("name", e)}
-                />
-              </th>
-              <th className="px-3 py-3">
-                <SelectInput
-                  className="w-full"
-                  defaultValue={queryParams.status}
-                  onChange={(e) => searchFieldChanged("status", e.target.value)}
-                >
-                  <option value="">Select Status</option>
-                  <option value="pending">Pending</option>
-                  <option value="in_progress">In Progress</option>
-                  <option value="completed">Completed</option>
-                </SelectInput>
-              </th>
-              <th className="px-3 py-3"></th>
-              <th className="px-3 py-3"></th>
-              <th className="px-3 py-3"></th>
-              <th className="px-3 py-3"></th>
-            </tr>
           </thead>
           <tbody>
             {assignedTasks.data.map((assignedTask) => (
@@ -154,42 +94,37 @@ export default function AssignedTasksTable({
                 <td className="px-3 py-2">
                   <img src={assignedTask.image_path} style={{ width: 60 }} />
                 </td>
+                <td className="px-3 py-2">{getProjectName(assignedTask.project_id)}</td>
                 <th className="px-3 py-2 text-gray-100 hover:underline">
-                  <Link href={route("task.show", assignedTask.id)}>{assignedTask.name}</Link>
+                  <Link href={route("assignedTasks.show", assignedTask.id)}>{assignedTask.name}</Link>
                 </th>
                 <td className="px-3 py-2">
                   <span
                     className={
                       "px-2 py-1 rounded text-nowrap text-white " +
-                      TASK_STATUS_CLASS_MAP[assignedTask.status]
+                      PROJECT_STATUS_CLASS_MAP[assignedTask.status]
                     }
                   >
-                    {TASK_STATUS_TEXT_MAP[assignedTask.status]}
+                    {PROJECT_STATUS_TEXT_MAP[assignedTask.status]}
                   </span>
                 </td>
-                <td className="px-3 py-2 text-nowrap">{assignedTask.project_id}</td>
-                <td className="px-3 py-2 text-nowrap">{assignedTask.assigned_user_id}</td>
-                <td className="px-3 py-2 text-nowrap">{assignedTask.assigned_by}</td>
+                <td className="px-3 py-2 text-nowrap">{assignedTask.course_code}</td>
+                <td className="px-3 py-2">{getUserName(assignedTask.assigned_user_id)}</td>
+                <td className="px-3 py-2 text-nowrap">{assignedTask.max_units}</td>
+                <td className="px-3 py-2 text-nowrap">{assignedTask.units}</td>
                 <td className="px-3 py-2 text-nowrap">
                   <Link
                     href={route("assignedTasks.edit", assignedTask.id)}
                     className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
                   >
-                    Edit
+                    Edit Status
                   </Link>
-                  <button
-                    onClick={(e) => deleteTask(assignedTask)}
-                    className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
-                  >
-                    Delete
-                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      <Pagination links={assignedTasks.meta.links} />
     </>
   );
 }

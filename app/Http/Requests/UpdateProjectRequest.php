@@ -25,8 +25,9 @@ class UpdateProjectRequest extends FormRequest
         return [
             'name' => ['required', 'max:255'],
             'status' => ['required', Rule::in(['pending', 'in_progress', 'completed'])],
+            'course_code' => ['nullable', 'string'],
             'selectedTasks' => ['array', 'nullable'],
-            'selectedTasks.*' => ['integer', 'exists:all_tasks,id'], // Ensure each task ID exists in the all_tasks table
+            'selectedTasks.*' => ['integer', 'exists:tasks,id'], // Ensure each task ID exists in the all_tasks table
             'image_path' => ['nullable', 'string'], // Include other fields if needed
             'task_type' => ['nullable', 'string'],
             'gec_type' => ['nullable', 'string'],
@@ -36,7 +37,8 @@ class UpdateProjectRequest extends FormRequest
             'prerequisite_id' => ['nullable', 'integer'],
             'corequisite_id' => ['nullable', 'integer'],
             'project_id' => ['nullable', 'integer'],
-            'max_units' => ['required', 'integer', 'min:1'],
+            /* 'max_units' => ['required', 'integer', 'min:1'],
+            'assigned_user_id' => ['nullable', 'exists:users,id'], */
         ];
     }
 }

@@ -7,6 +7,7 @@ import { Link, router } from "@inertiajs/react";
 
 export default function TasksTable({
   tasks,
+  projects,
   success,
   queryParams = null,
   hideProjectColumn = false,
@@ -49,6 +50,16 @@ export default function TasksTable({
     router.delete(route("task.destroy", task.id));
   };
 
+  const getProjectName = (projectId) => {
+    const project = projects.data.find(project => project.id === projectId);
+    return project ? project.name : "N/A";
+  };
+
+  const getTaskName = (taskId) => {
+    const task = tasks.data.find(task => task.id === taskId);
+    return task ? task.course_code : "";
+  };
+
   return (
     <>
       {success && (
@@ -69,9 +80,7 @@ export default function TasksTable({
                 ID
               </TableHeading>
               <th className="px-3 py-3">Image</th>
-              {!hideProjectColumn && (
-                <th className="px-3 py-3">Project Name</th>
-              )}
+                <th className="px-3 py-3">Course Name</th>
               <TableHeading
                 name="name"
                 sort_field={queryParams.sort_field}
@@ -80,34 +89,10 @@ export default function TasksTable({
               >
                 Name
               </TableHeading>
-
-              <TableHeading
-                name="status"
-                sort_field={queryParams.sort_field}
-                sort_direction={queryParams.sort_direction}
-                sortChanged={sortChanged}
-              >
-                Status
-              </TableHeading>
-
-              <TableHeading
-                name="created_at"
-                sort_field={queryParams.sort_field}
-                sort_direction={queryParams.sort_direction}
-                sortChanged={sortChanged}
-              >
-                Create Date
-              </TableHeading>
-
-              <TableHeading
-                name="due_date"
-                sort_field={queryParams.sort_field}
-                sort_direction={queryParams.sort_direction}
-                sortChanged={sortChanged}
-              >
-                Due Date
-              </TableHeading>
-              <th className="px-3 py-3">Created By</th>
+              <th className="px-3 py-3">Subject Type</th>
+              <th className="px-3 py-3">GEC Type</th>
+              <th className="px-3 py-3">Prerequisite</th>
+              <th className="px-3 py-3">Corequisite</th>
               <th className="px-3 py-3 text-right">Actions</th>
             </tr>
           </thead>
@@ -153,9 +138,7 @@ export default function TasksTable({
                 <td className="px-3 py-2">
                   <img src={task.image_path} style={{ width: 60 }} />
                 </td>
-                {/* {!hideProjectColumn && (
-                  <td className="px-3 py-2">{task.project.name}</td>
-                )} */}
+                  <td className="px-3 py-2">{getProjectName(task.project_id)}</td>
                 <th className="px-3 py-2 text-gray-100 hover:underline">
                   <Link href={route("task.show", task.id)}>{task.name}</Link>
                 </th>
@@ -179,9 +162,8 @@ export default function TasksTable({
                     {TASK_PRIORITY_TEXT_MAP[task.gec_type]}
                   </span>
                 </td>
-                <td className="px-3 py-2 text-nowrap">{task.prerequisite_id}</td>
-                <td className="px-3 py-2 text-nowrap">{task.corequisite_id}</td>
-                {/* <td className="px-3 py-2">{task.createdBy.name}</td> */}
+                <td className="px-3 py-2 text-nowrap">{getTaskName(task.prerequisite_id)}</td>
+                <td className="px-3 py-2 text-nowrap">{getTaskName(task.corequisite_id)}</td>
                 <td className="px-3 py-2 text-nowrap">
                   <Link
                     href={route("task.edit", task.id)}

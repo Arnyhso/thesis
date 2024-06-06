@@ -35,7 +35,7 @@ export default function Edit({ auth, task, projects, projectTasks }) {
       header={
         <div className="flex justify-between items-center">
           <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Edit task "{task.name}"
+            Edit Subject Name "{task.name}"
           </h2>
         </div>
       }
@@ -57,7 +57,7 @@ export default function Edit({ auth, task, projects, projectTasks }) {
               <div>
                 <InputLabel 
                 htmlFor="task_project_id" 
-                value="Project"
+                value="Course"
                 />
 
                 <SelectInput
@@ -67,7 +67,7 @@ export default function Edit({ auth, task, projects, projectTasks }) {
                   className="mt-1 block w-full"
                   onChange={(e) => setData("project_id", e.target.value)}
                 >
-                  <option value="">Select Project</option>
+                  <option value="">Select Course</option>
                   {projects.data.map((project) => (
                     <option value={project.id} key={project.id}>
                       {project.name}
@@ -78,7 +78,7 @@ export default function Edit({ auth, task, projects, projectTasks }) {
                 <InputError message={errors.project_id} className="mt-2" />
               </div>
               <div className="mt-4">
-                <InputLabel htmlFor="task_image_path" value="Task Image" />
+                <InputLabel htmlFor="task_image_path" value="Subject Image" />
                 <TextInput
                   id="task_image_path"
                   type="file"
@@ -91,7 +91,7 @@ export default function Edit({ auth, task, projects, projectTasks }) {
               <div className="mt-4">
                 <InputLabel 
                 htmlFor="task_name" 
-                value="Task Name" 
+                value="Subject Name" 
                 />
 
                 <TextInput
@@ -125,7 +125,7 @@ export default function Edit({ auth, task, projects, projectTasks }) {
               <div className="mt-4">
                 <InputLabel
                   htmlFor="task_description"
-                  value="Task Description"
+                  value="Subject Description"
                 />
 
                 <TextAreaInput
@@ -141,7 +141,7 @@ export default function Edit({ auth, task, projects, projectTasks }) {
               <div className="mt-4">
                 <InputLabel
                   htmlFor="TaskType"
-                  value="Task Type"
+                  value="Subject Type"
                 />
 
                 <SelectInput
@@ -163,7 +163,7 @@ export default function Edit({ auth, task, projects, projectTasks }) {
               <div className="mt-4">
                 <InputLabel
                   htmlFor="gectype"
-                  value="gec Type"
+                  value="GEC Type"
                 />
 
                 <SelectInput
@@ -235,29 +235,6 @@ export default function Edit({ auth, task, projects, projectTasks }) {
                   className="mt-2"
                 />
               </div>
-
-              {/* <div className="mt-4">
-                <InputLabel
-                  htmlFor="task_course_code"
-                  value="Course Code"
-                />
-
-                <TextInput
-                  id="task_course_code"
-                  type="text"
-                  name="course_code"
-                  value={data.course_code}
-                  className="mt-1 block w-full"
-                  onChange={(e) => setData("course_code", e.target.value)}
-                />
-
-                <InputError
-                  message={errors.course_code}
-                  className="mt-2"
-                />
-              </div> */}
-
-
               <div className="mt-4 text-right">
                 <Link
                   href={route("task.index")}

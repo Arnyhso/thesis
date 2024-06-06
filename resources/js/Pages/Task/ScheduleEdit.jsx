@@ -39,7 +39,7 @@ export default function ScheduleEdit({ auth, task, projects }) {
       header={
         <div className="flex justify-between items-center">
           <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Edit task "{task.name}"
+            Edit Subject Name "{task.name}"
           </h2>
         </div>
       }
@@ -56,7 +56,7 @@ export default function ScheduleEdit({ auth, task, projects }) {
               <div>
                 <InputLabel 
                 htmlFor="task_project_id" 
-                value="Project"
+                value="Course"
                 />
 
                 <SelectInput
@@ -66,7 +66,7 @@ export default function ScheduleEdit({ auth, task, projects }) {
                   className="mt-1 block w-full"
                   onChange={(e) => setData("project_id", e.target.value)}
                 >
-                  <option value="">Select Project</option>
+                  <option value="">Select Course</option>
                   {projects.data.map((project) => (
                     <option value={project.id} key={project.id}>
                       {project.name}

@@ -70,7 +70,7 @@ export default function AssignTable({
               </TableHeading>
               <th className="px-3 py-3">Image</th>
               {!hideProjectColumn && (
-                <th className="px-3 py-3">Project Name</th>
+                <th className="px-3 py-3">Course Code</th>
               )}
               <TableHeading
                 name="name"
@@ -120,7 +120,7 @@ export default function AssignTable({
                 <TextInput
                   className="w-full"
                   defaultValue={queryParams.name}
-                  placeholder="Task Name"
+                  placeholder="Subject Name"
                   onBlur={(e) => searchFieldChanged("name", e.target.value)}
                   onKeyPress={(e) => onKeyPress("name", e)}
                 />
@@ -128,13 +128,13 @@ export default function AssignTable({
               <th className="px-3 py-3">
                 <SelectInput
                   className="w-full"
-                  defaultValue={queryParams.status}
-                  onChange={(e) => searchFieldChanged("status", e.target.value)}
+                  defaultValue={queryParams.task_type}
+                  onChange={(e) => searchFieldChanged("task_type", e.target.value)}
                 >
                   <option value="">Select Status</option>
-                  <option value="pending">Pending</option>
-                  <option value="in_progress">In Progress</option>
-                  <option value="completed">Completed</option>
+                  <option value="gec">GEC</option>
+                  <option value="special">SPECIAL</option>
+                  <option value="standing">STANDING</option>
                 </SelectInput>
               </th>
               <th className="px-3 py-3"></th>
@@ -153,9 +153,7 @@ export default function AssignTable({
                 <td className="px-3 py-2">
                   <img src={task.image_path} style={{ width: 60 }} />
                 </td>
-                {/* {!hideProjectColumn && (
-                  <td className="px-3 py-2">{task.project.name}</td>
-                )} */}
+                <td className="px-3 py-2 text-nowrap">{task.course_code}</td>
                 <th className="px-3 py-2 text-gray-100 hover:underline">
                   <Link href={route("task.show", task.id)}>{task.name}</Link>
                 </th>
@@ -181,7 +179,6 @@ export default function AssignTable({
                 </td>
                 <td className="px-3 py-2 text-nowrap">{task.prerequisite_id}</td>
                 <td className="px-3 py-2 text-nowrap">{task.corequisite_id}</td>
-                {/* <td className="px-3 py-2">{task.createdBy.name}</td> */}
                 <td className="px-3 py-2 text-nowrap">
                   <Link
                     href={route("task.edit", task.id)}

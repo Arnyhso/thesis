@@ -40,11 +40,11 @@ export default function Show({ auth, allTask, prerequisite, corequisite }) {
               <div className="grid gap-1 grid-cols-2 mt-2">
                 <div>
                   <div>
-                    <label className="font-bold text-lg">Task ID</label>
+                    <label className="font-bold text-lg">Subject ID</label>
                     <p className="mt-1">{allTask.id}</p>
                   </div>
                   <div className="mt-4">
-                    <label className="font-bold text-lg">Task Name</label>
+                    <label className="font-bold text-lg">Subject Name</label>
                     <p className="mt-1">{allTask.name}</p>
                   </div>
 
@@ -54,7 +54,7 @@ export default function Show({ auth, allTask, prerequisite, corequisite }) {
                   </div>
 
                   <div className="mt-4">
-                    <label className="font-bold text-lg">Task Status</label>
+                    <label className="font-bold text-lg">Subject Type</label>
                     <p className="mt-1">
                       <span
                         className={
@@ -66,9 +66,7 @@ export default function Show({ auth, allTask, prerequisite, corequisite }) {
                       </span>
                     </p>
                   </div>
-
                   <div className="mt-4">
-                    <label className="font-bold text-lg">Task Priority</label>
                     <p className="mt-1">
                       <span
                         className={
@@ -80,6 +78,8 @@ export default function Show({ auth, allTask, prerequisite, corequisite }) {
                       </span>
                     </p>
                   </div>
+                </div>
+                <div>
                   <div className="mt-4">
                    <label className="font-bold text-lg">Prerequisite</label>
                    <p className="mt-1">
@@ -92,9 +92,6 @@ export default function Show({ auth, allTask, prerequisite, corequisite }) {
                     )}
                     </p>
                    </div>
-                </div>
-                <div>
-                  <div>
                         <div>
                             <label className="font-bold text-lg">Corequisite</label>
                             <p className="mt-1">
@@ -107,33 +104,7 @@ export default function Show({ auth, allTask, prerequisite, corequisite }) {
                             )}
                             </p>
                         </div>
-                  </div>
-
-                  {/* <div className="mt-4">
-                    <label className="font-bold text-lg">Create Date</label>
-                    <p className="mt-1">{task.created_at}</p>
-                  </div> 
-                  /* <div className="mt-4">
-                    <label className="font-bold text-lg">Updated By</label>
-                    <p className="mt-1">{task.updatedBy.name}</p>
-                  </div> */}
-                  {/* <div className="mt-4">
-                    <label className="font-bold text-lg">Project</label>
-                    <p className="mt-1">
-                      <Link
-                        href={route("project.show", allTask.project.id)}
-                        className="hover:underline"
-                      >
-                        {allTask.project.name}
-                      </Link>
-                    </p>
-                  </div> */}
                 </div>
-              </div>
-
-              <div className="mt-4">
-                <label className="font-bold text-lg">Task Description</label>
-                <p className="mt-1">{allTask.description}</p>
               </div>
             </div>
           </div>

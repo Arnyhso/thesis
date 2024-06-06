@@ -13,7 +13,7 @@ export default function Show({ auth, success, project, tasks, queryParams }) {
       header={
         <div className="flex items-center justify-between">
           <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {`Project "${project.name}"`}
+            {`Course name "${project.name}"`}
           </h2>
           <Link
             href={route("project.edit", project.id)}
@@ -32,16 +32,16 @@ export default function Show({ auth, success, project, tasks, queryParams }) {
               <div className="grid gap-1 grid-cols-2 mt-2">
                 <div>
                   <div>
-                    <label className="font-bold text-lg">Project ID</label>
+                    <label className="font-bold text-lg">Course ID</label>
                     <p className="mt-1">{project.id}</p>
                   </div>
                   <div className="mt-4">
-                    <label className="font-bold text-lg">Project Name</label>
+                    <label className="font-bold text-lg">Course Name</label>
                     <p className="mt-1">{project.name}</p>
                   </div>
 
                   <div className="mt-4">
-                    <label className="font-bold text-lg">Project Status</label>
+                    <label className="font-bold text-lg">Course Status</label>
                     <p className="mt-1">
                       <span
                         className={

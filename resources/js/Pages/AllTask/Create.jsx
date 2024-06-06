@@ -37,7 +37,7 @@ export default function Create({ auth, allTask }) {
       header={
         <div className="flex justify-between items-center">
           <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Create new Task
+            Create new Subject
           </h2>
         </div>
       }
@@ -52,7 +52,7 @@ export default function Create({ auth, allTask }) {
               className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
             > 
               <div className="mt-4">
-                <InputLabel htmlFor="task_name" value="Task Name" />
+                <InputLabel htmlFor="task_name" value="Subject Name" />
 
                 <TextInput
                   id="task_name"
@@ -148,7 +148,7 @@ export default function Create({ auth, allTask }) {
                     setData("task_type", e.target.value); // Update form data
                   }}
                 >
-                  <option value="">Select Task Type</option>
+                  <option value="">Select Subject Type</option>
                   <option value="gec">GEC</option>
                   <option value="special">SPECIAL</option>
                   <option value="standing">STANDING</option>
@@ -160,7 +160,7 @@ export default function Create({ auth, allTask }) {
 
               {taskType === "gec" && ( // Conditional rendering
                 <div className="mt-4">
-                  <InputLabel htmlFor="gectype" value="gec Type" />
+                  <InputLabel htmlFor="gectype" value="GEC Type" />
 
                   <SelectInput
                     name="gec_type"

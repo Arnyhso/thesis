@@ -24,9 +24,10 @@ class UpdateStudentProjectRequest extends FormRequest
     {
         return [
             'name' => ['nullable', 'max:255'],
-            'status' => ['required', Rule::in(['pending', 'in_progress', 'completed'])],
+            'status' => ['nullable', Rule::in(['pending', 'in_progress', 'completed'])],
+            'course_code' => ['nullable', 'string'],
             'selectedTasks' => ['array', 'nullable'],
-            'selectedTasks.*' => ['integer', 'exists:all_tasks,id'], // Ensure each task ID exists in the all_tasks table
+            'selectedTasks.*' => ['integer', 'exists:tasks,id'], // Ensure each task ID exists in the all_tasks table
             'image_path' => ['nullable', 'string'], // Include other fields if needed
             'task_type' => ['nullable', 'string'],
             'gec_type' => ['nullable', 'string'],

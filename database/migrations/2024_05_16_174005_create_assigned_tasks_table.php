@@ -16,13 +16,13 @@ return new class extends Migration {
             $table->string('course_code')->nullable();
             $table->string('task_type')->nullable();
             $table->string('gec_type')->nullable();
-            $table->foreignId('prerequisite_id')->nullable()->constrained('tasks');
-            $table->foreignId('corequisite_id')->nullable()->constrained('tasks');
+            $table->foreignId('prerequisite_id')->nullable()->constrained('assigned_tasks');
+            $table->foreignId('corequisite_id')->nullable()->constrained('assigned_tasks');
             $table->integer('units')->nullable();
 
             $table->longText('description')->nullable();
             $table->string('image_path')->nullable();
-            $table->foreignId('project_id')->constrained('projects');
+            $table->foreignId('project_id')->constrained('student_projects');
 
             $table->string('prof_name')->nullable();
             $table->string('room_num')->nullable();

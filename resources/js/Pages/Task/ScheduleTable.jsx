@@ -6,6 +6,7 @@ import { Link, router } from "@inertiajs/react";
 
 export default function ScheduleTable({
   tasks,
+  projects,
   success,
   queryParams = null,
   hideProjectColumn = false,
@@ -46,6 +47,11 @@ export default function ScheduleTable({
       return;
     }
     router.delete(route("task.destroy", task.id));
+  };
+
+  const getProjectName = (projectId) => {
+    const project = projects.data.find(project => project.id === projectId);
+    return project ? project.name : "N/A";
   };
 
   return (
@@ -119,57 +125,6 @@ export default function ScheduleTable({
               >
                 End Time
               </TableHeading>
-              {/*<TableHeading
-                name="created_at"
-                sort_field={queryParams.sort_field}
-                sort_direction={queryParams.sort_direction}
-                sortChanged={sortChanged}
-              >
-                Create Date
-              </TableHeading>
-              <TableHeading
-                name="due_date"
-                sort_field={queryParams.sort_field}
-                sort_direction={queryParams.sort_direction}
-                sortChanged={sortChanged}
-              >
-                Due Date
-              </TableHeading>
-               <th className="px-3 py-3">Created By</th>
-              <th className="px-3 py-3 text-right">Actions</th>
-            </tr>
-          </thead>
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
-            <tr className="text-nowrap">
-              <th className="px-3 py-3"></th>
-              <th className="px-3 py-3"></th>
-              {!hideProjectColumn && <th className="px-3 py-3"></th>}
-              <th className="px-3 py-3">
-                <TextInput
-                  className="w-full"
-                  defaultValue={queryParams.name}
-                  placeholder="Task Name"
-                  onBlur={(e) => searchFieldChanged("name", e.target.value)}
-                  onKeyPress={(e) => onKeyPress("name", e)}
-                />
-              </th>
-              <th className="px-3 py-3">
-                <SelectInput
-                  className="w-full"
-                  defaultValue={queryParams.status}
-                  onChange={(e) => searchFieldChanged("status", e.target.value)}
-                >
-                  <option value="">Select Status</option>
-                  <option value="pending">Pending</option>
-                  <option value="in_progress">In Progress</option>
-                  <option value="completed">Completed</option>
-                </SelectInput>
-              </th>
-              <th className="px-3 py-3"></th>
-              <th className="px-3 py-3"></th>
-              <th className="px-3 py-3"></th>
-              <th className="px-3 py-3"></th>
-              <th className="px-3 py-3"></th> */}
               <th className="px-3 py-3 text-left">Actions</th>
             </tr>
           </thead>
@@ -180,13 +135,7 @@ export default function ScheduleTable({
                 key={task.id}
               >
                 <td className="px-3 py-2">{task.id}</td>
-                {/* <td className="px-3 py-2">
-                  <img src={task.image_path} style={{ width: 60 }} />
-                </td> */}
-                
-                {!hideProjectColumn && (
-                  <td className="px-3 py-2">{task.project_id}</td>
-                )}
+                  <td className="px-3 py-2">{getProjectName(task.project_id)}</td>
 
                 <th className="px-3 py-2 text-gray-100 hover:underline">
                   <Link href={route("task.show", task.id)}>{task.name}</Link>
@@ -196,8 +145,6 @@ export default function ScheduleTable({
                 <td className="px-3 py-2 text-nowrap">{task.day}</td>
                 <td className="px-3 py-2 text-nowrap">{task.start_time}</td>
                 <td className="px-3 py-2 text-nowrap">{task.end_time}</td>
-                {/* <td className="px-3 py-2 ">{task.created_at}</td>
-                <td className="px-3 py-2">{task.due_date}</td> */}
                 <td className="px-3 py-2 text-nowrap">
                   <Link
                     href={route("task.scheduleedit", task.id)}

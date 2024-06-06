@@ -97,6 +97,7 @@ class ProjectController extends Controller
                     // Create task with validated task data
                     Task::create([
                         'name' => $taskInfo->name,
+                        'course_code' => $taskInfo->course_code,
                         'prerequisite_id' => $taskInfo->prerequisite_id,
                         'corequisite_id' => $taskInfo->corequisite_id,
                         'project_id' => $project->id,
@@ -140,6 +141,7 @@ class ProjectController extends Controller
         $tasks = $query->orderBy($sortField, $sortDirection)
             ->paginate(10)
             ->onEachSide(1);
+            
         return inertia('Project/Show', [
             'project' => new ProjectResource($project),
             "tasks" => TaskResource::collection($tasks),
@@ -227,52 +229,46 @@ class ProjectController extends Controller
 
     public function studentStore(StoreStudentProjectRequest $request)
     {
+
         $data = $request->validated();
         $data['created_by'] = Auth::id();
         $data['updated_by'] = Auth::id();
+        // Retrieve the user based on assigned_user_id
+        $assignedUser = User::find($data['assigned_user_id']);
 
+        // Add the user's name to the data
+        $data['name'] = $assignedUser->name;
 
-        $project = Project::create($data);
+        $project = StudentProject::create($data);
 
         // Create the tasks and associate them with the project
         if (!empty($data['selectedTasks'])) {
             foreach ($data['selectedTasks'] as $taskId) {
-                // Find task info from AllTasks
                 $taskInfo = Task::find($taskId);
-
+                
                 if ($taskInfo) {
-                    // Validate task data
+                    
                     $taskInfo['project_id'] = $project->id;
                     
                     // Create task with validated task data
                     AssignedTasks::create([
                         'name' => $taskInfo->name,
+                        'course_code' => $taskInfo->course_code,
                         'prerequisite_id' => $taskInfo->prerequisite_id,
                         'corequisite_id' => $taskInfo->corequisite_id,
                         'project_id' => $project->id,
                         'task_type' => $taskInfo->task_type,
                         'gec_type' => $taskInfo->gec_type,
                         'units' => $taskInfo->units,
-                        'day' => $taskInfo->day,
                         'max_units' => $data['max_units'],
                         'assigned_user_id' => $data['assigned_user_id'],
-                        /* 'course_code' => $data['course_code'],
-                        'description' => $data['description'],
-                        'image_path' => $data['image_path'], // Assuming you handle file upload separately
-                        'prof_name' => $data['prof_name'],
-                        'room_num' => $data['room_num'],
-                        'start_time' => $data['start_time'],
-                        'end_time' => $data['end_time'],
                         'status' => $data['status'],
-                        'priority' => $data['priority'],
-                        'assigned_by' => $data['assigned_by'],
-                        'semester' => $data['semester'], */
                     ]);
-
+                    
                 } else {
                     throw new \Exception("Task with ID $taskId not found.");
                 }
-                LOG::info("value", $data);
+                
             }
         } else {
             throw new \Exception('No selected tasks.');
