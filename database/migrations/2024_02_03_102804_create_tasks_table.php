@@ -16,8 +16,8 @@ return new class extends Migration {
             $table->string('course_code')->nullable();
             $table->string('task_type')->nullable();
             $table->string('gec_type')->nullable();
-            $table->foreignId('prerequisite_id')->nullable()->constrained('tasks');
-            $table->foreignId('corequisite_id')->nullable()->constrained('tasks');
+            $table->foreignId('prerequisite_id')->nullable()->constrained('all_tasks');
+            $table->foreignId('corequisite_id')->nullable()->constrained('all_tasks');
             $table->integer('units');
 
             $table->longText('description')->nullable();

@@ -16,12 +16,12 @@ export default function Show({ auth, allTask, prerequisite, corequisite }) {
           <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {`Task "${allTask.name}"`}
           </h2>
-          {/* <Link
-            href={route("allTask.edit", allTasks.id)}
-            className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
+          <Link
+            href={route("allTask.index")}
+            className="bg-amber-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-amber-600"
           >
-            Edit
-          </Link> */}
+            Back
+          </Link>
         </div>
       }
     >

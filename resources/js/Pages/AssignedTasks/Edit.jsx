@@ -35,7 +35,7 @@ export default function Edit({ auth, assignedTasks, assignedTask, projects, proj
       header={
         <div className="flex justify-between items-center">
           <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Edit assignedTasks "{assignedTasks.name}"
+            Edit assignedTasks "{projectTasks.name}"
           </h2>
         </div>
       }
@@ -50,7 +50,7 @@ export default function Edit({ auth, assignedTasks, assignedTask, projects, proj
               className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
             >
               <div className="mt-4">
-                <InputLabel htmlFor="status" value="Subject Status" />
+                <InputLabel htmlFor="status" value="Course Status" />
                 <SelectInput
                   name="status"
                   id="status"
@@ -64,7 +64,6 @@ export default function Edit({ auth, assignedTasks, assignedTask, projects, proj
                 </SelectInput>
                 <InputError message={errors.status} className="mt-2" />
               </div>
-
               <div className="mt-4 text-right">
                 <Link
                   href={route("assignedTasks.index")}

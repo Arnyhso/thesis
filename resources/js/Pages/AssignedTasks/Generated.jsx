@@ -104,12 +104,12 @@ export default function Generated({ auth, success, assignedTasks, queryParams = 
                       <tr className="text-nowrap">
                         <th className="px-3 py-3">ID</th>
                         <th className="px-3 py-3">Image</th>
-                        <th className="px-3 py-3">Project Name</th>
                         <th className="px-3 py-3">Subject Name</th>
                         <th className="px-3 py-3">Status</th>
                         <th className="px-3 py-3">Create Date</th>
                         <th className="px-3 py-3">Assigned_User</th>
-                        <th className="px-3 py-3">Created By</th>
+                        <th className="px-3 py-3">Units</th>
+                        <th className="px-3 py-3">Max Units</th>
                         <th className="px-3 py-3 text-right">Actions</th>
                       </tr>
                     </thead>
@@ -123,7 +123,6 @@ export default function Generated({ auth, success, assignedTasks, queryParams = 
                           <td className="px-3 py-2">
                             <img src={assignedTask.image_path} style={{ width: 60 }} />
                           </td>
-                          <td className="px-3 py-2">{getProjectName(assignedTask.project_id)}</td>
                           <th className="px-3 py-2 text-gray-100 hover:underline">
                             <Link href={route("task.show", assignedTask.id)}>{assignedTask.name}</Link>
                           </th>
@@ -139,12 +138,8 @@ export default function Generated({ auth, success, assignedTasks, queryParams = 
                           </td>
                           <td className="px-3 py-2 text-nowrap">{assignedTask.course_code}</td>
                           <td className="px-3 py-2">{getUserName(assignedTask.assigned_user_id)}</td>
-                          <td className="px-3 py-2 text-nowrap">{assignedTask.max_units}</td>
                           <td className="px-3 py-2 text-nowrap">{assignedTask.units}</td>
-                          <td className="px-3 py-2 text-nowrap">{assignedTask.gec_type}</td>
-                          <td className="px-3 py-2 text-nowrap">{assignedTask.task_type}</td>
-                          <td className="px-3 py-2 text-nowrap">{assignedTask.prerequisite_id}</td>
-                          <td className="px-3 py-2 text-nowrap">{assignedTask.corequisite_id}</td>
+                          <td className="px-3 py-2 text-nowrap">{assignedTask.max_units}</td>
                           <td className="px-3 py-2 text-nowrap">
                             <Link
                               href={route("assignedTasks.edit", assignedTask.id)}

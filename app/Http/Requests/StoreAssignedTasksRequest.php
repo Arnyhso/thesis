@@ -27,8 +27,8 @@ class StoreAssignedTasksRequest extends FormRequest
             "course_code" => ['nullable', 'string'],
             'task_type' => ['required', Rule::in(['gec', 'special', 'standing'])],
             'gec_type' => ['nullable', Rule::in(['gec', 'elective', 'gee'])],
-            'prerequisite_id' => ['nullable', 'exists:assigned_tasks,id'],
-            'corequisite_id' => ['nullable', 'exists:assigned_tasks,id'],
+            'prerequisite_id' => ['nullable', 'exists:all_tasks,id'],
+            'corequisite_id' => ['nullable', 'exists:all_tasks,id'],
             'units' => ['required', 'integer', 'min:1'],
 
             'description' => ['nullable', 'string'],

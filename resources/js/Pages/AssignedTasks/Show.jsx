@@ -15,6 +15,12 @@ export default function Show({ auth, assignedTasks, prerequisite, corequisite })
           <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {`Subject Name "${assignedTasks.name}"`}
           </h2>
+          <Link
+            href={route("assignedTasks.index")}
+            className="bg-amber-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-amber-600"
+          >
+            Back
+          </Link>
         </div>
       }
     >

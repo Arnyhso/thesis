@@ -48,6 +48,10 @@ export default function Index({ auth, studentProject, queryParams = null, succes
     router.delete(route("studentProject.destroy", studentProject.id));
   };
 
+  const formatDate = (dateString) => {
+    return new Date(dateString).toISOString().split('T')[0];
+  };
+
   return (
     <AuthenticatedLayout
       user={auth.user}
@@ -169,7 +173,7 @@ export default function Index({ auth, studentProject, queryParams = null, succes
                           </span>
                         </td>
                         <td className="px-3 py-2 text-nowrap">
-                          {studentProject.created_at}
+                          {formatDate(studentProject.created_at)}
                         </td>
                         <td className="px-3 py-2"></td>
                         <td className="px-3 py-2"></td>

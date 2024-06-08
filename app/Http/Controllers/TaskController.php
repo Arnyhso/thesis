@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\AllTasksResource;
 use App\Http\Resources\ProjectResource;
 use App\Http\Resources\TaskResource;
 use App\Http\Resources\UserResource;
+use App\Models\AllTasks;
 use App\Models\Project;
 use App\Models\Task;
 use App\Http\Requests\StoreTaskRequest;
@@ -24,6 +26,7 @@ class TaskController extends Controller
     {
         $query = Task::query();
         $projects = Project::query()->orderBy('name', 'asc')->get();
+        $allTasks = AllTasks::query()->orderBy('name', 'asc')->get();
 
         $sortField = request("sort_field", 'created_at');
         $sortDirection = request("sort_direction", "desc");
@@ -41,6 +44,7 @@ class TaskController extends Controller
 
         return inertia("Task/Index", [
             'projects' => ProjectResource::collection($projects),
+            'allTasks' => AllTasksResource::collection($allTasks),
             "tasks" => TaskResource::collection($tasks),
             'queryParams' => request()->query() ?: null,
             'success' => session('success'),

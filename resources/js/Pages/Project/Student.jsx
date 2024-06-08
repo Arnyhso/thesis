@@ -62,6 +62,8 @@ export default function Student({ auth, task, projects, users, assignedTasks }) 
     // Set the selectedTasks array in the form data
     setData("selectedTasks", selectedTasks);
     };
+
+    const studentUsers = users.data.filter((user) => user.user_type === "student");
     
 
   return (
@@ -149,7 +151,7 @@ export default function Student({ auth, task, projects, users, assignedTasks }) 
                 </SelectInput>
                 <InputError message={errors.status} className="mt-2" />
               </div>
-
+{/* 
               <div className="mt-4">
                 <InputLabel htmlFor="task_name" value="Task Name" />
                 <TextInput
@@ -162,7 +164,7 @@ export default function Student({ auth, task, projects, users, assignedTasks }) 
                   onChange={(e) => setData("name", e.target.value)}
                 />
                 <InputError message={errors.name} className="mt-2" />
-              </div>
+              </div> */}
 
               <div className="mt-4">
                 <InputLabel htmlFor="assigned_user_id" value="Assigned User" />
@@ -173,7 +175,7 @@ export default function Student({ auth, task, projects, users, assignedTasks }) 
                   onChange={(e) => setData("assigned_user_id", e.target.value)}
                 >
                   <option value="">Select User</option>
-                  {users.data.map((user) => (
+                 {studentUsers.map((user) => (
                     <option value={user.id} key={user.id}>
                       {user.name}
                     </option>

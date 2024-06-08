@@ -82,10 +82,26 @@ export default function Login({ status, canResetPassword }) {
                         <span className="ms-2 text-sm text-gray-600 dark:text-gray-400">
                             Remember me
                         </span>
+                        
                     </label>
                 </div>
 
+                <div className="flex items-center mt-4">
+                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                        Doesn't have an Account yet?{' '}
+                        <Link
+                        href={route('register')}
+                        className="text-blue-600 dark:text-blue-400 hover:text-indigo-900 dark:hover:text-indigo-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+                        >
+                        Register
+                        </Link>
+                    </span>
+                </div>
+
+
                 <div className="flex items-center justify-end mt-4">
+
+                    
                     {canResetPassword && (
                         <Link
                             href={route("password.request")}
@@ -94,7 +110,6 @@ export default function Login({ status, canResetPassword }) {
                             Forgot your password?
                         </Link>
                     )}
-
                     <PrimaryButton className="ms-4" disabled={processing}>
                         Log in
                     </PrimaryButton>

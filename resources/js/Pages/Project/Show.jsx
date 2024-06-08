@@ -6,7 +6,13 @@ import {
 } from "@/constants.jsx";
 import TasksTable from "../Task/TasksTable";
 
-export default function Show({ auth, success, project, tasks, queryParams }) {
+export default function Show({ auth, success, project, tasks, queryParams, projects, allTasks }) {
+
+const formatDate = (dateString) => {
+    return new Date(dateString).toISOString().split('T')[0];
+  };
+
+
   return (
     <AuthenticatedLayout
       user={auth.user}
@@ -16,10 +22,10 @@ export default function Show({ auth, success, project, tasks, queryParams }) {
             {`Course name "${project.name}"`}
           </h2>
           <Link
-            href={route("project.edit", project.id)}
-            className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
+            href={route("project.index")}
+            className="bg-amber-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-amber-600"
           >
-            Edit
+            Back
           </Link>
         </div>
       }
@@ -53,19 +59,11 @@ export default function Show({ auth, success, project, tasks, queryParams }) {
                       </span>
                     </p>
                   </div>
-                  <div className="mt-4">
-                    <label className="font-bold text-lg">Created By</label>
-                    <p className="mt-1">{project.createdBy.name}</p>
-                  </div>
                 </div>
                 <div>
                   <div className="mt-4">
                     <label className="font-bold text-lg">Create Date</label>
-                    <p className="mt-1">{project.created_at}</p>
-                  </div>
-                  <div className="mt-4">
-                    <label className="font-bold text-lg">Updated By</label>
-                    <p className="mt-1">{project.updatedBy.name}</p>
+                    <p className="mt-1">{formatDate(project.created_at)}</p>
                   </div>
                 </div>
               </div>
@@ -79,6 +77,8 @@ export default function Show({ auth, success, project, tasks, queryParams }) {
           <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             <div className="p-6 text-gray-900 dark:text-gray-100">
               <TasksTable
+                allTasks={allTasks}
+                projects={projects}
                 tasks={tasks}
                 success={success}
                 queryParams={queryParams}

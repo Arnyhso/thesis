@@ -4,7 +4,7 @@ import { Head, Link } from "@inertiajs/react";
 
 import TasksTable from "./TasksTable";
 
-export default function Index({ auth, success, tasks, task, queryParams = null, projects }) {
+export default function Index({ auth, success, tasks, task, queryParams = null, projects, allTasks }) {
   return (
     <AuthenticatedLayout
       user={auth.user}
@@ -15,7 +15,7 @@ export default function Index({ auth, success, tasks, task, queryParams = null, 
           </h2>
           <Link
             href={route("project.index")}
-            className="bg-amber-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
+            className="bg-amber-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-amber-600"
           >
             Go back
           </Link>
@@ -35,6 +35,7 @@ export default function Index({ auth, success, tasks, task, queryParams = null, 
           <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             <div className="p-6 text-gray-900 dark:text-gray-100">
               <TasksTable
+                allTasks={allTasks}
                 projects={projects}
                 task={task}
                 tasks={tasks}

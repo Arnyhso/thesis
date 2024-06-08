@@ -15,16 +15,16 @@ export default function Index({ auth, success, tasks, projects, task, queryParam
           </h2>
           <Link
             href={route("task.index")}
-            className="bg-amber-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
+            className="bg-amber-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-amber-600"
           >
             Go back
           </Link>
-          <Link
-            href={route("task.create")}
+          {/* <Link
+            href={route("task.Scheduleedit")}
             className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
           >
             Add new schedule
-          </Link>
+          </Link> */}
         </div>
       }
     >

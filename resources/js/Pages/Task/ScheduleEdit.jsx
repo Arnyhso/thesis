@@ -76,6 +76,24 @@ export default function ScheduleEdit({ auth, task, projects }) {
 
                 <InputError message={errors.project_id} className="mt-2" />
               </div>
+
+              <div className="mt-4">
+                <InputLabel
+                  htmlFor="task_description"
+                  value="Subject Description"
+                />
+
+                <TextAreaInput
+                  id="task_description"
+                  name="description"
+                  value={data.description}
+                  className="mt-1 block w-full"
+                  onChange={(e) => setData("description", e.target.value)}
+                />
+
+                <InputError message={errors.description} className="mt-2" />
+              </div>
+              
               <div className="mt-4">
                 <InputLabel htmlFor="prof_name" value="Professor Name" />
                 <TextInput

@@ -48,11 +48,6 @@ export default function AssignedTasksTable({
     router.get(route("assignedTasks.Planner"), queryParams);
   };
 
-  const getProjectName = (projectId) => {
-    const project = studentprojects.data.find(project => project.id === projectId);
-    return project ? project.name : "N/A";
-  };
-
 
   const getUserName = (userId) => {
     const user = users.data.find((user) => user.id === userId);
@@ -72,7 +67,6 @@ export default function AssignedTasksTable({
             <tr className="text-nowrap">
               <th className="px-3 py-3">ID</th>
               <th className="px-3 py-3">Image</th>
-              <th className="px-3 py-3">Project Name</th>
               <th className="px-3 py-3">Subject Name</th>
               <th className="px-3 py-3">Status</th>
               <th className="px-3 py-3">Course Code</th>
@@ -94,7 +88,6 @@ export default function AssignedTasksTable({
                 <td className="px-3 py-2">
                   <img src={assignedTask.image_path} style={{ width: 60 }} />
                 </td>
-                <td className="px-3 py-2">{getProjectName(assignedTask.project_id)}</td>
                 <th className="px-3 py-2 text-gray-100 hover:underline">
                   <Link href={route("assignedTasks.show", assignedTask.id)}>{assignedTask.name}</Link>
                 </th>
@@ -110,8 +103,8 @@ export default function AssignedTasksTable({
                 </td>
                 <td className="px-3 py-2 text-nowrap">{assignedTask.course_code}</td>
                 <td className="px-3 py-2">{getUserName(assignedTask.assigned_user_id)}</td>
-                <td className="px-3 py-2 text-nowrap">{assignedTask.max_units}</td>
                 <td className="px-3 py-2 text-nowrap">{assignedTask.units}</td>
+                <td className="px-3 py-2 text-nowrap">{assignedTask.max_units}</td>
                 <td className="px-3 py-2 text-nowrap">
                   <Link
                     href={route("assignedTasks.edit", assignedTask.id)}

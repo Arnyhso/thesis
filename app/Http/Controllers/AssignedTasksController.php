@@ -118,7 +118,7 @@ class AssignedTasksController extends Controller
     {
         $projects = Project::query()->orderBy('name', 'asc')->get();
         $users = User::query()->orderBy('name', 'asc')->get();
-        $projectTasks = AssignedTasks::where('project_id', $assignedTasks->project_id)->get();
+        $projectTasks = AssignedTasks::query()->orderBy('name', 'asc')->get();
         $prerequisites = AssignedTasks::orderBy('name', 'asc')->get();
         $corequisites = AssignedTasks::orderBy('name', 'asc')->get();
 

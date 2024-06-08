@@ -58,7 +58,7 @@ export default function Index({ auth, projects, queryParams = null, success }) {
           </h2>
           <Link
             href={route("project.assign")}
-            className="bg-blue-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
+            className="bg-blue-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-blue-600"
           >
             Assign Student Course
           </Link>

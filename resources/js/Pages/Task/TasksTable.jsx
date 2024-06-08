@@ -7,6 +7,7 @@ import { Link, router } from "@inertiajs/react";
 
 export default function TasksTable({
   tasks,
+  allTasks,
   projects,
   success,
   queryParams = null,
@@ -56,7 +57,7 @@ export default function TasksTable({
   };
 
   const getTaskName = (taskId) => {
-    const task = tasks.data.find(task => task.id === taskId);
+    const task = allTasks.data.find(task => task.id === taskId);
     return task ? task.course_code : "";
   };
 
@@ -80,7 +81,7 @@ export default function TasksTable({
                 ID
               </TableHeading>
               <th className="px-3 py-3">Image</th>
-                <th className="px-3 py-3">Course Name</th>
+                <th className="px-3 py-3">Student Name</th>
               <TableHeading
                 name="name"
                 sort_field={queryParams.sort_field}
@@ -122,6 +123,7 @@ export default function TasksTable({
                   <option value="completed">Completed</option>
                 </SelectInput>
               </th>
+              <th className="px-3 py-3"></th>
               <th className="px-3 py-3"></th>
               <th className="px-3 py-3"></th>
               <th className="px-3 py-3"></th>

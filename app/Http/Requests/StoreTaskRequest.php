@@ -33,8 +33,8 @@ class StoreTaskRequest extends FormRequest
                 'nullable',
                 Rule::in(['gec', 'elective', 'gee'])
             ],
-            'prerequisite_id' => ['nullable', 'exists:tasks,id'],
-            'corequisite_id' => ['nullable', 'exists:tasks,id'],
+            'prerequisite_id' => ['nullable', 'exists:all_tasks,id'],
+            'corequisite_id' => ['nullable', 'exists:all_tasks,id'],
             "units" => ['required', 'integer', 'min:1'],
 
             "description" => ['nullable', 'string'],

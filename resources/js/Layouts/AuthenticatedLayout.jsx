@@ -57,12 +57,6 @@ export default function AuthenticatedLayout({ user, header, children }) {
                       Users
                     </NavLink>
                     <NavLink
-                      href={route("assignedTasks.Planner")}
-                      active={route().current("assignedTasks.Planner")}
-                    >
-                      My Planner
-                    </NavLink>
-                    <NavLink
                       href={route("assignedTasks.index")}
                       active={route().current("assignedTasks.index")}
                     >
@@ -188,12 +182,75 @@ export default function AuthenticatedLayout({ user, header, children }) {
           }
         >
           <div className="pt-2 pb-3 space-y-1">
+          {user.user_type === 'college_head' ? (
+            <>
             <ResponsiveNavLink
               href={route("dashboard")}
               active={route().current("dashboard")}
             >
               Dashboard
             </ResponsiveNavLink>
+            <ResponsiveNavLink
+              href={route("project.index")}
+              active={route().current("project.index")}
+            >
+              Courses
+            </ResponsiveNavLink>
+            <ResponsiveNavLink
+              href={route("allTask.index")}
+              active={route().current("allTask.index")}
+            >
+              Subject Library
+            </ResponsiveNavLink>
+            <ResponsiveNavLink
+              href={route("allTask.index")}
+              active={route().current("allTask.index")}
+            >
+              Subject / Courses
+            </ResponsiveNavLink>
+            <ResponsiveNavLink
+             href={route("user.index")}
+             active={route().current("user.index")}
+            >
+              Users
+            </ResponsiveNavLink>
+            <ResponsiveNavLink
+              href={route("assignedTasks.index")}
+              active={route().current("assignedTasks.index")}
+            >
+              Course Planner
+            </ResponsiveNavLink>
+            <ResponsiveNavLink
+              href={route("studentProject.index")}
+              active={route().current("studentProject.index")}
+            >
+              Student Library
+            </ResponsiveNavLink>
+            </>
+            ) : user.user_type === 'student' ? (
+              <>
+              <ResponsiveNavLink
+              href={route("dashboard")}
+              active={route().current("dashboard")}
+            >
+              Dashboard
+            </ResponsiveNavLink>
+
+            <ResponsiveNavLink
+              href={route("assignedTasks.Planner")}
+              active={route().current("assignedTasks.Planner")}
+            >
+              My Planner
+            </ResponsiveNavLink>
+
+            <ResponsiveNavLink
+              href={route("studentProject.index")}
+              active={route().current("studentProject.index")}
+            >
+              Student Library
+            </ResponsiveNavLink>
+              </>
+              ) : null}
           </div>
 
           <div className="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">

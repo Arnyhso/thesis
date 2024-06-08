@@ -128,6 +128,9 @@ class ProjectController extends Controller
 
         $query = $project->tasks();
 
+
+        $allTasks = AllTasks::query()->orderBy('name', 'asc')->get();
+
         $sortField = request("sort_field", 'created_at');
         $sortDirection = request("sort_direction", "desc");
 
@@ -138,12 +141,18 @@ class ProjectController extends Controller
             $query->where("status", request("status"));
         }
 
+        $projects = $query->orderBy($sortField, $sortDirection)
+            ->paginate(10)
+            ->onEachSide(1);
+
         $tasks = $query->orderBy($sortField, $sortDirection)
             ->paginate(10)
             ->onEachSide(1);
-            
+
         return inertia('Project/Show', [
-            'project' => new ProjectResource($project),
+            'project' => $project,
+            'allTasks' => AllTasksResource::collection($allTasks),
+            "projects" => ProjectResource::collection($projects),
             "tasks" => TaskResource::collection($tasks),
             'queryParams' => request()->query() ?: null,
             'success' => session('success'),
