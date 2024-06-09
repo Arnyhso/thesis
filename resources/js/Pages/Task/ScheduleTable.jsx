@@ -65,17 +65,9 @@ export default function ScheduleTable({
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
             <tr className="text-nowrap">
-              <TableHeading
-                name="id"
-                sort_field={queryParams.sort_field}
-                sort_direction={queryParams.sort_direction}
-                sortChanged={sortChanged}
-              >
-                ID
-              </TableHeading>
               {/* <th className="px-3 py-3">Image</th> */}
               {!hideProjectColumn && (
-                <th className="px-3 py-3">Program</th>
+                <th className="px-3 py-3">Course Program</th>
               )}
               <TableHeading
                 name="name"
@@ -83,7 +75,7 @@ export default function ScheduleTable({
                 sort_direction={queryParams.sort_direction}
                 sortChanged={sortChanged}
               >
-                Name
+                Subject Description
               </TableHeading>
               <TableHeading
                 name="prof_name"
@@ -134,9 +126,7 @@ export default function ScheduleTable({
                 className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                 key={task.id}
               >
-                <td className="px-3 py-2">{task.id}</td>
-                  <td className="px-3 py-2">{getProjectName(task.project_id)}</td>
-
+                <td className="px-3 py-2">{getProjectName(task.project_id)}</td>
                 <th className="px-3 py-2 text-gray-100 hover:underline">
                   <Link href={route("task.show", task.id)}>{task.name}</Link>
                 </th>

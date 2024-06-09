@@ -63,7 +63,7 @@ export default function Index({ auth, studentProject, queryParams = null, succes
         </div>
       }
     >
-      <Head title="studentProject" />
+      <Head title="Student Library" />
 
       <div className="py-12">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -78,21 +78,14 @@ export default function Index({ auth, studentProject, queryParams = null, succes
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                   <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                     <tr className="text-nowrap">
-                      <TableHeading
-                        name="id"
-                        sort_field={queryParams.sort_field}
-                        sort_direction={queryParams.sort_direction}
-                        sortChanged={sortChanged}
-                      >
-                        ID
-                      </TableHeading>
+                      <th className="px-3 py-3 text-center"></th>
                       <TableHeading
                         name="name"
                         sort_field={queryParams.sort_field}
                         sort_direction={queryParams.sort_direction}
                         sortChanged={sortChanged}
                       >
-                        Name
+                        Student Name
                       </TableHeading>
 
                       <TableHeading
@@ -156,7 +149,7 @@ export default function Index({ auth, studentProject, queryParams = null, succes
                         className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                         key={studentProject.id}
                       >
-                        <td className="px-3 py-2">{studentProject.id}</td>
+                       <td className="px-3 py-2"></td> 
                         <th className="px-3 py-2 text-gray-100 text-nowrap">
                           {studentProject.name}
                         </th>
@@ -175,7 +168,8 @@ export default function Index({ auth, studentProject, queryParams = null, succes
                         </td>
                         <td className="px-3 py-2"></td>
                         <td className="px-3 py-2"></td>
-                        <td className="px-3 py-2 text-nowrap">
+
+                        <td className="px-3 py-2 text-center">
                           {auth.user.user_type !== 'student' && (
                             <button
                               onClick={(e) => deleteProject(studentProject)}

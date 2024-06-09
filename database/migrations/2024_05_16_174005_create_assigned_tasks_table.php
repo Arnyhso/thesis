@@ -31,7 +31,7 @@ return new class extends Migration {
             $table->time('end_time')->nullable();
 
             $table->string('status')->nullable();
-            $table->string('priority')->nullable();
+            $table->integer('semester')->nullable();
             $table->foreignId('assigned_user_id')->constrained('users');
             $table->integer('max_units');
             $table->timestamps();

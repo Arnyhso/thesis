@@ -71,7 +71,7 @@ export default function Index({ auth, projects, queryParams = null, success }) {
         </div>
       }
     >
-      <Head title="Projects" />
+      <Head title="Courses" />
 
       <div className="py-12">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -86,14 +86,7 @@ export default function Index({ auth, projects, queryParams = null, success }) {
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                   <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                     <tr className="text-nowrap">
-                      <TableHeading
-                        name="id"
-                        sort_field={queryParams.sort_field}
-                        sort_direction={queryParams.sort_direction}
-                        sortChanged={sortChanged}
-                      >
-                        ID
-                      </TableHeading>
+                      <th className="px-3 py-3 text-center"></th>
                       <TableHeading
                         name="name"
                         sort_field={queryParams.sort_field}
@@ -112,17 +105,19 @@ export default function Index({ auth, projects, queryParams = null, success }) {
                       </TableHeading>
                       <th className="px-3 py-3 text-left">Create Date</th>
                       <th className="px-3 py-3 text-center"></th>
-                      <th className="px-3 py-3 text-center"></th>
                       <th className="px-3 py-3 text-left">Actions</th>
+                      
                     </tr>
                   </thead>
                   <tbody>
                     {projects.data.map((project) => (
+                      
                       <tr
                         className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                         key={project.id}
                       >
-                        <td className="px-3 py-2">{project.id}</td>
+                        <td className="px-3 py-2 text-nowrap"></td>
+                        
                         <th className="px-3 py-2 text-gray-100 text-nowrap hover:underline">
                           <Link href={route("project.show", project.id)}>
                             {project.name}
@@ -142,7 +137,7 @@ export default function Index({ auth, projects, queryParams = null, success }) {
                           {project.created_at}
                         </td>
                         <td className="px-3 py-2 text-nowrap"></td>
-                        <td className="px-3 py-2 text-nowrap"></td>
+                        
                         <td className="px-3 py-2 text-nowrap">
                           <Link
                             href={route("project.edit", project.id)}

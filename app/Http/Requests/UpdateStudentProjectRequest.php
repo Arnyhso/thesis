@@ -39,6 +39,7 @@ class UpdateStudentProjectRequest extends FormRequest
             'project_id' => ['nullable', 'integer'],
             'max_units' => ['required', 'integer', 'min:1'],
             'assigned_user_id' => ['nullable', 'exists:users,id'],
+            'semester' => ['nullable', 'integer'],
         ];
     }
 }

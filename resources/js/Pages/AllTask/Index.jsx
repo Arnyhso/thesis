@@ -21,7 +21,7 @@ export default function Index({ auth, success, allTasks, allTask, queryParams = 
         </div>
       }
     >
-      <Head title="All Task" />
+      <Head title="Subject Library" />
 
       <div className="py-12">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">

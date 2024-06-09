@@ -72,7 +72,7 @@ export default function Student({ auth, task, projects, users, assignedTasks }) 
       header={
         <div className="flex justify-between items-center">
           <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Create new Course
+            Assign New Student
           </h2>
         </div>
       }
@@ -87,7 +87,7 @@ export default function Student({ auth, task, projects, users, assignedTasks }) 
               className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
             >
               <div>
-                <InputLabel htmlFor="project_id" value="Course name" />
+                <InputLabel htmlFor="project_id" value="Course Program name" />
 
                 <SelectInput
                   name="project_id"
@@ -96,7 +96,7 @@ export default function Student({ auth, task, projects, users, assignedTasks }) 
                   className="mt-1 block w-full"
                   onChange={(e) => handleProjectChange(e.target.value)}
                 >
-                  <option value="">Select Course</option>
+                  <option value="">Select Course Program</option>
                   {projects.data.map((project) => (
                     <option value={project.id} key={project.id}>
                       {project.name}
@@ -106,22 +106,6 @@ export default function Student({ auth, task, projects, users, assignedTasks }) 
 
                 <InputError message={errors.project_id} className="mt-2" />
               </div>
-
-                <div className="mt-4">
-                <InputLabel value="Selected Subject IDs" />
-                    <div className="p-6 text-gray-900 dark:text-gray-100">
-                        {data.selectedTasks.length === 0 ? (
-                        <p>No Subjects selected</p>
-                        ) : (
-                        <ul>
-                            {data.selectedTasks.map((taskId) => (
-                            <li key={taskId}>{taskId}</li>
-                            ))}
-                        </ul>
-                        )}
-                    </div>
-                </div>
-
 
               <div className="mt-4">
                 <InputLabel htmlFor="max_units" value="Max Units" />
@@ -151,21 +135,7 @@ export default function Student({ auth, task, projects, users, assignedTasks }) 
                 </SelectInput>
                 <InputError message={errors.status} className="mt-2" />
               </div>
-{/* 
-              <div className="mt-4">
-                <InputLabel htmlFor="task_name" value="Task Name" />
-                <TextInput
-                  id="task_name"
-                  type="text"
-                  name="name"
-                  value={data.name}
-                  className="mt-1 block w-full"
-                  isFocused={true}
-                  onChange={(e) => setData("name", e.target.value)}
-                />
-                <InputError message={errors.name} className="mt-2" />
-              </div> */}
-
+              
               <div className="mt-4">
                 <InputLabel htmlFor="assigned_user_id" value="Assigned User" />
                 <SelectInput

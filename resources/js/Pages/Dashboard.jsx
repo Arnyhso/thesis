@@ -66,9 +66,8 @@ export default function Dashboard({
               <table className="mt-3 w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                   <tr>
-                    <th className="px-3 py-3">ID</th>
-                    <th className="px-3 py-3">Course Code</th>
-                    <th className="px-3 py-3">Name</th>
+                    <th className="px-3 py-3">Subject ID</th>
+                    <th className="px-3 py-3">Subject Description</th>
                     <th className="px-3 py-3">Status</th>
                     <th className="px-3 py-3">Units</th>
                   </tr>
@@ -76,10 +75,9 @@ export default function Dashboard({
                 <tbody>
                   {activeTasks.data.map((subjects) => (
                     <tr key={subjects.id}>
-                      <td className="px-3 py-2">{subjects.id}</td>
                       <td className="px-3 py-2 text-nowrap">{subjects.course_code}</td>
                       <td className="px-3 py-2 text-white hover:underline">
-                        <Link href={route("assignedTasks.show", subjects.id)}>
+                        <Link href={route("task.show", subjects.id)}>
                           {subjects.name}
                         </Link>
                       </td>

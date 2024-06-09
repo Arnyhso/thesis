@@ -269,9 +269,17 @@ class ProjectController extends Controller
                         'task_type' => $taskInfo->task_type,
                         'gec_type' => $taskInfo->gec_type,
                         'units' => $taskInfo->units,
+
+                        'prof_name' => $taskInfo->prof_name,
+                        'room_num' => $taskInfo->room_num,
+                        'day' => $taskInfo->day,
+                        'start_time' => $taskInfo->start_time,
+                        'end_time' => $taskInfo->end_time,
+
                         'max_units' => $data['max_units'],
                         'assigned_user_id' => $data['assigned_user_id'],
                         'status' => $data['status'],
+                        'semester' => $data['semester'],
                     ]);
                     
                 } else {

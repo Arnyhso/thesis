@@ -15,7 +15,7 @@ export default function Index({ auth, success, assignedTasks, projects, assigned
           </h2>
           <Link
             href={route("project.index")}
-            className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
+            className="bg-amber-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-amber-600"
           >
             Go back
           </Link>
@@ -28,7 +28,7 @@ export default function Index({ auth, success, assignedTasks, projects, assigned
         </div>
       }
     >
-      <Head title="Task" />
+      <Head title="Assign" />
 
       <div className="py-12">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">

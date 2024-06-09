@@ -51,7 +51,7 @@ export default function Create({ auth, allTasks }) {
       header={
         <div className="flex justify-between items-center">
           <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Create new Course
+            Create new Course Program
           </h2>
         </div>
       }
@@ -66,7 +66,7 @@ export default function Create({ auth, allTasks }) {
               className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
             >
               <div className="mt-4">
-                <InputLabel htmlFor="project_name" value="Project Name" />
+                <InputLabel htmlFor="project_name" value="Course Program Name" />
 
                 <TextInput
                   id="project_name"
@@ -81,7 +81,7 @@ export default function Create({ auth, allTasks }) {
                 <InputError message={errors.name} className="mt-2" />
               </div>
               <div className="mt-4">
-                <InputLabel htmlFor="project_status" value="Project Status" />
+                <InputLabel htmlFor="project_status" value="Course Program Status" />
 
                 <SelectInput
                   name="status"
@@ -115,17 +115,6 @@ export default function Create({ auth, allTasks }) {
                     </li>
                   ))}
                 </ul>
-                </div>
-              </div>
-
-              <div className="mt-4">
-                <InputLabel value="Selected Subjects IDs" />
-                <div className="p-6 text-gray-900 dark:text-gray-100">
-                  <ul>
-                    {data.selectedTasks.map((taskId) => (
-                      <li key={taskId}>{taskId}</li>
-                    ))}
-                  </ul>
                 </div>
               </div>
               <div className="mt-4 text-right">

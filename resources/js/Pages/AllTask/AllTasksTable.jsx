@@ -66,14 +66,6 @@ export default function AllTasksTable({
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
             <tr className="text-nowrap">
-              <TableHeading
-                name="id"
-                sort_field={queryParams.sort_field}
-                sort_direction={queryParams.sort_direction}
-                sortChanged={sortChanged}
-              >
-                ID
-              </TableHeading>
               <th className="px-3 py-3">Image</th>
               <TableHeading
                 name="course_code"
@@ -81,7 +73,7 @@ export default function AllTasksTable({
                 sort_direction={queryParams.sort_direction}
                 sortChanged={sortChanged}
               >
-                Course Code
+                Subject ID
               </TableHeading>
               <TableHeading
                 name="name"
@@ -89,7 +81,7 @@ export default function AllTasksTable({
                 sort_direction={queryParams.sort_direction}
                 sortChanged={sortChanged}
               >
-                Subject Name
+                Subject Description
               </TableHeading>
 
               <TableHeading
@@ -106,12 +98,13 @@ export default function AllTasksTable({
               <th className="px-3 py-3">Prerequisite</th>
               <th className="px-3 py-3">Corequisite</th>
               <th className="px-3 py-3 text-right">Actions</th>
+              <th className="px-3 py-3 text-right"></th>
             </tr>
           </thead>
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
             <tr className="text-nowrap">
               <th className="px-3 py-3"></th>
-              <th className="px-3 py-3"></th>
+              
               {!hideProjectColumn && <th className="px-3 py-3"></th>}
               <th className="px-3 py-3">
                 <TextInput
@@ -147,6 +140,7 @@ export default function AllTasksTable({
               <th className="px-3 py-3"></th>
               <th className="px-3 py-3"></th>
               <th className="px-3 py-3"></th>
+              <th className="px-3 py-3"></th>
             </tr>
           </thead>
           <tbody>
@@ -155,7 +149,6 @@ export default function AllTasksTable({
                 className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                 key={allTask.id}
               >
-                <td className="px-3 py-2">{allTask.id}</td>
                 <td className="px-3 py-2">
                   <img src={allTask.image_path} style={{ width: 60 }} />
                 </td>
