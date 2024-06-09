@@ -4,7 +4,7 @@ import { Head, Link } from "@inertiajs/react";
 
 import AssignedTasksTable from "./AssignedTasksTable";
 
-export default function Planner({ auth, success, assignedTasks, queryParams = null, projects, users, studentprojects }) {
+export default function Planner({ auth, success, assignedTask, queryParams = null, projects, users, studentprojects }) {
     
   return (
     <AuthenticatedLayout
@@ -33,7 +33,7 @@ export default function Planner({ auth, success, assignedTasks, queryParams = nu
                 studentprojects={studentprojects}
                 projects={projects}
                 users={users}
-                assignedTasks={assignedTasks}
+                assignedTask={assignedTask}
                 queryParams={queryParams}
                 success={success}
               />

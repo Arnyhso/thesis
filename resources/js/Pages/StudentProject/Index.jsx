@@ -157,10 +157,8 @@ export default function Index({ auth, studentProject, queryParams = null, succes
                         key={studentProject.id}
                       >
                         <td className="px-3 py-2">{studentProject.id}</td>
-                        <th className="px-3 py-2 text-gray-100 text-nowrap hover:underline">
-                          <Link href={route("studentProject.show", studentProject.id)}>
-                            {studentProject.name}
-                          </Link>
+                        <th className="px-3 py-2 text-gray-100 text-nowrap">
+                          {studentProject.name}
                         </th>
                         <td className="px-3 py-2">
                           <span

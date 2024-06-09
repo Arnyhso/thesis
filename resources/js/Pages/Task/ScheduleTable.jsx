@@ -75,7 +75,7 @@ export default function ScheduleTable({
               </TableHeading>
               {/* <th className="px-3 py-3">Image</th> */}
               {!hideProjectColumn && (
-                <th className="px-3 py-3">Project</th>
+                <th className="px-3 py-3">Program</th>
               )}
               <TableHeading
                 name="name"

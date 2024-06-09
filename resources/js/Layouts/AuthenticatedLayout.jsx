@@ -33,16 +33,16 @@ export default function AuthenticatedLayout({ user, header, children }) {
                 {user.user_type === 'college_head' ? (
                   <>
                     <NavLink
-                      href={route("project.index")}
-                      active={route().current("project.index")}
-                    >
-                      Courses
-                    </NavLink>
-                    <NavLink
                       href={route("allTask.index")}
                       active={route().current("allTask.index")}
                     >
                       Subject Library
+                    </NavLink>
+                    <NavLink
+                      href={route("project.index")}
+                      active={route().current("project.index")}
+                    >
+                      Courses
                     </NavLink>
                     <NavLink
                       href={route("task.index")}
@@ -55,6 +55,12 @@ export default function AuthenticatedLayout({ user, header, children }) {
                       active={route().current("user.index")}
                     >
                       Users
+                    </NavLink>
+                    <NavLink
+                      href={route("assignedTasks.Planner")}
+                      active={route().current("assignedTasks.Planner")}
+                    >
+                      My Planner
                     </NavLink>
                     <NavLink
                       href={route("assignedTasks.index")}

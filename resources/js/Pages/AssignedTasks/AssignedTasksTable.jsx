@@ -9,12 +9,11 @@ export default function AssignedTasksTable({
   projects,
   studentprojects,
   users,
-  assignedTasks,
+  assignedTask,
   success,
   queryParams = null,
   hideProjectColumn = false,
 }) {
-
   queryParams = queryParams || {};
 
   const searchFieldChanged = (name, value) => {
@@ -54,6 +53,10 @@ export default function AssignedTasksTable({
     return user ? user.name : "N/A";
   };
 
+  const updateStatus = (taskId, newStatus) => {
+    router.put(route('assignedTasks.update', taskId), { status: newStatus });
+  };
+
   return (
     <>
       {success && (
@@ -79,43 +82,50 @@ export default function AssignedTasksTable({
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
           </thead>
           <tbody>
-            {assignedTasks.data.map((assignedTask) => (
-              <tr
-                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                key={assignedTask.id}
-              >
-                <td className="px-3 py-2">{assignedTask.id}</td>
-                <td className="px-3 py-2">
-                  <img src={assignedTask.image_path} style={{ width: 60 }} />
-                </td>
-                <th className="px-3 py-2 text-gray-100 hover:underline">
-                  <Link href={route("assignedTasks.show", assignedTask.id)}>{assignedTask.name}</Link>
-                </th>
-                <td className="px-3 py-2">
-                  <span
-                    className={
-                      "px-2 py-1 rounded text-nowrap text-white " +
-                      PROJECT_STATUS_CLASS_MAP[assignedTask.status]
-                    }
-                  >
-                    {PROJECT_STATUS_TEXT_MAP[assignedTask.status]}
-                  </span>
-                </td>
-                <td className="px-3 py-2 text-nowrap">{assignedTask.course_code}</td>
-                <td className="px-3 py-2">{getUserName(assignedTask.assigned_user_id)}</td>
-                <td className="px-3 py-2 text-nowrap">{assignedTask.units}</td>
-                <td className="px-3 py-2 text-nowrap">{assignedTask.max_units}</td>
-                <td className="px-3 py-2 text-nowrap">
-                  <Link
-                    href={route("assignedTasks.edit", assignedTask.id)}
-                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
-                  >
-                    Edit Status
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+  {assignedTask.data.map((assignedTask) => {
+    //console.log("Assigned Task ID:", assignedTask.id); // Log the assignedTask id
+    return (
+      <tr
+        className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+        key={assignedTask.id}
+      >
+        <td className="px-3 py-2">{assignedTask.id}</td>
+        <td className="px-3 py-2">
+          <img src={assignedTask.image_path} style={{ width: 60 }} />
+        </td>
+        <th className="px-3 py-2 text-gray-100 hover:underline">
+          <Link href={route("assignedTasks.show", assignedTask.id)}>
+            {assignedTask.name}
+          </Link>
+        </th>
+        <td className="px-3 py-2">
+           <SelectInput
+              name={`status-${assignedTask.id}`}
+              value={assignedTask.status}
+              onChange={(e) => updateStatus(assignedTask.id, e.target.value)}
+            >
+              <option value="pending">Pending</option>
+              <option value="in_progress">In Progress</option>
+              <option value="completed">Completed</option>
+            </SelectInput>
+        </td>
+        <td className="px-3 py-2 text-nowrap">{assignedTask.course_code}</td>
+        <td className="px-3 py-2">{getUserName(assignedTask.assigned_user_id)}</td>
+        <td className="px-3 py-2 text-nowrap">{assignedTask.units}</td>
+        <td className="px-3 py-2 text-nowrap">{assignedTask.max_units}</td>
+        <td className="px-3 py-2 text-nowrap">
+          <Link
+            href={route("assignedTasks.edit", assignedTask.id)}
+            className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
+          >
+            Edit Status
+          </Link>
+        </td>
+      </tr>
+    );
+  })}
+</tbody>
+
         </table>
       </div>
     </>

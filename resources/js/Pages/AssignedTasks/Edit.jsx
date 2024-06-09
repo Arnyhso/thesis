@@ -1,32 +1,27 @@
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import SelectInput from "@/Components/SelectInput";
-import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 
-export default function Edit({ auth, assignedTasks, assignedTask, projects, projectTasks }) {
+export default function Edit({ auth, assignedTask }) {
+  // Add a default value for assignedTask
+  const task = assignedTask || {};
+
+  console.log("Assigned Task (raw):", assignedTask);
+  console.log("Task Object (used in form):", task);
+
+
   const { data, setData, post, errors, reset } = useForm({
-    image: "",
-    name: assignedTasks.name || "",
-    assignedTasks_type: assignedTasks.assignedTasks_type || "",
-    gec_type: assignedTasks.gec_type || "",
-    description: assignedTasks.description || "",
-    project_id: assignedTasks.project_id || "",
-    prerequisite_id: assignedTasks.prerequisite_id || "",
-    prerequisite: assignedTasks.prerequisite || "",
-    corequisite_id: assignedTasks.corequisite_id || "",
-    corequisite: assignedTasks.corequisite || "",
-    units: assignedTasks.units || "",
-    status: assignedTasks.status || "", 
+    name: task.name || "",
+    status: task.status || "",
     _method: "PUT",
   });
 
   const onSubmit = (e) => {
     e.preventDefault();
-
-    post(route("assignedTasks.update", assignedTasks.id));
+    post(route("assignedTasks.update", task.id));
   };
 
   return (
@@ -35,12 +30,12 @@ export default function Edit({ auth, assignedTasks, assignedTask, projects, proj
       header={
         <div className="flex justify-between items-center">
           <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Edit assignedTasks "{projectTasks.name}"
+            Edit Course name "{task.name}"
           </h2>
         </div>
       }
     >
-      <Head title="Tasks" />
+      <Head title="Projects" />
 
       <div className="py-12">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -50,10 +45,24 @@ export default function Edit({ auth, assignedTasks, assignedTask, projects, proj
               className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
             >
               <div className="mt-4">
-                <InputLabel htmlFor="status" value="Course Status" />
+                <InputLabel htmlFor="assignedTask_name" value="Subject Name" />
+                <TextInput
+                  id="assignedTask_name"
+                  type="text"
+                  name="name"
+                  value={data.name}
+                  className="mt-1 block w-full"
+                  isFocused={true}
+                  onChange={(e) => setData("name", e.target.value)}
+                />
+                <InputError message={errors.name} className="mt-2" />
+              </div>
+              <div className="mt-4">
+                <InputLabel htmlFor="assignedTask_status" value="Subject Status" />
                 <SelectInput
                   name="status"
-                  id="status"
+                  id="assignedTask_status"
+                  value={data.status}
                   className="mt-1 block w-full"
                   onChange={(e) => setData("status", e.target.value)}
                 >

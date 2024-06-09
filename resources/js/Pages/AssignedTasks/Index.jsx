@@ -4,7 +4,7 @@ import { Head, Link } from "@inertiajs/react";
 
 import AssignedTasksTable from "./AssignedTasksTable";
 
-export default function Index({ auth, success, assignedTasks, queryParams = null, projects, users, studentprojects }) {
+export default function Index({ auth, success, assignedTask, queryParams = null, projects, users, studentprojects }) {
   return (
     <AuthenticatedLayout
       user={auth.user}
@@ -26,7 +26,7 @@ export default function Index({ auth, success, assignedTasks, queryParams = null
                 studentprojects={studentprojects}
                 projects={projects}
                 users={users}
-                assignedTasks={assignedTasks}
+                assignedTask={assignedTask}
                 queryParams={queryParams}
                 success={success}
               />

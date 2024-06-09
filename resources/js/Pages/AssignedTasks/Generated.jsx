@@ -6,47 +6,6 @@ import { Link, router } from "@inertiajs/react";
 export default function Generated({ auth, success, assignedTasks, queryParams = null, projects, users, studentprojects }) {
   queryParams = queryParams || {};
 
-  const searchFieldChanged = (name, value) => {
-    if (value) {
-      queryParams[name] = value;
-    } else {
-      delete queryParams[name];
-    }
-
-    router.get(route("assignedTasks.Planner"), queryParams);
-  };
-
-  const onKeyPress = (name, e) => {
-    if (e.key !== "Enter") return;
-
-    searchFieldChanged(name, e.target.value);
-  };
-
-  const sortChanged = (name) => {
-    if (name === queryParams.sort_field) {
-      if (queryParams.sort_direction === "asc") {
-        queryParams.sort_direction = "desc";
-      } else {
-        queryParams.sort_direction = "asc";
-      }
-    } else {
-      queryParams.sort_field = name;
-      queryParams.sort_direction = "asc";
-    }
-
-    router.get(route("assignedTasks.Planner"), queryParams);
-  };
-
-  const getProjectName = (projectId) => {
-    const project = studentprojects.data.find(project => project.id === projectId);
-    return project ? project.name : "N/A";
-  };
-
-  const getUserName = (userId) => {
-    const user = users.data.find((user) => user.id === userId);
-    return user ? user.name : "N/A";
-  };
-
   // Count the number of each status type
   const statusCounts = {
     pending: 0,
@@ -106,8 +65,7 @@ export default function Generated({ auth, success, assignedTasks, queryParams = 
                         <th className="px-3 py-3">Image</th>
                         <th className="px-3 py-3">Subject Name</th>
                         <th className="px-3 py-3">Status</th>
-                        <th className="px-3 py-3">Create Date</th>
-                        <th className="px-3 py-3">Assigned_User</th>
+                        <th className="px-3 py-3">Course Code</th>
                         <th className="px-3 py-3">Units</th>
                         <th className="px-3 py-3">Max Units</th>
                         <th className="px-3 py-3 text-right">Actions</th>
@@ -137,9 +95,13 @@ export default function Generated({ auth, success, assignedTasks, queryParams = 
                             </span>
                           </td>
                           <td className="px-3 py-2 text-nowrap">{assignedTask.course_code}</td>
-                          <td className="px-3 py-2">{getUserName(assignedTask.assigned_user_id)}</td>
                           <td className="px-3 py-2 text-nowrap">{assignedTask.units}</td>
                           <td className="px-3 py-2 text-nowrap">{assignedTask.max_units}</td>
+                          <td className="px-3 py-2 text-nowrap">{assignedTask.prof_name}</td>
+                          <td className="px-3 py-2 text-nowrap">{assignedTask.room_num}</td>
+                          <td className="px-3 py-2 text-nowrap">{assignedTask.day}</td>
+                          <td className="px-3 py-2 text-nowrap">{assignedTask.start_time}</td>
+                          <td className="px-3 py-2 text-nowrap">{assignedTask.end_time}</td>
                           <td className="px-3 py-2 text-nowrap">
                             <Link
                               href={route("assignedTasks.edit", assignedTask.id)}

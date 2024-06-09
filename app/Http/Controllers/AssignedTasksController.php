@@ -39,7 +39,7 @@ class AssignedTasksController extends Controller
             $query->where("status", request("status"));
         }
 
-        $assignedTasks = $query->orderBy($sortField, $sortDirection)
+        $assignedTask = $query->orderBy($sortField, $sortDirection)
             ->paginate(100)
             ->onEachSide(1);
 
@@ -47,7 +47,7 @@ class AssignedTasksController extends Controller
             'projects' => ProjectResource::collection($projects),
             'studentprojects' => StudentProjectResource::collection($studentprojects),
             'users' => UserResource::collection($users),
-            "assignedTasks" => AssignedTasksResource::collection($assignedTasks),
+            "assignedTask" => AssignedTasksResource::collection($assignedTask),
             'queryParams' => request()->query() ?: null,
             'success' => session('success'),
         ]);
@@ -114,43 +114,33 @@ class AssignedTasksController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(AssignedTasks $assignedTasks)
+    public function edit(AssignedTasks $AssignedTask)
     {
-        $projects = Project::query()->orderBy('name', 'asc')->get();
-        $users = User::query()->orderBy('name', 'asc')->get();
-        $projectTasks = AssignedTasks::query()->orderBy('name', 'asc')->get();
-        $prerequisites = AssignedTasks::orderBy('name', 'asc')->get();
-        $corequisites = AssignedTasks::orderBy('name', 'asc')->get();
-
-        return inertia("AssignedTasks/Edit", [
-            'assignedTasks' => new AssignedTasksResource($assignedTasks),
-            'projects' => ProjectResource::collection($projects),
-            'users' => UserResource::collection($users),
-            'prerequisites' => AssignedTasksResource::collection($prerequisites),
-            'corequisites' => AssignedTasksResource::collection($corequisites),
-            'projectTasks' => AssignedTasksResource::collection($projectTasks),
+        return inertia('AssignedTasks/Edit', [
+            'AssignedTask' => new AssignedTasksResource($AssignedTask),
         ]);
     }
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateAssignedTasksRequest $request, AssignedTasks $assignedTasks)
+    public function update(UpdateAssignedTasksRequest $request, AssignedTasks $assignedTask)
     {
         $data = $request->validated();
-        $image = $data['image'] ?? null;
-        if ($image) {
-            if ($assignedTasks->image_path) {
-                Storage::disk('public')->deleteDirectory(dirname($assignedTasks->image_path));
-            }
-            $data['image_path'] = $image->store('task/' . Str::random(), 'public');
+
+        // Check if the status key exists in the validated data
+        if (array_key_exists('status', $data)) {
+            $assignedTask->update(['status' => $data['status']]);
+            return to_route('assignedTasks.Planner')->with('success', 'Status was updated');
         }
 
-        $assignedTasks->update($data);
-
-        return to_route('AssignedTasks.index')
-            ->with('success', "Task \"$assignedTasks->name\" was updated");
+        // If the status key doesn't exist, proceed with the regular update
+        $assignedTask->update($data);
+        return to_route('assignedTasks.index')->with('success', 'Task was updated');
     }
+
+
 
     /**
      * Remove the specified resource from storage.
@@ -184,14 +174,14 @@ class AssignedTasksController extends Controller
             $query->where("status", request("status"));
         }
 
-        $assignedTasks = $query->orderBy($sortField, $sortDirection)
+        $assignedTask = $query->orderBy($sortField, $sortDirection)
             ->get();
 
         return inertia("AssignedTasks/Planner", [
             'projects' => ProjectResource::collection($projects),
             'studentprojects' => StudentProjectResource::collection($studentprojects),
             'users' => UserResource::collection($users),
-            "assignedTasks" => AssignedTasksResource::collection($assignedTasks),
+            "assignedTask" => AssignedTasksResource::collection($assignedTask),
             'queryParams' => request()->query() ?: null,
             'success' => session('success'),
         ]);
@@ -227,6 +217,5 @@ class AssignedTasksController extends Controller
             'success' => session('success'),
         ]);
     }
-
 
 }

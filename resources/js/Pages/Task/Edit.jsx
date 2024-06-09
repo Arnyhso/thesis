@@ -7,6 +7,11 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 
 export default function Edit({ auth, task, projects, projectTasks }) {
+
+  console.log("Assigned Task:", task); // Debugging line
+  console.log("Project Tasks:", projectTasks); // Debugging line
+  console.log("Assigned Task ID:", task.id);
+  
   const { data, setData, post, errors, reset } = useForm({
     image: "",
     name: task.name || "",

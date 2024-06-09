@@ -30,9 +30,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('assignedTasks.Planner');
     Route::get('/assignedTasks/Generated', [AssignedTasksController::class, 'Generated'])
         ->name('assignedTasks.Generated');
+    Route::post('/assignedTasks/updateStatus/{id}', [AssignedTasksController::class, 'updateStatus'])->name('assignedTasks.updateStatus');
+    Route::resource('assignedTasks', AssignedTasksController::class);
     Route::resource('project', ProjectController::class);
     Route::resource('allTask', AllTasksController::class);
-    Route::resource('assignedTasks', AssignedTasksController::class);
     Route::resource('studentTask', StudentTaskController::class);
     Route::resource('studentProject', StudentProjectController::class);
     Route::get('/task/schedule', [TaskController::class, 'schedule'])
