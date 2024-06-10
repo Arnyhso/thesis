@@ -13,7 +13,7 @@ export default function Show({ auth, task, prerequisite, corequisite }) {
       header={
         <div className="flex items-center justify-between">
           <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {`Task "${task.name}"`}
+            {`Subject Description "${task.name}"`}
           </h2>
           <Link
             href={route("task.index")}
@@ -24,7 +24,7 @@ export default function Show({ auth, task, prerequisite, corequisite }) {
         </div>
       }
     >
-      <Head title={`Task "${task.name}"`} />
+      <Head title={`Subject "${task.name}"`} />
       <div className="py-12">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
           <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
@@ -38,12 +38,8 @@ export default function Show({ auth, task, prerequisite, corequisite }) {
             <div className="p-6 text-gray-900 dark:text-gray-100">
               <div className="grid gap-1 grid-cols-2 mt-2">
                 <div>
-                  <div>
-                    <label className="font-bold text-lg">Subject ID</label>
-                    <p className="mt-1">{task.id}</p>
-                  </div>
                   <div className="mt-4">
-                    <label className="font-bold text-lg">Subject Name</label>
+                    <label className="font-bold text-lg">Subject Description</label>
                     <p className="mt-1">{task.name}</p>
                   </div>
 
@@ -79,8 +75,6 @@ export default function Show({ auth, task, prerequisite, corequisite }) {
                       </span>
                     </p>
                   </div>
-                </div>
-                <div>
                   <div className="mt-4">
                    <label className="font-bold text-lg">Prerequisite</label>
                    <p className="mt-1">
@@ -107,6 +101,8 @@ export default function Show({ auth, task, prerequisite, corequisite }) {
                         </p>
                       </div>
                     </div>
+                </div>
+                <div>
                     <div className="mt-4">
                     <label className="font-bold text-lg">Professor Name</label>
                     <p className="mt-1">{task.prof_name}</p>

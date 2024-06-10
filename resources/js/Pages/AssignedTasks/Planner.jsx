@@ -12,7 +12,10 @@ export default function Planner({ auth, success, assignedTask, queryParams = nul
       header={
         <div className="flex items-center justify-between">
           <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Hi ! Welcome
+            Technological University of the Philippines - Manila
+          </h2>
+          <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            Study Planner for Irregular Students
           </h2>
           <Link
             href={route("assignedTasks.Generated")}
@@ -23,7 +26,7 @@ export default function Planner({ auth, success, assignedTask, queryParams = nul
         </div>
       }
     >
-      <Head title="Task" />
+      <Head title="Study Planner" />
 
       <div className="py-12">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">

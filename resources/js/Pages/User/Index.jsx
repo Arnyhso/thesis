@@ -76,14 +76,7 @@ export default function Index({ auth, users, queryParams = null, success }) {
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                   <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                     <tr className="text-nowrap">
-                      <TableHeading
-                        name="id"
-                        sort_field={queryParams.sort_field}
-                        sort_direction={queryParams.sort_direction}
-                        sortChanged={sortChanged}
-                      >
-                        ID
-                      </TableHeading>
+                      <th className="px-3 py-3"></th>
                       <TableHeading
                         name="name"
                         sort_field={queryParams.sort_field}
@@ -120,7 +113,7 @@ export default function Index({ auth, users, queryParams = null, success }) {
                         Create Date
                       </TableHeading>
 
-                      <th className="px-3 py-3 text-right">Actions</th>
+                      <th className="px-3 py-3 text-center">Actions</th>
                     </tr>
                   </thead>
                   <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
@@ -161,11 +154,7 @@ export default function Index({ auth, users, queryParams = null, success }) {
                         className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                         key={user.id}
                       >
-                        <td className="px-3 py-2">{user.id}</td>
-                        {/* <th className="px-3 py-2 text-gray-100 text-nowrap">
-                          {user.name}
-                        </th> */}
-
+                        <td className="px-3 py-2"></td>
                         <th className="px-3 py-2 text-gray-100 text-nowrap hover:underline">
                           <Link href={route("user.show", user.id)}>
                             {user.name}
@@ -188,7 +177,7 @@ export default function Index({ auth, users, queryParams = null, success }) {
                         <td className="px-3 py-2 text-nowrap">
                           {user.created_at}
                         </td>
-                        <td className="px-3 py-2 text-nowrap">
+                        <td className="px-3 py-2 text-center">
                           <Link
                             href={route("user.edit", user.id)}
                             className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"

@@ -60,17 +60,9 @@ export default function AssignTable({
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
             <tr className="text-nowrap">
-              <TableHeading
-                name="id"
-                sort_field={queryParams.sort_field}
-                sort_direction={queryParams.sort_direction}
-                sortChanged={sortChanged}
-              >
-                ID
-              </TableHeading>
               <th className="px-3 py-3">Image</th>
               {!hideProjectColumn && (
-                <th className="px-3 py-3">Course Code</th>
+                <th className="px-3 py-3">Subject ID</th>
               )}
               <TableHeading
                 name="name"
@@ -78,7 +70,7 @@ export default function AssignTable({
                 sort_direction={queryParams.sort_direction}
                 sortChanged={sortChanged}
               >
-                Name
+                Subject Description
               </TableHeading>
 
               <TableHeading
@@ -87,33 +79,18 @@ export default function AssignTable({
                 sort_direction={queryParams.sort_direction}
                 sortChanged={sortChanged}
               >
-                Status
+                Task Type
               </TableHeading>
-
-              <TableHeading
-                name="created_at"
-                sort_field={queryParams.sort_field}
-                sort_direction={queryParams.sort_direction}
-                sortChanged={sortChanged}
-              >
-                Create Date
-              </TableHeading>
-
-              <TableHeading
-                name="due_date"
-                sort_field={queryParams.sort_field}
-                sort_direction={queryParams.sort_direction}
-                sortChanged={sortChanged}
-              >
-                Due Date
-              </TableHeading>
-              <th className="px-3 py-3">Created By</th>
+              <th className="px-3 py-3">GEC Type</th>
+              <th className="px-3 py-3">Prerequisite</th>
+              <th className="px-3 py-3">Corequisite</th>
+              <th className="px-3 py-3"></th>
               <th className="px-3 py-3 text-right">Actions</th>
+              <th className="px-3 py-3"></th>
             </tr>
           </thead>
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
             <tr className="text-nowrap">
-              <th className="px-3 py-3"></th>
               <th className="px-3 py-3"></th>
               {!hideProjectColumn && <th className="px-3 py-3"></th>}
               <th className="px-3 py-3">
@@ -141,6 +118,8 @@ export default function AssignTable({
               <th className="px-3 py-3"></th>
               <th className="px-3 py-3"></th>
               <th className="px-3 py-3"></th>
+              <th className="px-3 py-3"></th>
+              <th className="px-3 py-3"></th>
             </tr>
           </thead>
           <tbody>
@@ -149,7 +128,6 @@ export default function AssignTable({
                 className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                 key={task.id}
               >
-                <td className="px-3 py-2">{task.id}</td>
                 <td className="px-3 py-2">
                   <img src={task.image_path} style={{ width: 60 }} />
                 </td>
@@ -179,6 +157,8 @@ export default function AssignTable({
                 </td>
                 <td className="px-3 py-2 text-nowrap">{task.prerequisite_id}</td>
                 <td className="px-3 py-2 text-nowrap">{task.corequisite_id}</td>
+                <td className="px-3 py-2 text-nowrap"></td>
+                
                 <td className="px-3 py-2 text-nowrap">
                   <Link
                     href={route("task.edit", task.id)}

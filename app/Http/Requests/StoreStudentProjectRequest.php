@@ -36,9 +36,17 @@ class StoreStudentProjectRequest extends FormRequest
             'corequisite' => ['nullable', 'string'],
             'prerequisite_id' => ['nullable', 'integer'],
             'corequisite_id' => ['nullable', 'integer'],
+
+            'prof_name' => ['nullable', 'string', 'max:255'],
+            'room_num' => ['nullable', 'string', 'max:255'],
+            'day' => ['nullable', Rule::in(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])],
+            'start_time' => ['nullable', 'date_format:H:i'],
+            'end_time' => ['nullable', 'date_format:H:i', 'after:start_time'],
+
             'project_id' => ['nullable', 'integer'],
             'max_units' => ['required', 'integer', 'min:1'],
             'assigned_user_id' => ['nullable', 'exists:users,id'],
+            'semester' => ['nullable', 'integer'],
         ];
     }
 }

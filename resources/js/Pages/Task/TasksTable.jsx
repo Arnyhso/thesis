@@ -72,14 +72,7 @@ export default function TasksTable({
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
             <tr className="text-nowrap">
-              <TableHeading
-                name="id"
-                sort_field={queryParams.sort_field}
-                sort_direction={queryParams.sort_direction}
-                sortChanged={sortChanged}
-              >
-                ID
-              </TableHeading>
+              <th className="px-3 py-3"></th>
               <th className="px-3 py-3">Image</th>
                 <th className="px-3 py-3">Student Name</th>
               <TableHeading
@@ -88,13 +81,14 @@ export default function TasksTable({
                 sort_direction={queryParams.sort_direction}
                 sortChanged={sortChanged}
               >
-                Name
+                Subject Description
               </TableHeading>
               <th className="px-3 py-3">Subject Type</th>
               <th className="px-3 py-3">GEC Type</th>
               <th className="px-3 py-3">Prerequisite</th>
               <th className="px-3 py-3">Corequisite</th>
               <th className="px-3 py-3 text-right">Actions</th>
+              <th className="px-3 py-3"></th>
             </tr>
           </thead>
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
@@ -106,7 +100,7 @@ export default function TasksTable({
                 <TextInput
                   className="w-full"
                   defaultValue={queryParams.name}
-                  placeholder="Task Name"
+                  placeholder="Subject Description"
                   onBlur={(e) => searchFieldChanged("name", e.target.value)}
                   onKeyPress={(e) => onKeyPress("name", e)}
                 />
@@ -135,8 +129,8 @@ export default function TasksTable({
               <tr
                 className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                 key={task.id}
-              >
-                <td className="px-3 py-2">{task.id}</td>
+                >
+                <td className="px-3 py-2 text-nowrap"></td>
                 <td className="px-3 py-2">
                   <img src={task.image_path} style={{ width: 60 }} />
                 </td>

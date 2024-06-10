@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\AllTasksResource;
 use App\Http\Resources\AssignedTasksResource;
 use App\Http\Resources\ProjectResource;
 use App\Http\Resources\StudentProjectResource;
 use App\Http\Resources\UserResource;
+use App\Models\AllTasks;
 use App\Models\Project;
 use App\Models\AssignedTasks;
 use App\Http\Controllers\Controller;
@@ -190,6 +192,7 @@ class AssignedTasksController extends Controller
     public function Generated(AssignedTasks $assignedTasks)
     {
         $user = auth()->user();
+        $allTasks = AllTasks::query()->orderBy('name', 'asc')->get();
         $query = AssignedTasks::query()->where('assigned_user_id', $user->id);
         $projects = Project::query()->orderBy('name', 'asc')->get();
         $studentprojects = StudentProject::query()->orderBy('name', 'asc')->get();
@@ -209,6 +212,7 @@ class AssignedTasksController extends Controller
             ->get();
 
         return inertia("AssignedTasks/Generated", [
+            'allTasks' => AllTasksResource::collection($allTasks),
             'projects' => ProjectResource::collection($projects),
             'studentprojects' => StudentProjectResource::collection($studentprojects),
             'users' => UserResource::collection($users),

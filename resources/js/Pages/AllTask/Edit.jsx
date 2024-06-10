@@ -48,10 +48,32 @@ export default function Edit({ auth, allTask, task }) {
               onSubmit={onSubmit}
               className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
             >
+              
+              <div className="mt-4">
+                <InputLabel
+                  htmlFor="task_course_code"
+                  value="Subject ID"
+                />
+
+                <TextInput
+                  id="task_course_code"
+                  type="text"
+                  name="course_code"
+                  value={data.course_code}
+                  className="mt-1 block w-full"
+                  onChange={(e) => setData("course_code", e.target.value)}
+                />
+
+                <InputError
+                  message={errors.course_code}
+                  className="mt-2"
+                />
+              </div>
+
               <div className="mt-4">
                 <InputLabel 
                 htmlFor="task_name" 
-                value="Subject Name" 
+                value="Subject Description" 
                 />
 
                 <TextInput
@@ -186,28 +208,6 @@ export default function Edit({ auth, allTask, task }) {
                   className="mt-2"
                 />
               </div>
-
-              <div className="mt-4">
-                <InputLabel
-                  htmlFor="task_course_code"
-                  value="Course Code"
-                />
-
-                <TextInput
-                  id="task_course_code"
-                  type="text"
-                  name="course_code"
-                  value={data.course_code}
-                  className="mt-1 block w-full"
-                  onChange={(e) => setData("course_code", e.target.value)}
-                />
-
-                <InputError
-                  message={errors.course_code}
-                  className="mt-2"
-                />
-              </div>
-
 
               <div className="mt-4 text-right">
                 <Link

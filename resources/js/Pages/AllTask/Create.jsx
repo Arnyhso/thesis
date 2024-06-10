@@ -52,7 +52,23 @@ export default function Create({ auth, allTask }) {
               className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
             > 
               <div className="mt-4">
-                <InputLabel htmlFor="task_name" value="Subject Name" />
+                <InputLabel htmlFor="course_code" value="Subject ID" />
+
+                <TextInput
+                  id="course_code"
+                  type="text"
+                  name="course_code"
+                  value={data.course_code}
+                  className="mt-1 block w-full"
+                  isFocused={true}
+                  onChange={(e) => setData("course_code", e.target.value)}
+                />
+
+                <InputError message={errors.course_code} className="mt-2" />
+              </div>
+
+              <div className="mt-4">
+                <InputLabel htmlFor="task_name" value="Subject Description" />
 
                 <TextInput
                   id="task_name"
@@ -177,23 +193,6 @@ export default function Create({ auth, allTask }) {
                   <InputError message={errors.gec_type} className="mt-2" />
                 </div>  
               )}
-
-              <div className="mt-4">
-                <InputLabel htmlFor="course_code" value="Course Code" />
-
-                <TextInput
-                  id="course_code"
-                  type="text"
-                  name="course_code"
-                  value={data.course_code}
-                  className="mt-1 block w-full"
-                  isFocused={true}
-                  onChange={(e) => setData("course_code", e.target.value)}
-                />
-
-                <InputError message={errors.course_code} className="mt-2" />
-              </div>
-
               <div className="mt-4 text-right">
                 <Link
                   href={route("allTask.index")}
