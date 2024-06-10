@@ -3,126 +3,178 @@ import { Head } from "@inertiajs/react";
 import { PROJECT_STATUS_CLASS_MAP, PROJECT_STATUS_TEXT_MAP } from "@/constants.jsx";
 import { Link, router } from "@inertiajs/react";
 
-export default function Generated({ auth, success, assignedTasks, queryParams = null, projects, users, studentprojects }) {
+export default function Generated({ auth, success, allTasks, assignedTasks, queryParams = null, projects, users, studentprojects }) {
   queryParams = queryParams || {};
 
-  const chunkTables = [];
+const chunkTables = [];
 
-  let currentChunkInProgress = [];
-  let currentChunkPending = [];
-  let currentChunk = currentChunkInProgress;
-  let currentUnits = 0;
-  let maxUnits = assignedTasks.data.length > 0 ? assignedTasks.data[0].max_units : 0;
+let currentChunkInProgress = [];
+let currentChunkPending = [];
+let currentChunk = currentChunkInProgress;
+let currentUnits = 0;
+let maxUnits = assignedTasks.data.length > 0 ? assignedTasks.data[0].max_units : 0;
 
-  // Separate tasks into in_progress and pending chunks
-  assignedTasks.data.forEach((task) => {
-    if (task.status === "in_progress") {
-      currentChunkInProgress.push(task);
-    } else if (task.status === "pending") {
-      currentChunkPending.push(task);
-    } else {
-      // Ignore completed tasks
-      return;
-    }
-  });
+// Separate tasks into in_progress and pending chunks
+assignedTasks.data.forEach((task) => {
+  task.prerequisites = task.prerequisites || [];  // Ensure prerequisites field exists
+  task.corequisites = task.corequisites || [];    // Ensure corequisites field exists
 
-  // Push in_progress tasks as the first chunk
-  if (currentChunkInProgress.length > 0) {
-    chunkTables.push({ semester: assignedTasks.data[0].semester, tasks: currentChunkInProgress });
+  if (task.status === "in_progress") {
+    currentChunkInProgress.push(task);
+  } else if (task.status === "pending") {
+    currentChunkPending.push(task);
+  } else {
+    // Ignore completed tasks
+    return;
   }
+});
 
-  // Initialize the current semester
-  let currentSemester = assignedTasks.data.length > 0 ? assignedTasks.data[0].semester + 1 : 1;
+// Fetch prerequisite and corequisite names from assignedTasks library
+const fetchPrerequisiteAndCorequisiteNames = (task) => {
+  task.prerequisiteNames = task.prerequisites.map(prereqId => allTasks.find(t => t.id === prereqId)?.name);
+  task.corequisiteNames = task.corequisites.map(coreqId => allTasks.find(t => t.id === coreqId)?.name);
+};
 
-  // Define task type sequences
-  const taskTypeSequences = ['gec->elective', 'gec->gec', 'special'];
+currentChunkInProgress.forEach(fetchPrerequisiteAndCorequisiteNames);
+currentChunkPending.forEach(fetchPrerequisiteAndCorequisiteNames);
 
-  // Function to determine the number of sequences based on the semester
-  const getNumSequencesForSemester = (semester) => {
-    if (semester <= 2) return 3;
-    if (semester <= 4) return 2;
-    return 1;
+// Push in_progress tasks as the first chunk
+if (currentChunkInProgress.length > 0) {
+  chunkTables.push(currentChunkInProgress);
+}
+
+// Sort tasks based on dependencies
+const sortTasksByDependencies = (tasks) => {
+  const taskMap = {};
+  tasks.forEach(task => taskMap[task.id] = task);
+
+  const sortedTasks = [];
+  const visited = new Set();
+
+  const visit = (task) => {
+    if (visited.has(task.id)) return;
+    visited.add(task.id);
+
+    task.prerequisites.forEach(prereqId => {
+      if (taskMap[prereqId]) visit(taskMap[prereqId]);
+    });
+
+    sortedTasks.push(task);
   };
 
-  let taskTypeQueues = {};
+  tasks.forEach(task => visit(task));
 
-  // Initialize queues for each task type and gec type combination
-  taskTypeSequences.forEach((type) => {
-    if (type.startsWith('gec->')) {
-      const gecType = type.split('->')[1];
-      taskTypeQueues[type] = currentChunkPending.filter((task) => task.task_type === 'gec' && task.gec_type === gecType);
-    } else {
-      taskTypeQueues[type] = currentChunkPending.filter((task) => task.task_type === type);
-    }
-  });
+  return sortedTasks;
+};
 
-  // Function to get the next task based on the task type and gec type in a round-robin fashion
-  const getNextPendingTask = (currentTaskTypeSequenceIndex) => {
-    let initialTaskTypeSequenceIndex = currentTaskTypeSequenceIndex;
+currentChunkPending = sortTasksByDependencies(currentChunkPending);
 
-    // Try to find a non-empty queue
-    do {
-      const type = taskTypeSequences[currentTaskTypeSequenceIndex];
-      if (taskTypeQueues[type] && taskTypeQueues[type].length > 0) {
-        const task = taskTypeQueues[type].shift();
+// Apply task_type and gec_type constraints within max_units slicing
+const taskTypeSequences = ['gec->elective', 'gec->gec', 'special'];
+let currentTaskTypeSequenceIndex = 0;
+let taskTypeQueues = {};
+
+// Initialize queues for each task type and gec type combination
+taskTypeSequences.forEach((type) => {
+  if (type.startsWith('gec->')) {
+    const gecType = type.split('->')[1];
+    taskTypeQueues[type] = currentChunkPending.filter((task) => task.task_type === 'gec' && task.gec_type === gecType);
+  } else {
+    taskTypeQueues[type] = currentChunkPending.filter((task) => task.task_type === type);
+  }
+});
+
+// Function to get the next task based on the task type and gec type in a round-robin fashion
+const getNextPendingTask = () => {
+  let initialTaskTypeSequenceIndex = currentTaskTypeSequenceIndex;
+
+  // Try to find a non-empty queue
+  do {
+    const type = taskTypeSequences[currentTaskTypeSequenceIndex];
+    if (taskTypeQueues[type] && taskTypeQueues[type].length > 0) {
+      const task = taskTypeQueues[type].shift();
+      
+      // Ensure prerequisites are met
+      const prereqsMet = task.prerequisites.every(prereqId => assignedTasks.data.some(t => t.id === prereqId && t.status === 'completed'));
+
+      // Ensure corequisites are included in the same chunk
+      const coreqsIncluded = task.corequisites.every(coreqId => currentChunk.some(t => t.id === coreqId));
+
+      if (prereqsMet && coreqsIncluded) {
         currentTaskTypeSequenceIndex = (currentTaskTypeSequenceIndex + 1) % taskTypeSequences.length;
-        return { task, currentTaskTypeSequenceIndex };
+        return task;
+      } else {
+        // If prerequisites or corequisites are not met, put the task back in the queue
+        taskTypeQueues[type].push(task);
       }
-      currentTaskTypeSequenceIndex = (currentTaskTypeSequenceIndex + 1) % taskTypeSequences.length;
-    } while (currentTaskTypeSequenceIndex !== initialTaskTypeSequenceIndex);
-
-    return { task: null, currentTaskTypeSequenceIndex }; // Return null if no more tasks are found
-  };
-
-  // Process pending tasks based on task_type and gec_type, considering semesters
-  currentChunk = [];
-  currentUnits = 0;
-  let currentTaskTypeSequenceIndex = 0;
-  let { task, currentTaskTypeSequenceIndex: newTaskTypeIndex } = getNextPendingTask(currentTaskTypeSequenceIndex);
-  let sequencesCount = 0;
-  const maxSequencesCount = getNumSequencesForSemester(currentSemester);
-
-  while (task) {
-    currentChunk.push(task);
-    currentUnits += task.units;
-
-    // If max_units reached, push the chunk, increment semester, and reset counters
-    if (currentUnits >= maxUnits) {
-      chunkTables.push({ semester: currentSemester, tasks: currentChunk });
-      currentChunk = [];
-      currentUnits = 0;
-      currentSemester += 1;
-      sequencesCount = 0; // Reset sequence count for the new semester
-      currentTaskTypeSequenceIndex = 0; // Reset the sequence index to start from gec->elective
     }
+    currentTaskTypeSequenceIndex = (currentTaskTypeSequenceIndex + 1) % taskTypeSequences.length;
+  } while (currentTaskTypeSequenceIndex !== initialTaskTypeSequenceIndex);
 
-    // Increment sequence count and check if it exceeds max for current semester
-    sequencesCount += 1;
-    if (sequencesCount >= maxSequencesCount) {
-      currentTaskTypeSequenceIndex = 2; // Move to the special task type after the sequences
-    } else {
-      currentTaskTypeSequenceIndex = newTaskTypeIndex;
+  return null; // Return null if no more tasks are found
+};
+
+// Function to get the maximum allowed gec->gec tasks based on chunk count
+const getMaxGecGecForCurrentChunk = () => {
+  if (chunkTables.length <= 1) return 3; // Semesters 1 & 2
+  if (chunkTables.length <= 3) return 2; // Semesters 3 & 4
+  return 1; // Semester 5 and above
+};
+
+// Process pending tasks based on task_type and gec_type
+currentChunk = [];
+currentUnits = 0;
+let task = getNextPendingTask();
+let gecGecCount = 0;
+
+while (task) {
+  if (task.task_type === 'gec' && task.gec_type === 'gec') {
+    if (gecGecCount >= getMaxGecGecForCurrentChunk()) {
+      // If max gec->gec limit is reached, skip to the next task
+      task = getNextPendingTask();
+      continue;
     }
-
-    // Get the next task based on task_type and gec_type in a round-robin fashion
-    ({ task, currentTaskTypeSequenceIndex: newTaskTypeIndex } = getNextPendingTask(currentTaskTypeSequenceIndex));
+    gecGecCount += 1;
   }
 
-  // Push the remaining tasks, if any
-  if (currentChunk.length > 0) {
-    chunkTables.push({ semester: currentSemester, tasks: currentChunk });
-  }
+  currentChunk.push(task);
+  currentUnits += task.units;
 
-  // Separate remaining tasks (standing, gec->gee) into the last table chunk
-  const remainingTasks = currentChunkPending.filter((task) => {
-    return !((task.task_type === 'gec' && (task.gec_type === 'elective' || task.gec_type === 'gec')) || task.task_type === 'special');
+  // Handle corequisites: ensure all corequisites are in the same chunk
+  task.corequisites.forEach(coreqId => {
+    const coreqTask = assignedTasks.data.find(t => t.id === coreqId && t.status === 'pending');
+    if (coreqTask) {
+      currentChunk.push(coreqTask);
+      currentUnits += coreqTask.units;
+      assignedTasks.data = assignedTasks.data.filter(t => t.id !== coreqId);
+    }
   });
 
-  if (remainingTasks.length > 0) {
-    chunkTables.push({ semester: currentSemester + 1, tasks: remainingTasks });
+  // If max_units reached, push the chunk and reset counters
+  if (currentUnits >= maxUnits) {
+    chunkTables.push(currentChunk);
+    currentChunk = [];
+    currentUnits = 0;
+    gecGecCount = 0; // Reset gec->gec count for the next chunk
   }
 
-  // return ...
+  // Get the next task based on task_type and gec_type in a round-robin fashion
+  task = getNextPendingTask();
+}
+
+// Push the remaining tasks, if any
+if (currentChunk.length > 0) {
+  chunkTables.push(currentChunk);
+}
+
+// Separate remaining tasks (standing, gec->gee) into the last table chunk
+const remainingTasks = currentChunkPending.filter((task) => {
+  return !((task.task_type === 'gec' && (task.gec_type === 'elective' || task.gec_type === 'gec')) || task.task_type === 'special');
+});
+
+if (remainingTasks.length > 0) {
+  chunkTables.push(remainingTasks);
+  }
 
   return (
     <AuthenticatedLayout
@@ -130,16 +182,13 @@ export default function Generated({ auth, success, assignedTasks, queryParams = 
       header={
         <div className="flex items-center justify-between">
           <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Technological University of the Philippines - Manila
-          </h2>
-          <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Study Planner for Irregular Students
+            Hi! Welcome
           </h2>
         </div>
       }
     >
-      <Head title="Study Planner" />
-
+      <Head title="Task" />
+      
       {/* Render each chunk as a separate table */}
       {chunkTables.map((chunk, index) => (
         <div key={index} className="py-12">
@@ -152,10 +201,10 @@ export default function Generated({ auth, success, assignedTasks, queryParams = 
                   </div>
                 )}
                 <div className="overflow-auto">
-                  <h3 className="text-lg font-semibold mb-4">Semester {chunk.semester}</h3>
                   <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                       <tr className="text-nowrap">
+                        <th className="px-3 py-3">ID</th>
                         <th className="px-3 py-3">Image</th>
                         <th className="px-3 py-3">Subject Name</th>
                         <th className="px-3 py-3">Status</th>
@@ -167,16 +216,16 @@ export default function Generated({ auth, success, assignedTasks, queryParams = 
                         <th className="px-3 py-3">Day</th>
                         <th className="px-3 py-3">Time</th>
                         <th className="px-3 py-3">Task Type</th>
-                        <th className="px-3 py-3">GEC Type</th>
-                        <th className="px-3 py-3"></th>
+                        <th className="px-3 py-3">GEC Type</th>      
                       </tr>
                     </thead>
                     <tbody>
-                      {chunk.tasks.map((assignedTask) => (
+                      {chunk.map((assignedTask) => (
                         <tr
                           className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                           key={assignedTask.id}
                         >
+                          <td className="px-3 py-2">{assignedTask.id}</td>
                           <td className="px-3 py-2">
                             <img src={assignedTask.image_path} style={{ width: 60 }} />
                           </td>

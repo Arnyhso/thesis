@@ -127,7 +127,7 @@ class ProjectController extends Controller
     {
 
         $query = $project->tasks();
-
+        
 
         $allTasks = AllTasks::query()->orderBy('name', 'asc')->get();
 
